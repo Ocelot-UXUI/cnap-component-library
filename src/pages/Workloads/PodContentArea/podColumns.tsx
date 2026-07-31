@@ -14,17 +14,19 @@ import {
     renderRestarts,
     renderStatus,
 } from './podCells';
+import {GpuUsageCard} from './PodDetailDrawer/GpuUsageCard';
+import {GpuCellList} from './podColumns.style';
 import {renderCpu, renderMemory} from './podUsageCells';
 import type {ViewMode} from './types';
 
 /** 该组是否存在 GPU 资源（无则整列隐藏） */
 export function groupHasGpu(pods: Pod[]): boolean {
     return pods.some(pod =>
-        Boolean(pod.resourceLimits?.gpus?.length)
-        || Object.keys(pod.resourceLimits?.others ?? {}).some(key => key.toLowerCase().includes('gpu'))
+        Boolean(pod.resourceRequests?.gpus?.length)
     );
 }
 
+/** GPU 列：复用 ResourceUsageView 的 GpuUsageCard 渲染结构化 GPU；无结构化数据时回退文本。 */
 export function gpuText(pod: Pod): string {
     const gpus = pod.resourceLimits?.gpus ?? [];
     if (gpus.length) {
@@ -35,6 +37,18 @@ export function gpuText(pod: Pod): string {
     const entries = Object.entries(pod.resourceLimits?.others ?? {})
         .filter(([key]) => key.toLowerCase().includes('gpu'));
     return entries.length ? entries.map(([name, value]) => `${name}:${value}`).join(', ') : '-';
+}
+
+function renderGpu(pod: Pod) {
+    const gpus = pod.resourceLimits?.gpus ?? [];
+    if (gpus.length === 0) {
+        return gpuText(pod);
+    }
+    return (
+        <GpuCellList>
+            {gpus.map((gpu, index) => <GpuUsageCard key={index} gpu={gpu} />)}
+        </GpuCellList>
+    );
 }
 
 export function buildPodColumns(
@@ -79,7 +93,7 @@ export function buildPodColumns(
         { title: '内存', key: 'memory', width: detailed ? 200 : 90, render: (_, pod) => renderMemory(pod, detailed) },
     ];
     if (hasGpu) {
-        columns.push({ title: 'GPU', key: 'gpu', width: 120, render: (_, pod) => gpuText(pod) });
+        columns.push({ title: 'GPU', key: 'gpu', width: 200, render: (_, pod) => renderGpu(pod) });
     }
     columns.push({
         title: '操作',

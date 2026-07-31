@@ -1,24 +1,19 @@
 import {ThunderboltOutlined} from '@ant-design/icons';
-import {Badge, Button, Dropdown, Tooltip, Typography} from 'antd';
+import {Button, Dropdown, Tooltip, Typography} from 'antd';
 
 import {semantic} from '@/constants/colors';
 import type {ContainerPort, Pod, PodOperation} from '@/interface/entities/pod';
 import {formatAge} from './duration';
 import {getPodOperationIcon, moreIcon} from './PodOperationIcons';
 import {statusLabel, statusTone} from './podStatus';
-
-const toneColor = {
-    success: semantic.state.success.default,
-    info: semantic.state.info.default,
-    warning: semantic.state.warning.default,
-    error: semantic.state.error.default,
-};
+import {StatusTag} from './podCells.style';
 
 export function renderStatus(pod: Pod, detailed: boolean) {
+    const tone = statusTone(pod.status);
     return (
         <div>
             <Tooltip title={pod.status}>
-                <Badge color={toneColor[statusTone(pod.status)]} text={statusLabel(pod.status)} />
+                <StatusTag $tone={tone}>{statusLabel(pod.status)}</StatusTag>
             </Tooltip>
             {detailed && (
                 <div style={{ color: semantic.text.tertiary }}>
@@ -33,7 +28,12 @@ export function renderName(pod: Pod, detailed: boolean) {
     return (
         <div>
             <Typography.Text copyable={{ text: pod.name }}>{pod.name}</Typography.Text>
-            {detailed && <div style={{ color: semantic.text.tertiary }}>{pod.clusterName ?? pod.clusterId}</div>}
+            {detailed && (
+                <div style={{ color: semantic.text.tertiary }}>
+                    <span>{pod.clusterName ?? pod.clusterId}</span>
+                    {pod.version && <span style={{ marginLeft: 8 }}>v{pod.version}</span>}
+                </div>
+            )}
         </div>
     );
 }
