@@ -75,8 +75,8 @@ export function buildPodColumns(
         },
         { title: '重启', key: 'restarts', width: 80, sorter: true, render: (_, pod) => renderRestarts(pod) },
         { title: '存活', key: 'creationTimestamp', width: 100, sorter: true, render: (_, pod) => renderAge(pod) },
-        { title: 'CPU', key: 'cpu', width: 90, render: (_, pod) => renderCpu(pod) },
-        { title: '内存', key: 'memory', width: 90, render: (_, pod) => renderMemory(pod) },
+        { title: 'CPU', key: 'cpu', width: detailed ? 200 : 90, render: (_, pod) => renderCpu(pod, detailed) },
+        { title: '内存', key: 'memory', width: detailed ? 200 : 90, render: (_, pod) => renderMemory(pod, detailed) },
     ];
     if (hasGpu) {
         columns.push({ title: 'GPU', key: 'gpu', width: 120, render: (_, pod) => gpuText(pod) });
