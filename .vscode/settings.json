@@ -1,0 +1,15 @@
+{
+    "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
+    "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
+    "cSpell.words": [
+        "antd",
+        "comatestack",
+        "constate",
+        "huse",
+        "Icafe",
+        "idataset",
+        "ievalue",
+        "Popconfirm"
+    ],
+    // "editor.formatOnSave": true
+}

@@ -1,0 +1,48 @@
+{
+  "lineWidth": 120,
+  "indentWidth": 4,
+  "useTabs": false,
+  "newLineKind": "lf",
+  "typescript": {
+    "quoteStyle": "preferSingle",
+    "jsx.quoteStyle": "preferDouble",
+    "semiColons": "always",
+    "trailingCommas": "onlyMultiLine",
+    "arrowFunction.useParentheses": "maintain",
+    "binaryExpression.linePerExpression": false,
+    "memberExpression.linePerExpression": false,
+    "jsx.multiLineParens": "prefer",
+    "operatorPosition": "nextLine",
+    "preferHanging": false,
+    "preferSingleLine": false,
+    "spaceAround": false,
+    "importDeclaration.spaceSurroundingNamedImports": false,
+    "exportDeclaration.spaceSurroundingNamedExports": false,
+    "typeLiteral.separatorKind": "semiColon"
+  },
+  "json": {
+    "indentWidth": 2,
+    "trailingCommas": "never"
+  },
+  "markdown": {
+    "lineWidth": 120
+  },
+  "includes": [
+    "**/*.{ts,tsx,js,jsx,mjs,cjs}",
+    "**/*.json",
+    "**/*.md"
+  ],
+  "excludes": [
+    "**/node_modules",
+    "**/dist",
+    "**/*-lock.json",
+    "**/.yarn",
+    "**/.vscode",
+    "**/ai-context.json"
+  ],
+  "plugins": [
+    "https://plugins.dprint.dev/typescript-0.96.1.wasm",
+    "https://plugins.dprint.dev/json-0.20.0.wasm",
+    "https://plugins.dprint.dev/markdown-0.18.0.wasm"
+  ]
+}

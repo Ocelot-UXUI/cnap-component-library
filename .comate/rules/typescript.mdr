@@ -1,0 +1,221 @@
+---
+description: TypeScript 编码规范 - 适用于所有 TS/TSX 文件
+globs: *.ts,*.tsx
+---
+
+## TypeScript 规范
+
+### 1. 类型定义
+
+- **类型 vs 接口**
+    - 对象形状定义优先使用 `interface`
+    - 联合类型、交叉类型、工具类型使用 `type`
+    - 示例：
+
+        ```typescript
+        // ✅ 推荐：对象使用 interface
+        interface User {
+            id: string;
+            name: string;
+        }
+
+        // ✅ 推荐：联合类型使用 type
+        type Status = "pending" | "success" | "error";
+
+        // ✅ 推荐：工具类型使用 type
+        type PartialUser = Partial<User>;
+        ```
+
+- **类型文件组织**
+    - 业务类型统一放在对应模块的 `types/` 目录下
+    - 公共类型定义在 `src/types/global.d.ts`
+    - 每个业务模块的类型放在 `src/types/<module>/` 下
+    - API 相关类型与 API 定义放在同一文件
+
+- **命名规范**
+    - 接口和类型使用 PascalCase
+    - 避免使用 `I` 或 `T` 前缀
+    - 类型名应清晰描述其用途
+
+### 2. React 组件类型
+
+- **组件定义**
+    - 组件文件使用 PascalCase 命名
+    - 优先使用函数组件而非类组件
+    - 显式定义 Props 类型
+
+- **Props 类型定义**
+
+    ```typescript
+    // ✅ 推荐：显式定义 Props
+    interface ButtonProps {
+        label: string;
+        onClick: () => void;
+        disabled?: boolean;
+    }
+
+    export const Button = ({
+        label,
+        onClick,
+        disabled = false,
+    }: ButtonProps) => {
+        // 组件实现
+    };
+    ```
+
+- **事件处理器类型**
+
+    ```typescript
+    import { MouseEvent, ChangeEvent } from "react";
+    // ✅ 使用 React 提供的事件类型
+    const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+        // 处理逻辑
+    };
+
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+        // 处理逻辑
+    };
+    ```
+
+### 3. API 调用类型
+
+- **API 定义规范**
+    - API 定义统一放在 `src/api/` 目录
+    - 使用 `src/api/base.ts` 中的基础配置
+    - 请求和响应类型必须明确定义
+
+- **类型定义示例**
+
+    ```typescript
+    // 请求参数类型
+    interface GetUserRequest {
+        userId: string;
+    }
+
+    // 响应数据类型
+    interface GetUserResponse {
+        id: string;
+        name: string;
+        email: string;
+    }
+
+    // API 函数定义
+    export const getUser = (
+        params: GetUserRequest,
+    ): Promise<GetUserResponse> => {
+        return request.get("/api/user", { params });
+    };
+    ```
+
+### 4. 类型推断与断言
+
+- **类型推断**
+    - 优先依赖 TypeScript 的类型推断
+    - 仅在必要时显式标注类型
+    - 函数返回值类型应显式声明（提高可读性）
+
+- **类型断言**
+    - 避免使用 `as any`
+    - 使用 `as const` 定义常量对象
+    - 类型断言应有明确理由并添加注释
+
+    ```typescript
+    // ✅ 推荐：使用 as const
+    const STATUS = {
+        PENDING: "pending",
+        SUCCESS: "success",
+    } as const;
+
+    // ⚠️ 谨慎使用：类型断言需要注释说明
+    const element = document.querySelector(".app") as HTMLDivElement; // 确保该元素存在且为 div
+    ```
+
+### 5. 泛型使用
+
+- **泛型定义**
+    - 泛型参数使用描述性名称（不仅仅是 T）
+    - 为泛型添加约束以提高类型安全
+
+    ```typescript
+    // ✅ 推荐：描述性泛型名
+    function getData<TData extends Record<string, any>>(key: string): TData {
+        // 实现
+    }
+
+    // ✅ 推荐：组件泛型
+    interface ListProps<TItem> {
+        items: TItem[];
+        renderItem: (item: TItem) => React.ReactNode;
+    }
+    ```
+
+### 6. 工具类型
+
+- **常用工具类型**
+    - `Partial<T>`：所有属性可选
+    - `Required<T>`：所有属性必填
+    - `Pick<T, K>`：选择部分属性
+    - `Omit<T, K>`：排除部分属性
+    - `Record<K, V>`：创建键值对类型
+
+- **自定义工具类型**
+    - 复用的工具类型放在 `src/types/utils.ts`
+    ```typescript
+    // 示例：深度部分可选
+    type DeepPartial<T> = {
+        [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];
+    };
+    ```
+
+### 7. 严格模式配置
+
+- **tsconfig.json 推荐配置**
+    ```json
+    {
+        "compilerOptions": {
+            "strict": true,
+            "noImplicitAny": true,
+            "strictNullChecks": true,
+            "strictFunctionTypes": true,
+            "noUnusedLocals": true,
+            "noUnusedParameters": true
+        }
+    }
+    ```
+
+### 8. 状态管理类型
+
+- **region-react**
+
+    ```typescript
+    import { createRegion } from "region-react";
+
+    interface TaskIdItem {
+        taskId: string;
+        bgCode: string;
+        bgName: string;
+        creator: string;
+        description: string;
+        productCode: string;
+        productName: string;
+        sceneCode: string;
+    }
+
+    const editTaskIdRegion = createRegion<TaskIdItem>();
+
+    export const useEditTaskId = editTaskIdRegion.useValue;
+    ```
+
+### 9. 常见错误避免
+
+- **避免 any 类型**
+    - 使用 `unknown` 代替 `any` 处理不确定的类型
+    - 使用泛型约束限制类型范围
+
+- **避免类型断言滥用**
+    - 类型断言应该是最后的手段
+    - 优先通过类型守卫和类型收窄解决问题
+
+- **避免循环依赖**
+    - 类型定义文件应避免循环导入
+    - 使用前置声明或重新组织类型文件结构

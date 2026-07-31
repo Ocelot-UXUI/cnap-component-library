@@ -1,22 +1,23 @@
 #!/usr/bin/env bash
 
 set -e
+set -o pipefail
 
-echo "node $(node -v)"
-echo "npm $(npm -v)"
-echo "yarn $(yarn -v)"
+echo "Node version: $(node --version)"
+echo "Yarn version: $(yarn --version)"
 
-rm -rf dist output
+if [ "$BUILD_CACHE_BUSTING" = "Y" ]; then
+    rm -rf node_modules
+fi
 
-NODE_ENV=development npm install
-NODE_ENV=production npm run build "$@"
+yarn install
 
-mkdir output
+NODE_ENV=production yarn run build
 
-cd dist
+echo "Build output:"
+tree build
 
-tar czf ../output/bundle.tar.gz ./
+mv build output
 
-cd ..
-
-echo "build success"
+echo "Final output:"
+tree output

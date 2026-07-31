@@ -1,0 +1,66 @@
+---
+description: CNAP 2.0 Design Tokens 强制规范 — 编写任何 UI 样式前必读
+globs:
+  - "src/**/*.{ts,tsx}"
+  - "src/**/*.style.ts"
+alwaysApply: true
+---
+
+# CNAP 2.0 Design Tokens 强制规范
+
+**详细规范位于 `docs/design/design-tokens.md`，本文件为触发式提要。**
+
+## 引用优先级（强制）
+
+```
+antd ConfigProvider theme  >  semantic / sidebar  >  palette  >  hex 字面量（禁止）
+```
+
+## 强制引用路径
+
+```ts
+import { semantic, sidebar, palette } from '@/constants/colors';
+import { radius } from '@/constants/radius';
+import { spacing } from '@/constants/spacing';
+import { shadow } from '@/constants/shadow';
+import { typography } from '@/constants/typography';
+```
+
+## 反模式（禁止）
+
+- ❌ 硬编码颜色 `color: '#181818'` → ✅ `color: ${semantic.text.primary}`
+- ❌ 引用 `colors['gray-8']`（已 @deprecated）→ ✅ `semantic.text.secondary`
+- ❌ 在业务组件内覆盖 antd 主题 token → ✅ 通过 `themePresets.cnap2` 集中管理
+- ❌ 让 Input focus 边框变绿 → ✅ Input focus 走黑色 `#181818`
+
+## 品牌绿分布规则
+
+- ✅ **允许出现**：Switch / Radio / Checkbox / Slider / Progress / Sider 一级选中 / Button primary 文字 / Table 行多选态背景 / 下拉选中项浅背景
+- ❌ **不允许出现**：Input / Select / DatePicker / Menu / Tabs / Pagination / Anchor / Card 边框 / focus 环
+
+## 污染防护原理
+
+antd 的 seed → alias token 派生链路会让 `colorPrimary` 污染大量组件。`src/constants/themes/presets.ts` 中的 `cnap2` preset 通过以下 alias 显式钉死中性色：
+
+- `controlItemBgHover = #F2F2F2`（下拉 hover 灰）
+- `controlOutline = rgba(24,24,24,0.06)`（focus 环黑）
+- `Input.hoverBorderColor = #BFBFBF` / `Input.activeBorderColor = #181818`
+- `Select.colorPrimary = #181818`（切断内部 primary 派生）
+- `Tabs.inkBarColor = #181818` / `Menu.itemSelectedBg = #E8E8E8`
+
+**新增 antd 组件覆盖时**：先检查该组件是否从 `colorPrimary` 派生了 hover / selected / focus / border 语义，如是且视觉规范要求中性色，则必须在 `cnap2.components.<Name>` 显式覆盖。
+
+## Token 快查
+
+| 类别 | 常用 token |
+| - | - |
+| 背景 | `semantic.bg.page` `semantic.bg.default` |
+| 边框 | `semantic.border.divider` `semantic.border.card` |
+| 文字 | `semantic.text.{primary\|secondary\|tertiary\|placeholder\|disabled\|inverse\|link}` |
+| 状态 | `semantic.state.{brand\|info\|success\|warning\|error}.{default\|hover\|active\|disabled\|focus\|light}` |
+| 组件交互 | `semantic.state.component.{borderDefault\|borderHover\|borderFocus\|selectHover\|selectActive\|disabledBg}` |
+| 侧边栏 | `sidebar.level1.*` `sidebar.level2.*` `sidebar.text.*` `sidebar.border.*` |
+| 圆角 | `radius.{sm\|md\|lg\|xl\|xl2\|xl3\|xl4}` = 4/6/8/12/16/20/24 |
+| 间距 | `spacing.{xs2\|xs\|s\|m\|l\|xl\|xl2..xl9}` |
+| 阴影 | `shadow.{xs\|s\|m\|l}` |
+| 字体 | `typography.{heading\|body\|caption\|code}.*` |

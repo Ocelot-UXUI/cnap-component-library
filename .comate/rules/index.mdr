@@ -1,0 +1,24 @@
+---
+description: 当你在当前仓库发起任务时，必须阅读此条规则
+globs:
+alwaysApply: true
+---
+
+这是一个 React + Vite + TypeScript 的前端脚手架模板项目。
+
+## 规则目录
+
+- `basic.mdr`: 编码基本规范，适用于所有代码文件
+- `typescript.mdr`: TypeScript 规范
+- `components.mdr`: 组件开发规范
+- `design-tokens.mdr`: **CNAP 2.0 Design Tokens 强制规范**（编写任何 UI 样式前必读）
+
+## 技术栈
+
+- **框架**: React 19
+- **构建工具**: Vite 6
+- **UI 组件库**: Ant Design 6
+- **样式方案**: Emotion (CSS-in-JS)
+- **路由**: React Router 7
+- **HTTP 请求**: Axios
+- **日期处理**: Day.js

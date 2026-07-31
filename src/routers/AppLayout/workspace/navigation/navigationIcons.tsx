@@ -1,0 +1,45 @@
+import {
+    AlertOutlined,
+    ApiOutlined,
+    AppstoreOutlined,
+    BranchesOutlined,
+    BugOutlined,
+    CloudOutlined,
+    ClusterOutlined,
+    CodeOutlined,
+    DeploymentUnitOutlined,
+    FileTextOutlined,
+    HistoryOutlined,
+    HomeOutlined,
+    ReadOutlined,
+    RobotOutlined,
+    SettingOutlined,
+    StarOutlined,
+    TeamOutlined,
+    ToolOutlined,
+} from '@ant-design/icons';
+
+import type {NavigationNodeKey} from '@/navigation';
+import type {ReactNode} from 'react';
+
+export const navigationIcons: Partial<Record<NavigationNodeKey, ReactNode>> = {
+    'home.dashboard': <HomeOutlined />,
+    'home.favorites': <StarOutlined />,
+    'home.recent': <HistoryOutlined />,
+    'applications.list': <AppstoreOutlined />,
+    'applications.workloads': <DeploymentUnitOutlined />,
+    'applications.serviceExposure': <ApiOutlined />,
+    'applications.logs': <FileTextOutlined />,
+    'applications.terminal': <CodeOutlined />,
+    'applications.monitor': <AlertOutlined />,
+    'applications.appRuntimeConfig': <ToolOutlined />,
+    'applications.appSettings': <SettingOutlined />,
+    'environments.list': <CloudOutlined />,
+    'changes.pipelines': <BranchesOutlined />,
+    'resources.clusters': <ClusterOutlined />,
+    'accounts.list': <TeamOutlined />,
+    'support.aiChat': <RobotOutlined />,
+    'support.aiDebug': <BugOutlined />,
+    'support.settings': <SettingOutlined />,
+    'support.changelog': <ReadOutlined />,
+};

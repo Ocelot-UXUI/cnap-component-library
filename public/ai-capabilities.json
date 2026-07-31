@@ -1,0 +1,174 @@
+{
+  "version": "1.0.0",
+  "capabilities": [
+    {
+      "name": "listApplications",
+      "description": "获取当前用户的应用列表",
+      "params": {
+        "appId": {
+          "type": "string",
+          "description": "应用ID",
+          "required": true
+        }
+      }
+    },
+    {
+      "name": "deployApplication",
+      "description": "部署应用到指定环境（会等待部署完成后返回）",
+      "params": {
+        "appId": {
+          "type": "string",
+          "description": "应用ID",
+          "required": true
+        }
+      }
+    },
+    {
+      "name": "getDeploymentStatus",
+      "description": "获取部署状态",
+      "params": {
+        "deploymentId": {
+          "type": "string",
+          "description": "部署ID",
+          "required": true
+        }
+      }
+    },
+    {
+      "name": "configApplication",
+      "description": "打开应用配置页面",
+      "params": {
+        "appId": {
+          "type": "string",
+          "description": "应用ID",
+          "required": true
+        }
+      }
+    },
+    {
+      "name": "viewApplication",
+      "description": "查看应用详情",
+      "params": {
+        "appId": {
+          "type": "string",
+          "description": "应用ID",
+          "required": true
+        }
+      }
+    },
+    {
+      "name": "listClusters",
+      "description": "获取集群列表",
+      "params": {
+        "name": {
+          "type": "string",
+          "description": "集群名称",
+          "required": true
+        }
+      }
+    },
+    {
+      "name": "addCluster",
+      "description": "添加新集群（会等待集群就绪后返回）",
+      "params": {
+        "name": {
+          "type": "string",
+          "description": "集群名称",
+          "required": true
+        }
+      }
+    },
+    {
+      "name": "deleteCluster",
+      "description": "删除集群（会等待删除完成后返回）",
+      "params": {
+        "clusterId": {
+          "type": "string",
+          "description": "集群ID",
+          "required": true
+        }
+      }
+    },
+    {
+      "name": "viewCluster",
+      "description": "查看集群详情",
+      "params": {
+        "clusterId": {
+          "type": "string",
+          "description": "集群ID",
+          "required": true
+        }
+      }
+    },
+    {
+      "name": "getClusterStatus",
+      "description": "获取集群状态",
+      "params": {
+        "clusterId": {
+          "type": "string",
+          "description": "集群ID",
+          "required": true
+        }
+      }
+    },
+    {
+      "name": "listEnvironments",
+      "description": "获取环境列表",
+      "params": {
+        "name": {
+          "type": "string",
+          "description": "环境名称",
+          "required": true
+        }
+      }
+    },
+    {
+      "name": "createEnvironment",
+      "description": "创建新环境",
+      "params": {
+        "name": {
+          "type": "string",
+          "description": "环境名称",
+          "required": true
+        }
+      }
+    },
+    {
+      "name": "deleteEnvironment",
+      "description": "删除环境",
+      "params": {
+        "envId": {
+          "type": "string",
+          "description": "环境ID",
+          "required": true
+        }
+      }
+    },
+    {
+      "name": "viewEnvironment",
+      "description": "查看环境详情",
+      "params": {
+        "envId": {
+          "type": "string",
+          "description": "环境ID",
+          "required": true
+        }
+      }
+    },
+    {
+      "name": "navigateTo",
+      "description": "跳转到指定页面",
+      "params": {
+        "path": {
+          "type": "string",
+          "description": "页面路径或名称（applications/clusters/environments/settings）",
+          "required": true
+        }
+      }
+    },
+    {
+      "name": "goBack",
+      "description": "返回上一页"
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+/* 全局 CSS Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    font-family:
+        'Inter Variable',
+        'Inter',
+        -apple-system,
+        BlinkMacSystemFont,
+        'Segoe UI',
+        Roboto,
+        'Helvetica Neue',
+        Arial,
+        'Noto Sans',
+        sans-serif,
+        'Apple Color Emoji',
+        'Segoe UI Emoji',
+        'Segoe UI Symbol',
+        'Noto Color Emoji';
+}
+
+/* ============================================================
+   滚动条样式 - 细滑条风格
+   ============================================================ */
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.28);
+}
+
+/* ============================================================
+   Message 消息提示 - 从右侧滑入
+   ============================================================ */
+
+.ant-5-message {
+    top: 20px !important;
+    left: auto !important;
+    right: 24px !important;
+    transform: none !important;
+    width: auto !important;
+    max-width: 380px;
+}
+
+@keyframes messageSlideFromRight {
+    from {
+        opacity: 0;
+        transform: translateX(32px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.ant-5-message-notice-wrapper {
+    animation: messageSlideFromRight 0.22s cubic-bezier(0.4, 0, 0.2, 1) both !important;
+}
+
+/* ============================================================
+   Tabs 面板切换 - 淡入上浮
+   ============================================================ */
+
+@keyframes tabPaneFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.ant-5-tabs-tabpane-active {
+    animation: tabPaneFadeIn 0.18s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+/* ============================================================
+   Modal 弹出 - spring-like 弹入
+   ============================================================ */
+
+@keyframes modalSpringIn {
+    from {
+        opacity: 0;
+        transform: scale(0.96) translateY(-6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.ant-5-zoom-appear,
+.ant-5-zoom-enter {
+    animation: modalSpringIn 0.22s cubic-bezier(0.34, 1.4, 0.64, 1) both !important;
+}
+
+/* ============================================================
+   Drawer 滑入 - 加速过渡
+   ============================================================ */
+
+.ant-5-drawer-content-wrapper {
+    transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}

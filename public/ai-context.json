@@ -1,0 +1,67 @@
+{
+  "version": "1.0.0",
+  "routes": [
+    {
+      "path": "/app/applications",
+      "page": "ApplicationsPage",
+      "title": "应用列表",
+      "elements": [],
+      "params": []
+    },
+    {
+      "path": "/app/applications/:appId/overview",
+      "page": "ApplicationOverview",
+      "title": "应用概览",
+      "elements": [],
+      "params": [
+        "appId"
+      ]
+    },
+    {
+      "path": "/app/applications/:appId/deployments",
+      "page": "DeploymentsPage",
+      "title": "部署管理",
+      "elements": [],
+      "params": [
+        "appId"
+      ]
+    },
+    {
+      "path": "/app/applications/:appId/settings",
+      "page": "ApplicationSettings",
+      "title": "应用设置",
+      "elements": [],
+      "params": [
+        "appId"
+      ]
+    },
+    {
+      "path": "/app/environments",
+      "page": "EnvironmentsPage",
+      "title": "环境管理",
+      "elements": [],
+      "params": []
+    },
+    {
+      "path": "/app/clusters",
+      "page": "ClustersPage",
+      "title": "集群管理",
+      "elements": [],
+      "params": []
+    },
+    {
+      "path": "/app/accounts",
+      "page": "AccountsPage",
+      "title": "账户管理",
+      "elements": [],
+      "params": []
+    },
+    {
+      "path": "/app/settings",
+      "page": "SettingsPage",
+      "title": "用户设置",
+      "elements": [],
+      "params": []
+    }
+  ]
+}

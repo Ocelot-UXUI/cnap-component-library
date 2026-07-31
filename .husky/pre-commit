@@ -1,4 +1,5 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
-npm run lint-staged
+# pre-commit hook: 通过 lint-staged 对暂存文件执行 dprint 格式化
+# lint-staged 只格式化 git 暂存的文件，并将格式化后的改动自动重新暂存。
+# 职责分工：dprint 管格式化，ESLint 管代码质量（详见 docs/context/conventions.md → Code Style）
+# 注意：本 hook 仅执行格式化，不执行 yarn lint。ESLint 检查需在提交前手动运行或由 CI 承担。
+npx lint-staged

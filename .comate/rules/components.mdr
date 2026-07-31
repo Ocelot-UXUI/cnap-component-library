@@ -1,0 +1,105 @@
+---
+description: 组件开发规范 - 适用于所有组件文件
+globs: src/components/**/*,src/design/**/*
+---
+
+## 组件开发规范
+
+### 1. 组件结构
+
+- **目录组织**
+    - 每个组件应有独立的目录
+    - 组件文件命名使用 PascalCase（如 `UserCard.tsx`）
+    - 样式文件与组件文件同名，使用 `.ts` 扩展名（如 `UserCard.styles.ts`）
+    - 类型定义文件命名为 `types.ts` 或与组件同名
+
+- **文件结构示例**
+    ```
+    UserCard/
+    ├── index.tsx           # 组件导出
+    ├── UserCard.tsx        # 组件实现
+    ├── UserCard.styles.ts  # 样式定义
+    ├── types.ts            # 类型定义
+    └── constants.ts        # 常量定义（可选）
+    ```
+
+### 2. Props 定义
+
+- **类型定义规范**
+    - 必须定义完整的 TypeScript 接口
+    - 接口命名格式：`<ComponentName>Props`
+    - 可选参数必须提供默认值或在组件内部处理
+    - 复杂 Props 应定义在独立的 `types.ts` 文件中
+
+- **示例**
+    ```typescript
+    interface UserCardProps {
+        userId: string;
+        name: string;
+        avatar?: string;
+        onEdit?: (userId: string) => void;
+        className?: string;
+    }
+    ```
+
+### 3. 样式规范
+
+- **样式方案**
+    - 使用 `@emotion/react` 进行样式定义
+    - 避免使用全局样式，使用 CSS-in-JS 隔离样式
+    - 主题变量从 `src/constants/colors/` 引入
+    - 响应式设计使用主题提供的断点变量
+
+- **样式文件示例**
+
+    ```typescript
+    import { css } from "@emotion/react";
+    import { colors } from "@/constants/colors";
+
+    export const containerStyle = css({
+        padding: "16px",
+        backgroundColor: colors.background.primary,
+        borderRadius: "8px",
+    });
+    ```
+
+### 4. 最佳实践
+
+- **组件拆分**
+    - 单个组件文件不超过 150 行
+    - 复杂组件应拆分为多个子组件
+    - 子组件优先定义在同一文件中，过大时抽离为独立文件
+
+- **职责分离**
+    - 避免在 UI 组件中包含业务逻辑
+    - 数据获取和状态管理应使用 `src/regions/`
+    - 复杂计算逻辑抽离为工具函数
+
+- **可维护性**
+    - 组件应具有单一职责
+    - 提供清晰的 Props 接口
+    - 添加必要的注释说明复杂逻辑
+
+### 5. Hooks 使用规范
+
+- **自定义 Hooks**
+    - 命名以 `use` 开头
+    - 放在 `src/hooks/` 或组件目录的 `hooks/` 子目录
+    - 应该是可复用的逻辑单元
+
+- **常见 Hooks 使用**
+    - `useState`：本地 UI 状态
+    - `useEffect`：副作用处理，注意清理函数
+    - `useMemo`：昂贵计算的缓存
+    - `useCallback`：函数引用稳定性
+
+### 6. 性能优化
+
+- **渲染优化**
+    - 使用 `React.memo` 包裹纯组件
+    - 合理使用 `useMemo` 和 `useCallback`
+    - 避免在 render 中创建新对象或函数
+
+- **懒加载**
+    - 大型组件使用 `React.lazy` 和 `Suspense`
+    - 动态导入路由级组件

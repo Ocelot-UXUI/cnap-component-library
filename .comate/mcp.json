@@ -1,0 +1,23 @@
+{
+  "mcpServers": {
+    "iCafeCodingAgent": {
+      "url": "http://mcp-proxy.baidu-int.com/server/iCafeCodingAgent/mcp-plugin-center/mcp",
+      "headers": {
+        "u": "<-u->",
+        "pw": "<-pw->"
+      },
+      "type": "streamableHttp",
+      "timeout": 30
+    },
+    "context7": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp"
+      ],
+      "env": {
+        "DEFAULT_MINIMUM_TOKENS": "6000"
+      }
+    }
+  }
+}

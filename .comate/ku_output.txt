@@ -1,0 +1,2 @@
+'C:\Users\79104\.comate\skills\.system\ku-doc-manage\bin\ku' is not recognized as an internal or external command,
+operable program or batch file.

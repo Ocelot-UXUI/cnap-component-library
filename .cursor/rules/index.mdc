@@ -1,0 +1,31 @@
+---
+description: CNAP AGE workflow entry — read AGENTS.md and design tokens before writing code
+alwaysApply: true
+---
+
+# CNAP 项目规范入口
+
+本项目采用 Attractor-Guided Engineering (AGE) 工作流，**仓库是唯一真源**。
+
+## 每次开始编码前必读
+
+1. 根目录 `AGENTS.md` — 项目工作流、任务路由、编码规范总入口
+2. `docs/context/project-context.md` — 当前活跃需求与 owner docs 指引
+3. `docs/context/codebase-map.md` — 代码组织约定
+4. `docs/design/design-tokens.md` — **UI 代码强制规范**（写任何前端样式前必读）
+
+## 核心红线
+
+- 不要将聊天摘要当作持久化项目记忆。
+- 不要在 active requirement 尚不支持的情况下从 feature 直接跳到代码。
+- 修改超过 5 个文件或改动 > ~200 行、或影响公共契约时，先在 `docs/plans/` 落计划。
+- 完成任何重要代码变更后，追加 `docs/logs/{year}/{month}-{day}.md`。
+
+## 验证命令
+
+- `yarn lint-type` — TypeScript 类型检查
+- `yarn lint` — 代码风格检查
+- `yarn test` — 单元测试
+- `yarn build` — 生产构建
+
+失败命令不得作为通过基线记录。

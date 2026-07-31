@@ -1,0 +1,123 @@
+import type {TabSchema} from '../schema/types';
+import type {ValidatorRegistry} from '../schema/types';
+
+export const logSchema: TabSchema = {
+    key: 'log',
+    label: '监控日志',
+    fields: [
+        // ── 日志采集 ──────────────────────────────────────────
+        {
+            name: 'logType',
+            label: '日志采集类型',
+            component: 'Select',
+            initialValue: null,
+            options: [
+                { label: '不启用', value: null },
+                { label: 'EFK（Elasticsearch）', value: 'EFK' },
+                { label: 'BLS（百度日志服务）', value: 'BLS' },
+            ],
+            aiMeta: { role: 'field', param: 'logType', desc: '日志采集系统类型' },
+        },
+        {
+            name: 'efkEnable',
+            label: '启用 EFK 采集',
+            component: 'Switch',
+            initialValue: false,
+            visible: { fieldName: 'logType', value: 'EFK' },
+            aiMeta: { role: 'field', param: 'efkEnable', desc: '是否启用 EFK 日志采集' },
+        },
+        {
+            name: 'efkLogFiles',
+            label: 'EFK 日志文件路径',
+            component: 'TextArea',
+            visible: { fieldName: 'logType', value: 'EFK' },
+            componentProps: { rows: 3, placeholder: '每行一个路径，如 /var/log/app/*.log' },
+            tooltip: '需要采集的日志文件路径，支持 glob 通配符，每行一个',
+            aiMeta: { role: 'field', param: 'efkLogFiles', desc: 'EFK 采集的日志文件路径列表' },
+        },
+        {
+            name: 'efkCpu',
+            label: 'EFK Sidecar CPU',
+            component: 'Input',
+            initialValue: '100m',
+            visible: { fieldName: 'logType', value: 'EFK' },
+            placeholder: '如 100m',
+            validators: [{ name: 'cpuFormat' }],
+            aiMeta: { role: 'field', param: 'efkCpu', desc: 'EFK sidecar CPU 限制' },
+        },
+        {
+            name: 'efkMemory',
+            label: 'EFK Sidecar Memory',
+            component: 'Input',
+            initialValue: '128Mi',
+            visible: { fieldName: 'logType', value: 'EFK' },
+            placeholder: '如 128Mi',
+            validators: [{ name: 'memoryFormat' }],
+            aiMeta: { role: 'field', param: 'efkMemory', desc: 'EFK sidecar Memory 限制' },
+        },
+        {
+            name: 'blsEnable',
+            label: '启用 BLS 采集',
+            component: 'Switch',
+            initialValue: false,
+            visible: { fieldName: 'logType', value: 'BLS' },
+            aiMeta: { role: 'field', param: 'blsEnable', desc: '是否启用 BLS 日志采集' },
+        },
+        {
+            name: 'blsCpu',
+            label: 'BLS Sidecar CPU',
+            component: 'Input',
+            initialValue: '100m',
+            visible: { fieldName: 'logType', value: 'BLS' },
+            placeholder: '如 100m',
+            validators: [{ name: 'cpuFormat' }],
+            aiMeta: { role: 'field', param: 'blsCpu', desc: 'BLS sidecar CPU 限制' },
+        },
+        {
+            name: 'blsMemory',
+            label: 'BLS Sidecar Memory',
+            component: 'Input',
+            initialValue: '128Mi',
+            visible: { fieldName: 'logType', value: 'BLS' },
+            placeholder: '如 128Mi',
+            validators: [{ name: 'memoryFormat' }],
+            aiMeta: { role: 'field', param: 'blsMemory', desc: 'BLS sidecar Memory 限制' },
+        },
+        // ── 监控 ──────────────────────────────────────────────
+        {
+            name: 'monitorType',
+            label: '监控类型',
+            component: 'Select',
+            initialValue: null,
+            options: [
+                { label: '不启用', value: null },
+                { label: 'Noah（内部监控）', value: 'noahee' },
+                { label: 'cProm（Prometheus）', value: 'cprom' },
+            ],
+            aiMeta: { role: 'field', param: 'monitorType', desc: '监控系统类型' },
+        },
+        {
+            name: 'cpromPort',
+            label: 'Metrics 端口',
+            component: 'InputNumber',
+            initialValue: 9090,
+            visible: { fieldName: 'monitorType', value: 'cprom' },
+            componentProps: { min: 1, max: 65535, style: { width: '100%' } },
+            validators: [{ name: 'portRange' }],
+            tooltip: 'Prometheus metrics 暴露端口',
+            aiMeta: { role: 'field', param: 'cpromPort', desc: 'Prometheus metrics 端口' },
+        },
+        {
+            name: 'cpromPath',
+            label: 'Metrics 路径',
+            component: 'Input',
+            initialValue: '/metrics',
+            visible: { fieldName: 'monitorType', value: 'cprom' },
+            placeholder: '/metrics',
+            validators: [{ name: 'pathFormat' }],
+            aiMeta: { role: 'field', param: 'cpromPath', desc: 'Prometheus metrics 路径' },
+        },
+    ],
+};
+
+export const logValidators: ValidatorRegistry = {};

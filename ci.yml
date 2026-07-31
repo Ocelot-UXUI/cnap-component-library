@@ -1,25 +1,28 @@
 Global:
     version: "2.0"
-    group_email: icode-rd@baidu.com
+    group_email: ee-fe@baidu.com
 Default:
     profile:
-        - build
+        - image_register
 Profiles:
     - profile:
-      name: build
+      name: image_register
+      mode: AGENT_FOR_IMAGE_REGISTER    # 针对镜像注册，模式必须是IMAGE_REGISTER
+      group_mail: ee-fe@baidu.com       # 邮件组
+      images:                           # 镜像列表，每更新一个版本，均需要注册
+        - image: iregistry.baidu-int.com/hub-official/debian:12-slim
+    - profile:
+      name: fcnap
       mode: AGENT
       environment:
-          image: DECK_STD_CENTOS7
-          tools:
-              - nodejs: 22.latest
+        image: iregistry.baidu-int.com/hub-official/debian:12-slim
+        tools:
+            - nodejs: 24.latest
       build:
-          command: sh scripts/build.sh --build-target=$BUILD_TARGET --cache-dir=build-cache/webpack
+        command: |
+            /bin/bash ./scripts/build_fcnap.sh
       artifacts:
-          release: true
-      cache:
-          enable: true
-          paths:
-              - build-cache
+        release: true
       check:
-          - enable: true
-            reuse: TASK
+        - enable: true
+          reuse: TASK
