@@ -31,3 +31,4 @@ yarn-error.log*
 .comate/specs
 .comate/memory.json
 .cache
+build

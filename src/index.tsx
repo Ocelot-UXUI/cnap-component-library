@@ -11,7 +11,7 @@ import {UserProvider} from '@/contexts/UserContext';
 import ErrorBoundary from '@/design/Error/ErrorBoundary';
 import {AIExecutorProvider} from '@/executor';
 import {router} from '@/routers';
-import {qiankunWindow, renderWithQiankun} from 'vite-plugin-qiankun/dist/helper';
+import {exportQiankunLifeCycles, qiankunWindow} from '@tiny-codes/vite-plugin-qiankun';
 import '@/styles/common';
 import '@/styles/reset.css';
 
@@ -39,19 +39,20 @@ function render(container?: Element) {
     );
 }
 
-renderWithQiankun({
-    bootstrap() {},
-    mount(props) {
-        render(props.container);
-    },
-    unmount() {
-        root?.unmount();
-        root = null;
-    },
-    update() {},
-});
-
-if (!qiankunWindow.__POWERED_BY_QIANKUN__) {
+if (qiankunWindow.__POWERED_BY_QIANKUN__) {
+    exportQiankunLifeCycles({
+        name: 'cnap',
+        bootstrap() {},
+        mount(props) {
+            render(props.container);
+        },
+        unmount() {
+            root?.unmount();
+            root = null;
+        },
+        update() {},
+    });
+} else {
     if (!window.location.pathname.startsWith(APP_BASENAME)) {
         window.location.pathname = APP_BASENAME;
     }

@@ -1,13 +1,14 @@
 import react from '@vitejs/plugin-react';
 import * as process from 'process';
 import {defineConfig, UserConfig} from 'vite';
-import qiankun from 'vite-plugin-qiankun';
+import qiankun from '@tiny-codes/vite-plugin-qiankun';
 import svgr from 'vite-plugin-svgr';
 
 const buildTarget = ['chrome89', 'edge89', 'firefox89', 'safari15'];
 
-const isDev = process.env.NODE_ENV !== 'production';
-const CNAP_BASE_URL = isDev ? '/' : 'https://cnap-2.now.baidu-int.com/';
+// const isDev = process.env.NODE_ENV !== 'production';
+// const CNAP_BASE_URL = isDev ? '/' : 'https://cnap2-sandbox.now.baidu-int.com/';
+const CNAP_BASE_URL = process.env.FCNAP === 'true' ? `${process.env.FCNAP_CDN_HOST}/${process.env.FCNAP_CDN_PATH}` : 'https://cnap2-sandbox.now.baidu-int.com/';
 
 const sharedConfig: UserConfig = {
     base: CNAP_BASE_URL,
@@ -58,14 +59,9 @@ const applicationConfig: UserConfig = {
     plugins: [
         react({
             jsxImportSource: '@emotion/react',
-            babel: {
-                plugins: [
-                    '@emotion/babel-plugin',
-                ],
-            },
         }),
         svgr(),
-        qiankun('cnap', { useDevMode: true }),
+        qiankun('cnap'),
     ],
 };
 
