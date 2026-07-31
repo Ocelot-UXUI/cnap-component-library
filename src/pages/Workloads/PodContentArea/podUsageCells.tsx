@@ -1,7 +1,7 @@
 import cpuIcon from '@/assets/pod-resource-usage-cpu.png';
 import memoryIcon from '@/assets/pod-resource-usage-memory.png';
 
-import {formatCpu, formatMemory, parseBytes, parseCpu, usagePercent} from './PodDetailDrawer/resourceUsage';
+import {formatCpu, formatMemory, usagePercent} from './PodDetailDrawer/resourceUsage';
 import {ResourceUsageTooltip} from './PodDetailDrawer/ResourceUsageTooltip';
 import {UsageCell, UsageCellIcon} from './podUsageCells.style';
 
@@ -9,21 +9,22 @@ import type {Pod} from '@/interface/entities/pod';
 
 function renderUsageCell(
     pod: Pod,
-    key: 'cpu' | 'memory',
+    displayKey: 'cpu' | 'memory',
+    numericKey: 'cpuMilli' | 'memoryBytes',
     label: string,
     icon: string,
     format: (value?: string) => string,
-    parse: (value?: string) => number | undefined,
 ) {
-    const percent = usagePercent(pod.resourceUsages?.[key], pod.resourceLimits?.[key], parse);
+    const percent = usagePercent(pod.resourceUsages?.[numericKey], pod.resourceLimits?.[numericKey]);
     return (
         <ResourceUsageTooltip
             label={label}
-            usage={pod.resourceUsages?.[key]}
-            request={pod.resourceRequests?.[key]}
-            limit={pod.resourceLimits?.[key]}
+            usage={pod.resourceUsages?.[displayKey]}
+            request={pod.resourceRequests?.[displayKey]}
+            limit={pod.resourceLimits?.[displayKey]}
+            usageNumeric={pod.resourceUsages?.[numericKey]}
+            limitNumeric={pod.resourceLimits?.[numericKey]}
             format={format}
-            parse={parse}
         >
             <UsageCell>
                 <UsageCellIcon src={icon} alt="" aria-hidden="true" />
@@ -34,9 +35,9 @@ function renderUsageCell(
 }
 
 export function renderCpu(pod: Pod) {
-    return renderUsageCell(pod, 'cpu', 'CPU', cpuIcon, formatCpu, parseCpu);
+    return renderUsageCell(pod, 'cpu', 'cpuMilli', 'CPU', cpuIcon, formatCpu);
 }
 
 export function renderMemory(pod: Pod) {
-    return renderUsageCell(pod, 'memory', '内存', memoryIcon, formatMemory, parseBytes);
+    return renderUsageCell(pod, 'memory', 'memoryBytes', '内存', memoryIcon, formatMemory);
 }

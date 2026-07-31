@@ -5,6 +5,8 @@
  * 解析、格式化、单位拆拼与比较只实现一次。
  */
 
+import type {ResourceQuota} from '@/interface/entities/workload';
+
 /** 资源项类型 */
 export type ResourceKind = 'cpu' | 'memory' | 'ephemeralStorage';
 
@@ -12,7 +14,7 @@ export type ResourceKind = 'cpu' | 'memory' | 'ephemeralStorage';
 export const RESOURCE_UNITS: Record<ResourceKind, readonly string[]> = {
     cpu: ['c', 'nc'],
     memory: ['Mi', 'Gi', 'Ti'],
-    ephemeralStorage: ['Gi'],
+    ephemeralStorage: ['Mi', 'Gi', 'Ti'],
 };
 
 const RESOURCE_KINDS: ResourceKind[] = ['cpu', 'memory', 'ephemeralStorage'];
@@ -21,7 +23,7 @@ const RESOURCE_KINDS: ResourceKind[] = ['cpu', 'memory', 'ephemeralStorage'];
 const UNIT_FACTORS: Record<ResourceKind, Record<string, number>> = {
     cpu: { nc: 1, c: 1_000_000_000 },
     memory: { Mi: 1, Gi: 1024, Ti: 1024 * 1024 },
-    ephemeralStorage: { Gi: 1 },
+    ephemeralStorage: { Mi: 1, Gi: 1024, Ti: 1024 * 1024 },
 };
 
 /** 资源数量值对象：接口原值 + 规范化数值 + 单位 */
@@ -87,18 +89,20 @@ export function isLimitGteRequest(kind: ResourceKind, request?: Quantity, limit?
     return lim >= req;
 }
 
-/** 将接口 Record<string,string> 解析为 ResourceSpec */
-export function toResourceSpec(record?: Record<string, string>): ResourceSpec {
-    const spec: ResourceSpec = { others: {} };
+/** 将接口 ResourceQuota 解析为 ResourceSpec（显示侧）。派生字段（cpuMilli/*Bytes）与 gpus 不进入 ResourceSpec */
+export function toResourceSpec(record?: ResourceQuota): ResourceSpec {
     if (!record) {
-        return spec;
+        return { others: {} };
     }
-    for (const [key, val] of Object.entries(record)) {
-        if ((RESOURCE_KINDS as string[]).includes(key)) {
-            spec[key as ResourceKind] = parseQuantity(val);
-        } else {
-            spec.others[key] = val;
-        }
+    const spec: ResourceSpec = { others: {...record.others} };
+    if (record.cpu !== undefined) {
+        spec.cpu = parseQuantity(record.cpu);
+    }
+    if (record.memory !== undefined) {
+        spec.memory = parseQuantity(record.memory);
+    }
+    if (record.ephemeralStorage !== undefined) {
+        spec.ephemeralStorage = parseQuantity(record.ephemeralStorage);
     }
     return spec;
 }

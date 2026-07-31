@@ -24,10 +24,13 @@ export interface GpuResource {
 export interface ResourceQuota {
     /** CPU quantity，例如 1c、500m */
     cpu?: string;
+    cpuMilli?: string;
     /** 内存 quantity，例如 16Gi */
     memory?: string;
+    memoryBytes?: string;
     /** 临时存储 quantity，例如 200Gi */
     ephemeralStorage?: string;
+    ephemeralStorageBytes?: string;
     /** GPU 资源明细 */
     gpus?: GpuResource[];
     /** 其他扩展资源，例如 { "nvidia.com/gpu": "1" } */
@@ -101,8 +104,8 @@ export interface WorkloadGroup {
  */
 export interface RuntimeWorkloadContainer {
     name: string;
-    resourceLimits: Record<string, string>;
-    resourceRequests: Record<string, string>;
+    resourceLimits: ResourceQuota;
+    resourceRequests: ResourceQuota;
 }
 
 export interface RuntimeWorkloadUpdateStrategy {

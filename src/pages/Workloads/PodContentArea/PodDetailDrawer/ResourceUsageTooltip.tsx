@@ -22,8 +22,11 @@ interface ResourceUsageTooltipProps {
     usage?: string;
     request?: string;
     limit?: string;
+    /** 比例分子（无单位派生字段，如 cpuMilli / memoryBytes） */
+    usageNumeric?: string;
+    /** 比例分母（无单位派生字段） */
+    limitNumeric?: string;
     format: (value?: string) => string;
-    parse: (value?: string) => number | undefined;
     children: ReactNode;
 }
 
@@ -33,11 +36,12 @@ export const ResourceUsageTooltip = ({
     usage,
     request,
     limit,
+    usageNumeric,
+    limitNumeric,
     format,
-    parse,
     children,
 }: ResourceUsageTooltipProps) => {
-    const percent = usagePercent(usage, limit, parse);
+    const percent = usagePercent(usageNumeric, limitNumeric);
     const highLoad = isHighLoad(percent);
     const legend = [
         { tone: 'limit', label: 'Limit', value: limit },

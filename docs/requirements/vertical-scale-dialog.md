@@ -18,7 +18,7 @@
 - 容器选择器：从 Workload 列表聚合 `containers[].name` 去重，默认选中第一个
 - 选中容器后按容器过滤 Workload，仅展示包含该容器的 Workload 的集群行
 - 每个 Workload 行：CPU、内存、存储（ephemeralStorage）三项资源的 Req+Lim 数值输入 + 单位选择
-- 资源单位枚举：CPU → c（core）、nc（nanocore）；内存 → Mi、Gi、Ti；存储 → Gi
+- 资源单位枚举：CPU → c（core）、nc（nanocore）；内存 → Mi、Gi、Ti；存储 → Mi、Gi、Ti
 - 值与单位分割/拼接：接口返回的资源值为"数字+单位"拼接字符串，页面需分割为数值与单位分别展示；提交时再将数值与单位拼接回字符串
 - 集群选中态驱动资源项可用性：未选中集群时该行所有资源项（Req 与 Limit）及 Limit 复选框均为禁用态；选中集群时资源项启用且 Limit 复选框自动勾选；取消集群选中时 Limit 值同步为 Req 值并取消 Limit 勾选，资源项回到禁用态
 - 校验：数值为正数、同一资源项 Limit ≥ Req（CPU/内存/存储均适用）、至少选中一个集群
@@ -68,7 +68,7 @@
 
 - **容器切换过滤表格**：切换容器后，以当前选中容器名为条件过滤 Workload 列表（只保留 `containers[]` 中包含该容器名的 Workload），按过滤后的 Workload 重新渲染集群表格，清空已有勾选状态
 - **容器切换重置数据**：切换容器后，表格中 CPU/内存/存储所有值重新初始化为新选中容器在各过滤后 Workload 中的当前值（覆盖用户已有修改）
-- **资源项与单位枚举**：表格展示 CPU、内存、存储（ephemeralStorage）三项资源，每项均含 Req 与 Limit。单位枚举：CPU → c（core）、nc（nanocore）；内存 → Mi、Gi、Ti；存储 → Gi
+- **资源项与单位枚举**：表格展示 CPU、内存、存储（ephemeralStorage）三项资源，每项均含 Req 与 Limit。单位枚举：CPU → c（core）、nc（nanocore）；内存 → Mi、Gi、Ti；存储 → Mi、Gi、Ti
 - **值与单位分割/拼接**：接口返回的资源值（`containers[].resourceRequests.*` / `resourceLimits.*`）为"数字+单位"拼接字符串（如 `64c`、`16Gi`、`100Gi`），页面需将其分割为数值与单位分别填入输入框和单位选择器；提交时将每项的数值与单位重新拼接为字符串（如 `64` + `c` → `64c`）作为 `resourceLimits`/`resourceRequests` 字段值
 - **集群选中与资源项联动**：默认（集群未选中）该行所有资源项的 Req/Limit 输入框、单位选择器及 Limit 复选框均为禁用态；选中集群后该行资源项启用可编辑，且 Limit 复选框自动勾选（Limit 初始值取 Req 当前值）；取消集群选中后，该行 Limit 值同步为 Req 值、Limit 复选框取消勾选，所有资源项回到禁用态
 - **Limit 与 Req 关系**：同一资源项（CPU/内存/存储）的 Limit 值不得小于其 Req 值，否则对应 Limit 输入框标红
@@ -106,7 +106,7 @@
 - [ ] 选择 Group 后容器选择器正确聚合去重，默认选中第一个
 - [ ] 选择 Group 后表格正确渲染，每行列：复选框、集群、CPU Req/Lim、内存 Req/Lim、存储 Req/Lim、最大不可用、最大可超出、可用度
 - [ ] CPU/内存/存储输入框初始值为选中容器在各 Workload 中的当前值（由返回字符串分割为数值与单位）
-- [ ] CPU 单位选择器选项：c、nc；内存单位选择器选项：Mi、Gi、Ti；存储单位选择器选项：Gi
+- [ ] CPU 单位选择器选项：c、nc；内存单位选择器选项：Mi、Gi、Ti；存储单位选择器选项：Mi、Gi、Ti
 - [ ] 集群未选中时该行所有资源项（Req/Limit）及 Limit 复选框均为禁用态
 - [ ] 选中集群后该行资源项启用可编辑，且 Limit 复选框自动勾选
 - [ ] 取消集群选中后：Limit 值同步为 Req 值，Limit 复选框取消勾选，该行资源项回到禁用态
@@ -154,7 +154,7 @@
 | 集群       | 集群名称（`clusterName`），前带供应商图标                                      |
 | CPU        | Req 行（数值输入 + 单位选择 c/nc）+ Lim 行（复选框 + 数值输入 + 单位选择）     |
 | 内存       | Req 行（数值输入 + 单位选择 Mi/Gi/Ti）+ Lim 行（复选框 + 数值输入 + 单位选择） |
-| 存储       | Req 行（数值输入 + 单位选择 Gi）+ Lim 行（复选框 + 数值输入 + 单位选择）       |
+| 存储       | Req 行（数值输入 + 单位选择 Mi/Gi/Ti）+ Lim 行（复选框 + 数值输入 + 单位选择）       |
 | 最大不可用 | 只读，`updateStrategy.maxUnavailable`                                          |
 | 最大可超出 | 只读，`updateStrategy.maxSurge`                                                |
 | 可用度     | 只读，`availabilityTarget`，为空显示"未启用"                                   |
@@ -170,7 +170,7 @@
 | 1    | 状态图标   | Req 行为选中态图标（Req 恒启用）；Lim 行为**复选框**（勾选/取消，语义见下方「Limit 行」，此处仅描述展示）                                                                               |
 | 2    | 标签       | `Req` / `Lim` 文本，14px                                                                                                                                                                |
 | 3    | 数值输入框 | 宽 60px、高 32px，圆角 8px（`radius.lg`），默认中性灰边框（`semantic.state.component.borderDefault`）                                                                                   |
-| 4    | 单位选择器 | 宽 60px、高 32px，圆角 8px 的 Select，形态为"单位文本（左）+ 下拉箭头（右）"；单位候选**以各资源单位枚举为准**（CPU: c/nc；内存: Mi/Gi/Ti；存储: Gi），视觉稿中的单位取值为占位、不作准 |
+| 4    | 单位选择器 | 宽 60px、高 32px，圆角 8px 的 Select，形态为"单位文本（左）+ 下拉箭头（右）"；单位候选**以各资源单位枚举为准**（CPU: c/nc；内存: Mi/Gi/Ti；存储: Mi/Gi/Ti），视觉稿中的单位取值为占位、不作准 |
 
 - **禁用态**（Lim 未勾选或集群未选中）：该行数值与单位文本置灰（`semantic.text.disabled`），数值输入框与单位选择器不可编辑。
 - **校验错误态**（如同资源项 Lim < Req 或输入非法值）：对应行的数值输入框与单位选择器边框变红（`semantic.state.error`）。
@@ -200,7 +200,7 @@
 
 > 表格仅展示 `containers[]` 中包含当前选中容器名的 Workload。初始化值：根据弹窗级容器选择器当前容器名，在 Workload 的 `containers[]` 中找到对应容器的 `resourceLimits` 和 `resourceRequests` 预填。切换容器时重新初始化。
 >
-> **值与单位分割**：上述资源字段返回值为"数字+单位"拼接字符串（如 `64c`、`16Gi`、`100Gi`）。页面展示时需按各资源项的单位枚举（CPU: c/nc；内存: Mi/Gi/Ti；存储: Gi）将字符串解析为数值与单位，分别填入数值输入框和单位选择器。
+> **值与单位分割**：上述资源字段返回值为"数字+单位"拼接字符串（如 `64c`、`16Gi`、`100Gi`）。页面展示时需按各资源项的单位枚举（CPU: c/nc；内存: Mi/Gi/Ti；存储: Mi/Gi/Ti）将字符串解析为数值与单位，分别填入数值输入框和单位选择器。
 
 ### 触发接口
 

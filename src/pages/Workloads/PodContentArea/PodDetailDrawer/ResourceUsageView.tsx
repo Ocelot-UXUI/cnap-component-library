@@ -9,8 +9,6 @@ import {
     formatCpu,
     formatMemory,
     isHighLoad,
-    parseBytes,
-    parseCpu,
     usagePercent,
 } from './resourceUsage';
 import {ResourceUsageTooltip} from './ResourceUsageTooltip';
@@ -42,13 +40,14 @@ interface MetricProps {
     usage?: string;
     request?: string;
     limit?: string;
+    usageNumeric?: string;
+    limitNumeric?: string;
     format: (value?: string) => string;
-    parse: (value?: string) => number | undefined;
 }
 
 // 展示规则：数值行为 usage/request/limit，进度条按 usage/limit 比例，其后百分比为 usage/limit。
-const Metric = ({ icon, label, usage, request, limit, format, parse }: MetricProps) => {
-    const percent = usagePercent(usage, limit, parse);
+const Metric = ({ icon, label, usage, request, limit, usageNumeric, limitNumeric, format }: MetricProps) => {
+    const percent = usagePercent(usageNumeric, limitNumeric);
     const highLoad = isHighLoad(percent);
     return (
         <ResourceUsageTooltip
@@ -56,8 +55,9 @@ const Metric = ({ icon, label, usage, request, limit, format, parse }: MetricPro
             usage={usage}
             request={request}
             limit={limit}
+            usageNumeric={usageNumeric}
+            limitNumeric={limitNumeric}
             format={format}
-            parse={parse}
         >
             <MetricBlock>
                 <MetricValue>
@@ -93,8 +93,9 @@ export const ResourceUsageView = ({ container }: ResourceUsageProps) => {
                     usage={container.resourceUsages?.cpu}
                     request={container.resourceRequests?.cpu}
                     limit={container.resourceLimits?.cpu}
+                    usageNumeric={container.resourceUsages?.cpuMilli}
+                    limitNumeric={container.resourceLimits?.cpuMilli}
                     format={formatCpu}
-                    parse={parseCpu}
                 />
                 <UsageDivider />
                 <Metric
@@ -103,8 +104,9 @@ export const ResourceUsageView = ({ container }: ResourceUsageProps) => {
                     usage={container.resourceUsages?.memory}
                     request={container.resourceRequests?.memory}
                     limit={container.resourceLimits?.memory}
+                    usageNumeric={container.resourceUsages?.memoryBytes}
+                    limitNumeric={container.resourceLimits?.memoryBytes}
                     format={formatMemory}
-                    parse={parseBytes}
                 />
                 {gpus.length > 0 && (
                     <>

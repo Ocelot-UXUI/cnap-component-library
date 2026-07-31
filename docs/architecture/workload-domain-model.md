@@ -19,7 +19,7 @@
 
 ## 现状问题（复杂度根源）
 
-1. **资源规格三套并存**：`ResourceQuota`（数值 millicore/bytes，`workload.ts:17`）、`ResourceRequirements`（字符串 "32c"/"128Gi"，`runtimeSummary.ts`）、`Record<string,string>`（`RuntimeWorkloadContainer` `workload.ts:95`、`VerticalScaleTargetParams` `runtimeOperation.ts:185`）。换算/拆拼逻辑散落各组件。
+1. **资源规格三套并存**：`ResourceQuota`（带单位字符串 + 派生无单位字段 `cpuMilli`/`memoryBytes`/`ephemeralStorageBytes`，`workload.ts:24`）、`ResourceRequirements`（字符串 "32c"/"128Gi"，`runtimeSummary.ts`）、`Record<string,string>`（仅写侧 `VerticalScaleTargetParams` `runtimeOperation.ts:185`，按 `resource-usage-display-principle.md` 不属本模型范围）。读侧 `RuntimeWorkloadContainer` 已统一为 `ResourceQuota`。
 2. **Operation 重复**：`RuntimeOperation`（`runtimeOperation.ts:43`）与 `PodOperation`（`pod.ts:11`）几乎等价，`capability` 一处枚举一处退化为 `string`。
 3. **Workload 两套实体**：`Workload`（`/groups`，`workload.ts:33`）与 `RuntimeWorkload`（`/workloads`，含 `updateStrategy/containers/availabilityTarget`，`workload.ts:104`）共享身份却无共同基类。
 4. **状态是裸 string**：`Pod.status` / `Container.status` / `Order.status`；中文名/颜色/是否正常/分类的映射只在需求文档表格里，组件各自实现。
