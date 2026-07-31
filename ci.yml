@@ -3,15 +3,8 @@ Global:
     group_email: ee-fe@baidu.com
 Default:
     profile:
-        # - image_register
         - fcnap
 Profiles:
-    # - profile:
-    #  name: image_register
-    #  mode: AGENT_FOR_IMAGE_REGISTER    # 针对镜像注册，模式必须是IMAGE_REGISTER
-    #  group_mail: ee-fe@baidu.com       # 邮件组
-    #  images:                           # 镜像列表，每更新一个版本，均需要注册
-    #    - image: iregistry.baidu-int.com/hub-official/debian:12-slim
     - profile:
       name: fcnap
       mode: AGENT

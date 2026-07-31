@@ -4,7 +4,6 @@ import {useCallback, useState} from 'react';
 
 import {semantic} from '@/constants/colors';
 import {useTheme} from '@/contexts/ThemeContext';
-import {useCurrentUsername} from '@/contexts/UserContext';
 
 import {antPrefixCls} from '@/constants/design';
 import {FallbackTopNavLayout} from './topNavigation/FallbackTopNavLayout';
@@ -32,7 +31,6 @@ function AppLayoutBody({ isLiquidGlass }: { isLiquidGlass: boolean; }) {
         () => Boolean(window.__custom__?.headerElement),
     );
     const { token } = theme.useToken();
-    const currentUsername = useCurrentUsername();
     const navigation = useAppLayoutNavigation();
     const workspaceBackground = token.colorBgLayout;
 
@@ -48,8 +46,6 @@ function AppLayoutBody({ isLiquidGlass }: { isLiquidGlass: boolean; }) {
             <ICloudTopNavPortalLayout onPortalActive={handlePortalActive}>
                 <TopNavContent
                     contextRequirements={navigation.contextRequirements}
-                    username={currentUsername}
-                    showDevChrome
                 />
             </ICloudTopNavPortalLayout>
 
@@ -57,7 +53,6 @@ function AppLayoutBody({ isLiquidGlass }: { isLiquidGlass: boolean; }) {
                 <FallbackTopNavLayout>
                     <TopNavContent
                         contextRequirements={navigation.contextRequirements}
-                        username={currentUsername}
                     />
                 </FallbackTopNavLayout>
             )}
