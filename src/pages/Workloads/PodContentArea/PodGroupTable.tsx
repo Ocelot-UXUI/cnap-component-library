@@ -2,7 +2,6 @@ import {Alert, Empty, Table} from 'antd';
 import type {TablePaginationConfig} from 'antd';
 import type {SorterResult, TableCurrentDataSource} from 'antd/es/table/interface';
 
-import {BaseTable} from '@/design/Table';
 import type {Pod, PodOperation} from '@/interface/entities/pod';
 import type {RuntimeOperation} from '@/interface/entities/runtimeOperation';
 import type {WorkloadGroup} from '@/interface/entities/workload';
@@ -86,7 +85,7 @@ export const PodGroupTable = ({
                 error
                     ? <Alert type="error" message="加载失败" action={<a onClick={reload}>重试</a>} />
                     : (
-                        <BaseTable<Pod>
+                        <Table<Pod>
                             rowKey={podKey}
                             columns={columns}
                             dataSource={pods}

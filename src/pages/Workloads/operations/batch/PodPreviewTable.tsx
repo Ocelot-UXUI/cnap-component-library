@@ -1,8 +1,7 @@
-import {Tag} from 'antd';
+import {Tag, Table} from 'antd';
 import type {TableColumnsType} from 'antd';
 
 import {semantic} from '@/constants/colors';
-import {BaseTable} from '@/design/Table';
 import type {Pod} from '@/interface/entities/pod';
 import {statusLabel, statusTone} from '../../PodContentArea/podStatus';
 
@@ -36,7 +35,7 @@ export const PodPreviewTable = ({ pods }: PodPreviewTableProps) => {
     ];
 
     return (
-        <BaseTable<Pod>
+        <Table<Pod>
             rowKey={pod => `${pod.clusterId}/${pod.name}`}
             columns={columns}
             dataSource={pods}

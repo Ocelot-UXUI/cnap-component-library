@@ -1,16 +1,18 @@
-import {css} from '@emotion/css';
+import {injectGlobal} from '@emotion/css';
 
 import {semantic} from '@/constants/colors';
 import {spacing} from '@/constants/spacing';
 import {typography} from '@/constants/typography';
 
 /**
- * 轻量基础表格样式：
- * 白色表头/表体、48px 行高、表头三级文字色 + 中等字重、
+ * 全局 Table 样式（原 BaseTable 样式）。
+ * 通过 injectGlobal 注入，对所有 antd Table 组件生效。
+ *
+ * 样式要点：白色表头/表体、48px 行高、表头三级文字色 + 中等字重、
  * 去除表头竖向分隔线、保留浅灰横向分割线、首列贴左对齐。
  */
-export const baseTableClassName = css({
-    '&.ant-5-table-wrapper': {
+injectGlobal({
+    '.ant-5-table-wrapper': {
         '.ant-5-table': {
             background: semantic.bg.default,
             ...typography.body.regular,

@@ -1,7 +1,6 @@
-import {Checkbox, Input} from 'antd';
+import {Checkbox, Input, Table} from 'antd';
 import type {TableColumnsType} from 'antd';
 
-import {BaseTable} from '@/design/Table';
 import {isMaxUnavailableValid} from '../rows';
 import type {RestartRow} from '../rows';
 
@@ -44,7 +43,7 @@ export const ClusterTable = ({ rows, onToggleCluster, onEditMaxUnavailable }: Cl
     ];
 
     return (
-        <BaseTable<RestartRow>
+        <Table<RestartRow>
             rowKey="key"
             columns={columns}
             dataSource={rows}

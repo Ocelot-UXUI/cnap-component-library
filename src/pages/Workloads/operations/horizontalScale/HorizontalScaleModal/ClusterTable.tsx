@@ -1,7 +1,6 @@
-import {Checkbox, Input} from 'antd';
+import {Checkbox, Input, Table} from 'antd';
 import type {TableColumnsType} from 'antd';
 
-import {BaseTable} from '@/design/Table';
 import {isDesiredValid} from '../rows';
 import type {HorizontalRow} from '../rows';
 
@@ -44,7 +43,7 @@ export const ClusterTable = ({ rows, onToggleCluster, onEditDesired }: ClusterTa
     ];
 
     return (
-        <BaseTable<HorizontalRow>
+        <Table<HorizontalRow>
             rowKey="key"
             columns={columns}
             dataSource={rows}

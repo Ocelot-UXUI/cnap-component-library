@@ -1,1 +1,0 @@
-export {BaseTable} from './BaseTable';

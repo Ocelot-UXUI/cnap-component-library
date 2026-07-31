@@ -1,7 +1,6 @@
-import {Checkbox} from 'antd';
+import {Checkbox, Table} from 'antd';
 import type {TableColumnsType} from 'antd';
 
-import {BaseTable} from '@/design/Table';
 import type {ResourceKind} from '@/domain/workload';
 import type {FieldState, RowState} from '../rows';
 import {ResourceCell} from './ResourceCell';
@@ -51,7 +50,7 @@ export const ClusterTable = ({ rows, onToggleCluster, onToggleLimit, onEdit }: C
     ];
 
     return (
-        <BaseTable<RowState>
+        <Table<RowState>
             rowKey="key"
             columns={columns}
             dataSource={rows}

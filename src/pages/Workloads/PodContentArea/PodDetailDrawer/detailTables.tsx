@@ -1,9 +1,8 @@
 import {CopyOutlined} from '@ant-design/icons';
-import {Button, message, Tooltip} from 'antd';
+import {Button, message, Table, Tooltip} from 'antd';
 import type {TableColumnsType} from 'antd';
 
 import {semantic} from '@/constants/colors';
-import {BaseTable} from '@/design/Table';
 import type {ContainerPort, EnvVar, VolumeMount} from '@/interface/entities/pod';
 
 const placeholder = <span style={{ color: semantic.text.placeholder }}>-</span>;
@@ -53,7 +52,7 @@ export const PortsTable = ({ podIp, ports }: PortsTableProps) => {
         },
     ];
     return (
-        <BaseTable<ContainerPort>
+        <Table<ContainerPort>
             rowKey={(_, index) => String(index)}
             columns={columns}
             dataSource={ports}
@@ -70,7 +69,7 @@ export const MountsTable = ({ mounts }: { mounts: VolumeMount[]; }) => {
         { title: '操作', key: 'readOnly', render: (_, row) => (row.readOnly ? '只读' : '读写') },
     ];
     return (
-        <BaseTable<VolumeMount>
+        <Table<VolumeMount>
             rowKey={(_, index) => String(index)}
             columns={columns}
             dataSource={mounts}
@@ -86,7 +85,7 @@ export const EnvTable = ({ env }: { env: EnvVar[]; }) => {
         { title: '来源', key: 'source', render: () => placeholder },
     ];
     return (
-        <BaseTable<EnvVar>
+        <Table<EnvVar>
             rowKey={(_, index) => String(index)}
             columns={columns}
             dataSource={env}

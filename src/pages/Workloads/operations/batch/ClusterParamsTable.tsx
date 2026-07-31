@@ -1,7 +1,6 @@
-import {Alert, Input, Spin} from 'antd';
+import {Alert, Input, Spin, Table} from 'antd';
 import type {TableColumnsType} from 'antd';
 
-import {BaseTable} from '@/design/Table';
 import {isMaxUnavailableValid} from '../restart/rows';
 import type {ClusterParam} from './useClusterParams';
 
@@ -61,7 +60,7 @@ export const ClusterParamsTable = ({
     ];
 
     return (
-        <BaseTable<ClusterParam>
+        <Table<ClusterParam>
             rowKey="clusterId"
             columns={columns}
             dataSource={params}
