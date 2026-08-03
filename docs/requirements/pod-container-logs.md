@@ -1,14 +1,14 @@
 # Feature: Pod 容器日志模块
 
-> 状态：未完成（2026-07-30）——首版已实现（plan `docs/plans/2026-07-30-pod-container-logs-plan.md`），但需按本次调整重做暂停行为，且现有 HTTP 流式接口存在问题、拟改造为 SSE，故整体标记未完成
-> 来源：Figma「Frame 1444」(node 463:46340) + API `runtimeResourceApi.getContainerLogs()`（`src/api/runtimeResource.ts:167`）
+> 状态：进行中（2026-08-03）——传输层已定为 **WebSocket**（远端 ku 文档 2026-08-03 更新），首版 HTTP 流式实现已按此改造（`src/api/runtimeLogStream.ts`）；剩余暂停/续接行为重做为实现级待办
+> 来源：Figma「Frame 1444」(node 463:46340) + WebSocket 接口 `/ws/v1/.../logs`（`docs/input/source-api-runtime-workloads.md`）
 > 父需求：Pod Detail Drawer（`src/pages/Workloads/PodContentArea/PodDetailDrawer/`），本模块为容器子 Tab「日志」
-> 实现：流式消费 `src/api/runtimeLogStream.ts`；UI `ContainerLogs.tsx` / `ContainerLogsToolbar.tsx` / `LogConsole.tsx` / `useContainerLogStream.ts` / `logLine.ts`
+> 实现：流式消费 `src/api/runtimeLogStream.ts`（WebSocket）；UI `ContainerLogs.tsx` / `ContainerLogsToolbar.tsx` / `LogConsole.tsx` / `useContainerLogStream.ts` / `logLine.ts`
 
-> ⚠️ **未完成原因（阻塞）**：
+> 传输层已定（2026-08-03）：
 >
-> 1. 现有 HTTP 流式（fetch `ReadableStream`）接口存在问题，后续将尝试改为 **SSE**；传输层方案未定前本需求与 plan 均标记未完成。
-> 2. 暂停/开启行为按本次调整改为「**暂停不断流、后台缓存、开启后续接 append**」，首版的「暂停中止流 + 开启重载」实现需重做。
+> 1. **传输层改为 WebSocket**（原 HTTP fetch `ReadableStream` 存在问题）。远端 ku 文档 2026-08-03 明确"查看容器日志改为 WebSocket 通信，服务端消息为 text 类型"；`streamContainerLogs` 已改造为 WebSocket 消费，逐行装配保持不变。原"拟改为 SSE"的方向已作废。
+> 2. 暂停/开启行为按本次调整改为「**暂停不断流、后台缓存、开启后续接 append**」，首版的「暂停中止流 + 开启重载」实现需重做——此为实现级待办，不阻塞需求。
 
 ## Goal
 
@@ -103,7 +103,7 @@
 - **自动刷新与接口映射**：开启→以 `follow=true` 建立流式请求并渲染增量；暂停→**不关闭请求**，前端停止渲染并把增量写入缓存，开启后 append 缓存并继续渲染
 - **暂停缓存上限**：暂停期间的增量在内存中缓存，设上限（**默认按时间窗 3 分钟**，可配置；超限丢弃最旧缓存增量）；仅在停留于日志页面时保持，离开页面/关闭 Drawer/切换容器则中止请求并清空
 - **固定 tailLines**：每次建立日志流都指定一个固定 `tailLines`，接口返回"当前 `tailLines` 行历史 + 请求后续新增"，前端据此渲染历史尾部并继续跟随增量
-- **流式响应特性**：`follow=true` 时接口为长连接流式响应，不会主动结束；前端以流方式消费。**当前 HTTP 流式（fetch `ReadableStream`）接口存在问题，后续拟改造为 SSE**——传输层方案未定，暂停缓存/续接的具体实现待方案确定后落地
+- **流式响应特性**：`follow=true` 时接口为长连接流式响应，不会主动结束；前端以 WebSocket 消费（服务端消息为 text 类型，逐行装配）。暂停缓存/续接基于该 WebSocket 流实现（暂停仅停止渲染并缓存，不关闭连接）
 - **切换重置**：切换容器、切换来源、Drawer 关闭 / 离开日志页面均需中止当前流、清空已渲染内容与暂停缓存；重新加载时以固定 `tailLines` + `follow=true` 单条请求拉取
 - **标记线**：纯前端视觉分隔，不影响数据请求；不随日志清空持久保留
 - **级别着色**：按行首日志级别关键字着色（INFO/WARN/ERROR/DEBUG），级别解析规则见 Open Questions
@@ -137,31 +137,31 @@
 
 ## API 依赖
 
-| 接口                                    | 位置                             | 用途                    |
-| --------------------------------------- | -------------------------------- | ----------------------- |
-| `runtimeResourceApi.getContainerLogs()` | `src/api/runtimeResource.ts:167` | 拉取历史日志 + 流式跟随 |
+| 接口                        | 位置                          | 用途                              |
+| --------------------------- | ----------------------------- | --------------------------------- |
+| `streamContainerLogs()`     | `src/api/runtimeLogStream.ts` | WebSocket 流式拉取历史 + 跟随增量 |
 
-请求参数（`ParamsGetContainerLogs`）：
+WebSocket 端点：`/ws/v1/application-environments/:appEnvID/runtime/clusters/:clusterId/pods/:podName/containers/:containerName/logs`（服务端消息为 text 类型）。
 
-- `appEnvID` / `clusterId` / `podName` / `containerName`：定位容器（来自 Drawer 上下文）
+请求参数（`ContainerLogStreamParams`，通过 WS URL query 传递）：
+
+- `appEnvID` / `clusterId` / `podName` / `containerName`：定位容器（来自 Drawer 上下文，走 path）
 - `source`：来源，`file`=文件，不传=标准输出 → 来源开关
-- `follow`：固定为 `true` 建立跟随流；暂停为前端行为（停止渲染 + 缓存），不改变请求
+- `follow`：固定为 `true` 建立跟随流；暂停为前端行为（停止渲染 + 缓存），不关闭连接
 - `tailLines`：**每次固定指定**，接口返回"当前 `tailLines` 行历史 + 请求后续新增"
-- `headLines`：返回最前 N 行（本期未用）
-- `previous`：上一个容器实例日志（本期是否用见 Open Questions）
 - `filePath`：`source=file` 时容器内文件路径，来自用户在 `filePath` 输入框输入并确定的值
 
-响应：纯文本日志，每行一条；`follow=true` 为不结束的长连接流。
+> 注：WebSocket 无法设置自定义 header，认证信息（`x-region` / `x-account-id` / `baggage`）转为 query 参数传递（见 `runtimeLogStream.ts`）。
+> 非流式历史日志的 HTTP 接口 `runtimeResourceApi.getContainerLogs()`（`src/api/runtimeResource.ts:167`）保留，供非跟随场景使用。
 
-> ⚠️ **传输层未定（未完成）**：现有 HTTP 流式（fetch `ReadableStream`）接口存在问题，后续将尝试改为 **SSE**。暂停缓存/续接、断线重连等实现依赖最终传输层方案，方案确定前本需求与 plan 保持未完成，不锁定具体实现。
+响应：text 类型消息，每条含一行或多行日志文本；`follow=true` 为不结束的长连接。
 
 ## Open Questions
 
-> 已解决：「屏蔽与接流」下拉本期不实现（移入 Out Of Scope）；`source=file` 的 `filePath` 由用户在输入框输入并确定后传入；暂停改为「不断流 + 缓存（默认 3min 上限）+ 开启续接 append」；每次固定指定 `tailLines`（返回当前行 + 后续新增）。
+> 已解决：「屏蔽与接流」下拉本期不实现（移入 Out Of Scope）；`source=file` 的 `filePath` 由用户在输入框输入并确定后传入；暂停改为「不断流 + 缓存（默认 3min 上限）+ 开启续接 append」；每次固定指定 `tailLines`（返回当前行 + 后续新增）；**传输层已定为 WebSocket（2026-08-03）**。
 
-以下为阻塞/待定项：
+以下为待定项（均非阻塞）：
 
-- **[阻塞] 传输层方案**：现有 HTTP 流式接口存在问题，拟改为 **SSE**；方案未定前本需求与 plan 标记未完成，暂停缓存/续接与断线重连的实现待方案确定。
 - **[非阻塞] 固定 `tailLines` 取值**（首版按 500，待确认）。
 - **[非阻塞] 暂停缓存上限**：默认时间窗 3min，是否同时设行数上限、超限提示文案待定。
 - **[非阻塞] 状态筛选 / 搜索是前端过滤还是接口参数**：接口当前无 level / keyword 参数，倾向前端过滤，需确认。
@@ -169,3 +169,4 @@
 - **[非阻塞] 日志级别解析规则**：行格式是否固定为 `时间 级别 消息`，级别关键字集合与颜色映射。
 - **[非阻塞] `previous`（上次实例日志）是否本期支持**，若支持在哪触发。
 - **[非阻塞] 标记分隔线是否允许多条**，还是仅保留一条最新标记。
+- **[非阻塞] 暂停/续接实现重做**：首版「暂停中止流 + 重载」需按「暂停不断流 + 缓存 + append」重做（实现级待办）。

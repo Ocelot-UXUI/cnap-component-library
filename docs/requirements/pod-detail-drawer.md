@@ -359,8 +359,8 @@ Pod 下所有容器以 **Tab 页** 形式展示，每个容器一个 Tab。选�
 
 ## Open Questions
 
-1. 终端 Tab 的技术方案（xterm.js / WebSocket 等）
-2. 日志内容的具体渲染方案（虚拟滚动 / ANSI 颜色解析 / 行数上限等）
+1. ~~终端 Tab 的技术方案（xterm.js / WebSocket 等）~~ → 已定：WebSocket `v5.channel.k8s.io`，详见 `docs/requirements/pod-container-terminal.md`
+2. 日志内容的具体渲染方案（虚拟滚动 / ANSI 颜色解析 / 行数上限等）→ 见 `docs/requirements/pod-container-logs.md`
 3. 新窗口打开按钮的路由跳转目标
 4. 操作图标（删除/重建）的权限控制逻辑
 
