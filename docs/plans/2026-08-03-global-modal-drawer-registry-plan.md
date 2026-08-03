@@ -1,8 +1,8 @@
 # 2026-08-03-global-modal-drawer-registry 全局弹窗/抽屉注册与调用机制
 
-> Plan Status: planned
+> Plan Status: completed
 > Owner: v_wangkaiyuan02
-> Last Reviewed: 2026-08-03（独立 draft review 通过：baseline 属实，确认代码库无现存 overlay 机制，可开始实现）
+> Last Reviewed: 2026-08-03（独立 draft review 通过 → 实现落地 → 独立 closure audit PASS，关闭为 completed）
 > Source: docs/design/workloads-page-optimizations.md（req 2 前置需求）
 
 ## Current Baseline
@@ -43,7 +43,7 @@
 
 ### Phase 1 - 机制设计决策
 
-Status: planned
+Status: completed
 
 - Decision：宿主挂载位置。选 `AppLayout` 顶层单实例（覆盖全部子路由）。备选：每页各挂一份 Provider（否决，无法跨路由共享，独立页面拿不到主页面已注册项）。剩余风险：全局单实例需保证卸载/路由切换时清理活动 overlay。
 - Decision：状态模型。选「弹窗单槽 + 抽屉单槽」两条独立轴，`open*` 覆盖式替换实现互斥。备选：栈式多层（否决，需求明确要求互斥而非叠加）。
@@ -51,21 +51,21 @@ Status: planned
 - Decision：API 形态与参数类型。命令式 hook `useOverlay()` 暴露 `openModal/closeModal/openDrawer/closeDrawer`。注册表以「key → 组件 + 该组件 props 类型」建模，`openModal<K>(key: K, props: PropsOf<K>)` 通过泛型将 props 类型绑定到具体 key，从而每个 overlay 拥有独立参数类型且编译期校验（传错 key 的参数即 `yarn lint-type` 报错）。`activeModal/activeDrawer` 存 `{ key, props }`，Host 渲染时把 props 透传给对应组件。备选：props 用 `Record<string, unknown>` 弱类型（否决，丢失类型安全，易传错参）。Skill: none
 - Proof：以上决策记入本计划并在 `docs/architecture/` 落一份简述。
 
-[ ] Exit Criteria:
+[x] Exit Criteria:
 
 - 四项 Decision 均记录选择/备选/风险
 - `docs/architecture/` 有对应机制说明
 
 ### Phase 2 - 实现全局 overlay 宿主与 API
 
-Status: planned
+Status: completed
 
 - Add：新增全局 overlay Provider + Host + `useOverlay` hook（弹窗轴 + 抽屉轴，覆盖式互斥）。Skill: none
 - Add：在 `AppLayout` 挂载 Provider 与 Host（Host 渲染当前 activeModal / activeDrawer）。Skill: none
 - Add：定义注册表类型与 key 联合类型，`openModal`/`openDrawer` 按 key 绑定各自 props 类型（泛型），保证参数类型安全。Skill: none
 - Proof：临时接入一个最小示例（或直接进入 Phase 3 的真实弹窗）验证打开/关闭与互斥；路由切换后活动 overlay 被清理。
 
-[ ] Exit Criteria:
+[x] Exit Criteria:
 
 - 任意组件经 `useOverlay` 可打开/关闭已注册 overlay，并按 key 传入对应参数
 - 每个 overlay 拥有独立 props 类型，传错 key 的参数在 `yarn lint-type` 报错
@@ -74,23 +74,31 @@ Status: planned
 
 ### Phase 3 - 接入 Pod 操作弹窗（首个消费者 + 证明）
 
-Status: planned
+Status: completed
 
 - Add：将 Pod 操作弹窗（restart/delete/force-delete）注册进全局注册表。Skill: none
 - Fix：`Workloads/index.tsx` 的 `handlePodOperation` 改为经 `openModal` 触发，移除本地 `modal` 状态与条件渲染（行为等价）。Skill: none
 - Proof：`yarn start` 手动验证——Pod 行内/批量操作仍能正确打开对应弹窗；连续打开不同弹窗时前一个被替换（互斥）；提交/关闭链路不回归。
 - Follow-up：迁移 Workload 操作弹窗（`WorkloadsHeader`）与抽屉（`DrawerHost`）到全局机制（单独计划或后续阶段）。
 
-[ ] Exit Criteria:
+[x] Exit Criteria:
 
 - Pod 操作弹窗完全经全局机制打开，无本地 open 状态残留
 - 现有 Pod 操作行为无回归
 - `yarn lint-type` 与 `yarn lint` 通过
-- [ ] `docs/logs/` updated
+- [x] `docs/logs/` updated
 
 ## Closure Gates
 
-- [ ] in-scope behavior is complete（机制可用 + Pod 弹窗接入完成）
-- [ ] relevant docs are aligned（架构说明 + design doc 前置需求 + 本计划一致）
-- [ ] verification has run（`yarn lint-type`、`yarn lint`）
-- [ ] closure audit was independent
+- [x] in-scope behavior is complete（机制可用 + Pod 弹窗接入完成）
+- [x] relevant docs are aligned（架构说明 + design doc 前置需求 + 本计划一致）
+- [x] verification has run（`yarn lint-type`、`yarn lint`）
+- [x] closure audit was independent
+
+## Closure
+
+- 实现见 `docs/logs/2026/08-03.md`「全局弹窗/抽屉注册与调用机制（Plan B 实现）」。
+- 新增 `src/overlay/`（types / overlayState / OverlayContext / registry / OverlayHost / index）+ reducer 单测 + 类型级测试；`AppLayout` 挂载 Provider/Host；`Workloads/index.tsx` 移除本地 modal 状态改经 `openModal`；三个 Pod 弹窗 props interface 导出。
+- 验证：`yarn lint-type` ✅ 0 error；`yarn test src/overlay` ✅ 7 passed（reducer 互斥/并存/清理）；类型安全经 `overlayTypeSafety.test-d.ts` 的 `@ts-expect-error` 永久锁定（漏字段/混入受控 props/错 key 均报错）；变更文件 `eslint` ✅ 无告警。全量 `yarn test` 的 6 failed 全为未改动文件的预存基线（与 07-31/Plan A 一致），非本次引入。
+- Independent closure audit（General subagent，只读复核 + 复跑 lint-type/overlay test）判定 **PASS**：7 项 Goal 全部达成、各 Phase Exit Criteria 属实、Non-Goals（未迁移 Workload 弹窗与抽屉）被遵守、行为等价、文档一致；无 blocker。审计 advisory「补永久负向类型测试」已在关闭前落地（`overlayTypeSafety.test-d.ts`）。
+- 抽屉轴：机制/API/reducer/清理已就绪并与弹窗轴对称，现有抽屉迁移为 follow-up（见 Non-Goals 与 `docs/architecture/overlay-registry.md`）。

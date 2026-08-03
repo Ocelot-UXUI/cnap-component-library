@@ -22,6 +22,7 @@ src/
 ├── executor/      # AI 执行器 - Agent 循环和步骤执行引擎
 ├── hooks/         # 自定义 React Hooks
 ├── interface/     # 接口层 DTO 实体类型 (entities/，贴近后端接口)
+├── overlay/       # 全局弹窗/抽屉注册与调用机制 (跨路由 overlay 宿主)
 ├── pages/         # 页面组件 (每个页面一个目录)
 ├── routers/       # 路由定义和页面级布局组件
 ├── styles/        # 全局样式
@@ -35,10 +36,15 @@ src/
 
 ```
 routers/
-  → pages/, design/Layouts/, contexts/
+  → pages/, design/Layouts/, contexts/, overlay/
+
+overlay/
+  → pages/ (仅 registry.ts / OverlayHost 引入弹窗抽屉组件), contexts/, constants/, react-router
+  注：Provider/hook/types 无页面运行时依赖；消费者（pages）只 import useOverlay，
+  避免形成循环。
 
 pages/
-  → components/, hooks/, contexts/, api/, capabilities/, domain/, utils/
+  → components/, hooks/, contexts/, api/, capabilities/, domain/, utils/, overlay/ (useOverlay)
 
 components/
   → constants/, types/, utils/  (不应直接引用 contexts 或 pages)

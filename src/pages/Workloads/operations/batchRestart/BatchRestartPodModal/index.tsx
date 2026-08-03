@@ -11,7 +11,7 @@ import {useClusterParams} from '../../batch/useClusterParams';
 import {isMaxUnavailableValid, isTimeoutValid} from '../../restart/rows';
 import {OperationModalTitle} from '../../shared/OperationModalTitle';
 
-interface BatchRestartPodModalProps {
+export interface BatchRestartPodModalProps {
     appEnvID: string;
     pods: Pod[];
     environmentName?: string;

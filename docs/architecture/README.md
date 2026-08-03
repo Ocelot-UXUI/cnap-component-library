@@ -11,6 +11,7 @@
 - `navigation-system.md` - CNAP 2.0 导航系统的跨模块技术结构
 - `agent-context-capabilities.md` - Agent 与导航上下文、业务能力之间的技术边界
 - `workload-domain-model.md` - Workload 业务领域数据模型与分层（目标设计，待分阶段落地）
+- `overlay-registry.md` - 全局弹窗/抽屉注册与调用机制（跨路由 overlay 宿主）
 
 ## Precedence Boundary
 

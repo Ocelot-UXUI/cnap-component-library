@@ -3,26 +3,31 @@ import {AnimatePresence, motion} from 'framer-motion';
 import {useState} from 'react';
 
 import {useAppEnvID, useNavigationSnapshot} from '@/contexts/NavigationContext';
-import type {Pod, PodOperation} from '@/interface/entities/pod';
-import type {OperationCapability} from '@/interface/entities/runtimeOperation';
+import {useOverlay} from '@/overlay';
 import {BatchActionBar} from './BatchActionBar';
-import {BatchPodDeleteRebuildModal} from './operations/batchDelete/BatchPodDeleteRebuildModal';
-import {BatchPodForceDeleteModal} from './operations/batchDelete/BatchPodForceDeleteModal';
-import {BatchRestartPodModal} from './operations/batchRestart/BatchRestartPodModal';
 import {PodContentArea} from './PodContentArea';
 import {reconcileGroup, selectedList} from './PodContentArea/selection';
-import type {SelectedPods} from './PodContentArea/selection';
 import {WorkloadsRuntimeProvider} from './useWorkloadsRuntime';
 import {WorkloadsHeader} from './WorkloadsHeader';
 import {WorkloadsOverview} from './WorkloadsOverview';
 
-type ModalKey = 'restart' | 'delete' | 'force-delete';
+import type {Pod, PodOperation} from '@/interface/entities/pod';
+import type {OperationCapability} from '@/interface/entities/runtimeOperation';
+import type {ModalKey} from '@/overlay';
+import type {SelectedPods} from './PodContentArea/selection';
 
-/** Pod 行内操作能力 → 弹窗；未列出的能力（如屏蔽/解除屏蔽占位）不触发弹窗 */
+/** Pod 行内操作能力 → 全局弹窗 key；未列出的能力（如屏蔽/解除屏蔽占位）不触发弹窗 */
 const CAPABILITY_TO_MODAL: Partial<Record<OperationCapability, ModalKey>> = {
-    PodRestart: 'restart',
-    PodDelete: 'delete',
-    PodDeleteForce: 'force-delete',
+    PodRestart: 'pod-restart',
+    PodDelete: 'pod-delete',
+    PodDeleteForce: 'pod-force-delete',
+};
+
+/** 批量操作栏 action key → 全局弹窗 key */
+const BATCH_KEY_TO_MODAL: Record<string, ModalKey> = {
+    restart: 'pod-restart',
+    delete: 'pod-delete',
+    'force-delete': 'pod-force-delete',
 };
 
 const PageContainer = styled.div`
@@ -37,20 +42,32 @@ const BatchBarSlot = styled(motion.div)`
     align-self: center;
 `;
 
-// eslint-disable-next-line complexity
 const WorkloadsPage = () => {
     const appEnvID = useAppEnvID();
     const snapshot = useNavigationSnapshot();
     const environmentName = snapshot.environments.find(item => item.id === snapshot.environmentId)?.environmentName;
+    const { openModal, closeModal } = useOverlay();
 
     const [selection, setSelection] = useState<SelectedPods>({});
-    const [modal, setModal] = useState<{ key: ModalKey; pods: Pod[]; operationName?: string; } | null>(null);
     const selectedPods = selectedList(selection);
 
     const clearSelection = () => setSelection({});
-    const handleSuccess = () => {
-        clearSelection();
-        setModal(null);
+
+    /** 统一经全局机制打开 Pod 操作弹窗；成功后清空选择并关闭 */
+    const openPodModal = (key: ModalKey, pods: Pod[], operationName?: string) => {
+        if (appEnvID === undefined) {
+            return;
+        }
+        openModal(key, {
+            appEnvID,
+            pods,
+            environmentName,
+            operationName: operationName ?? '',
+            onSuccess: () => {
+                clearSelection();
+                closeModal();
+            },
+        });
     };
 
     const handleGroupSelection = (groupId: string, keys: string[], rows: Pod[]) =>
@@ -62,17 +79,7 @@ const WorkloadsPage = () => {
         if (!key || operation.disabled) {
             return;
         }
-        setModal({ key, pods: [pod], operationName: operation.name });
-    };
-
-    const modalProps = {
-        appEnvID: appEnvID ?? '',
-        pods: modal?.pods ?? [],
-        environmentName,
-        /** 操作名，来自 RuntimeOperation.name */
-        operationName: modal?.operationName ?? '',
-        onClose: () => setModal(null),
-        onSuccess: handleSuccess,
+        openPodModal(key, [pod], operation.name);
     };
 
     return (
@@ -95,19 +102,17 @@ const WorkloadsPage = () => {
                         >
                             <BatchActionBar
                                 pods={selectedPods}
-                                onAction={(key, operationName) => setModal({ key: key as ModalKey, pods: selectedPods, operationName })}
+                                onAction={(key, operationName) => {
+                                    const modalKey = BATCH_KEY_TO_MODAL[key];
+                                    if (modalKey) {
+                                        openPodModal(modalKey, selectedPods, operationName);
+                                    }
+                                }}
                                 onClose={clearSelection}
                             />
                         </BatchBarSlot>
                     )}
                 </AnimatePresence>
-                {appEnvID !== undefined && modal?.key === 'restart' && <BatchRestartPodModal {...modalProps} open />}
-                {appEnvID !== undefined && modal?.key === 'delete' && (
-                    <BatchPodDeleteRebuildModal {...modalProps} open />
-                )}
-                {appEnvID !== undefined && modal?.key === 'force-delete' && (
-                    <BatchPodForceDeleteModal {...modalProps} open />
-                )}
             </PageContainer>
         </WorkloadsRuntimeProvider>
     );

@@ -1,7 +1,7 @@
 import type {Pod} from '@/interface/entities/pod';
 import {DeleteModalBase} from '../DeleteModalBase';
 
-interface BatchPodDeleteRebuildModalProps {
+export interface BatchPodDeleteRebuildModalProps {
     appEnvID: string;
     pods: Pod[];
     environmentName?: string;

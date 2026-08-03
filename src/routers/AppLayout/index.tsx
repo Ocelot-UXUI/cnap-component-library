@@ -4,6 +4,7 @@ import {useCallback, useState} from 'react';
 
 import {semantic} from '@/constants/colors';
 import {useTheme} from '@/contexts/ThemeContext';
+import {OverlayHost, OverlayProvider} from '@/overlay';
 
 import {antPrefixCls} from '@/constants/design';
 import {FallbackTopNavLayout} from './topNavigation/FallbackTopNavLayout';
@@ -86,7 +87,10 @@ export function AppLayout() {
 
     return (
         <ConfigProvider theme={themeConfig} prefixCls={antPrefixCls}>
-            <AppLayoutBody isLiquidGlass={isLiquidGlass} />
+            <OverlayProvider>
+                <AppLayoutBody isLiquidGlass={isLiquidGlass} />
+                <OverlayHost />
+            </OverlayProvider>
         </ConfigProvider>
     );
 }
