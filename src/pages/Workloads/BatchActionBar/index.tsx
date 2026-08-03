@@ -8,11 +8,18 @@ import {aggregateAction, BATCH_ACTIONS} from './batchActions';
 
 interface BatchActionBarProps {
     pods: Pod[];
-    onAction: (key: string) => void;
+    onAction: (key: string, operationName?: string) => void;
     onClose: () => void;
 }
 
 export const BatchActionBar = ({ pods, onAction, onClose }: BatchActionBarProps) => {
+    /** 从第一个 Pod 的 operations 中按 capability 查找对应的操作名 */
+    const resolveOperationName = (capability: string): string | undefined => {
+        const firstPod = pods[0];
+        if (!firstPod?.operations) return undefined;
+        return firstPod.operations.find(op => op.capability === capability)?.name;
+    };
+
     return (
         <BatchBarWrapper>
             <CountText>已选择 {pods.length} 个实例</CountText>
@@ -30,7 +37,7 @@ export const BatchActionBar = ({ pods, onAction, onClose }: BatchActionBarProps)
                                     disabled={!enabled}
                                     onClick={() => {
                                         if (enabled && !action.placeholder) {
-                                            onAction(action.key);
+                                            onAction(action.key, resolveOperationName(action.capability));
                                         }
                                     }}
                                 >

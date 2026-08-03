@@ -5,7 +5,7 @@ import {buildVerticalScaleCommand} from '@/domain/workload';
 import {toVerticalScaleRows} from './rows';
 import type {RowState} from './rows';
 
-export function toVerticalScaleInput(appEnvID: string, rows: RowState[], container?: string): VerticalScaleInput {
+export function toVerticalScaleInput(appEnvID: string, rows: RowState[], container?: string, operationName?: string): VerticalScaleInput {
     const command = buildVerticalScaleCommand(toVerticalScaleRows(rows, container));
     return {
         appEnvID,
@@ -17,5 +17,6 @@ export function toVerticalScaleInput(appEnvID: string, rows: RowState[], contain
             resourceLimits: target.params?.resourceLimits as Record<string, string> | undefined,
             resourceRequests: target.params?.resourceRequests as Record<string, string> | undefined,
         })),
+        operation: operationName!,
     };
 }

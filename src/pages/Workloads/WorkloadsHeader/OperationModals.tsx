@@ -12,6 +12,8 @@ interface OperationModalProps {
     clusterId?: string;
     environmentName?: string;
     defaultGroupId?: string;
+    /** 操作名，来自 RuntimeOperation.name */
+    operationName: string;
     open: boolean;
     onClose: () => void;
 }
@@ -28,6 +30,8 @@ export const MODAL_CAPABILITIES: Set<OperationCapability> = new Set(listModalCap
 
 interface WorkloadOperationModalsProps {
     active: OperationCapability | null;
+    /** 操作名，来自 RuntimeOperation.name */
+    operationName: string | null;
     appEnvID: string;
     clusterId?: string;
     environmentName?: string;
@@ -37,6 +41,7 @@ interface WorkloadOperationModalsProps {
 
 export const WorkloadOperationModals = ({
     active,
+    operationName,
     appEnvID,
     clusterId,
     environmentName,
@@ -54,6 +59,7 @@ export const WorkloadOperationModals = ({
             clusterId={clusterId}
             environmentName={environmentName}
             defaultGroupId={defaultGroupId}
+            operationName={operationName!}
             open
             onClose={onClose}
         />

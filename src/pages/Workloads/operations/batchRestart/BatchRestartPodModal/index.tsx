@@ -15,6 +15,8 @@ interface BatchRestartPodModalProps {
     appEnvID: string;
     pods: Pod[];
     environmentName?: string;
+    /** 操作名，来自 RuntimeOperation.name */
+    operationName: string;
     open: boolean;
     onClose: () => void;
     onSuccess: () => void;
@@ -24,7 +26,7 @@ const SUBTITLE =
     '重启操作会按照部署并发度对所选 Pod 进行重启，且多个集群并行执行。重启过程中不销毁容器，仅重新拉起进程。';
 
 export const BatchRestartPodModal = (
-    { appEnvID, pods, environmentName, open, onClose, onSuccess }: BatchRestartPodModalProps,
+    { appEnvID, pods, environmentName, operationName, open, onClose, onSuccess }: BatchRestartPodModalProps,
 ) => {
     const { params, loading, error } = useClusterParams(appEnvID, pods);
     const [timeout, setTimeout] = useState('60');
@@ -47,6 +49,7 @@ export const BatchRestartPodModal = (
                 targets: toPodTargets(pods),
                 clusters: toRestartClusters(record),
                 exitTimeoutSeconds: Number(timeout),
+                operation: operationName,
             })
             .then(() => {
                 message.success('批量重启命令已下发，查看执行详情');

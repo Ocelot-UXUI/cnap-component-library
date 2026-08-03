@@ -22,6 +22,8 @@ export interface RestartContext {
     rows: RestartRow[];
     /** 超时时间（秒），字符串便于校验 */
     exitTimeout: string;
+    /** 操作名，来自 RuntimeOperation.name */
+    operationName: string;
     loadError?: string;
     submitError?: string;
 }
@@ -38,6 +40,8 @@ export interface RestartInputArgs {
     appEnvID: string;
     clusterId?: string;
     defaultGroupId?: string;
+    /** 操作名，来自 RuntimeOperation.name */
+    operationName: string;
 }
 
 const DEFAULT_TIMEOUT = '60';
@@ -68,6 +72,7 @@ export const restartMachine = setup({
         containerNames: [],
         rows: [],
         exitTimeout: DEFAULT_TIMEOUT,
+        operationName: input.operationName,
     }),
     initial: 'loadingGroups',
     states: {
@@ -137,7 +142,7 @@ export const restartMachine = setup({
             invoke: {
                 src: 'submit',
                 input: ({ context }) =>
-                    toRestartInput(context.appEnvID, context.rows, context.container, Number(context.exitTimeout)),
+                    toRestartInput(context.appEnvID, context.rows, context.container, Number(context.exitTimeout), context.operationName),
                 onDone: { target: 'succeeded' },
                 onError: { target: 'ready', actions: assign({ submitError: () => '提交失败，请重试' }) },
             },

@@ -15,6 +15,8 @@ export interface DeleteModalBaseProps {
     appEnvID: string;
     pods: Pod[];
     environmentName?: string;
+    /** 操作名，来自 RuntimeOperation.name */
+    operationName: string;
     open: boolean;
     onClose: () => void;
     onSuccess: () => void;
@@ -29,6 +31,7 @@ export const DeleteModalBase = ({
     appEnvID,
     pods,
     environmentName,
+    operationName,
     open,
     onClose,
     onSuccess,
@@ -45,7 +48,7 @@ export const DeleteModalBase = ({
     const handleSubmit = () => {
         setSubmitting(true);
         runtimeOperationApi
-            .deletePod({ appEnvID, targets: toPodTargets(pods), force })
+            .deletePod({ appEnvID, targets: toPodTargets(pods), force, operation: operationName })
             .then(() => {
                 message.success(successText);
                 onSuccess();

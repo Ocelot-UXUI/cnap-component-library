@@ -9,10 +9,12 @@ export function toRestartInput(
     rows: RestartRow[],
     container: string | undefined,
     exitTimeoutSeconds: number,
+    operationName: string,
 ): RestartInput {
     return {
         appEnvID,
         targets: toRestartTargets(rows, container),
         exitTimeoutSeconds,
+        operation: operationName,
     };
 }

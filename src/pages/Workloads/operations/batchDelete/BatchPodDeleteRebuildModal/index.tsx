@@ -5,6 +5,8 @@ interface BatchPodDeleteRebuildModalProps {
     appEnvID: string;
     pods: Pod[];
     environmentName?: string;
+    /** 操作名，来自 RuntimeOperation.name */
+    operationName: string;
     open: boolean;
     onClose: () => void;
     onSuccess: () => void;

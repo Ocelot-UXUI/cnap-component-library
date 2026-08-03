@@ -37,13 +37,14 @@ const BatchBarSlot = styled(motion.div)`
     align-self: center;
 `;
 
+// eslint-disable-next-line complexity
 const WorkloadsPage = () => {
     const appEnvID = useAppEnvID();
     const snapshot = useNavigationSnapshot();
     const environmentName = snapshot.environments.find(item => item.id === snapshot.environmentId)?.environmentName;
 
     const [selection, setSelection] = useState<SelectedPods>({});
-    const [modal, setModal] = useState<{ key: ModalKey; pods: Pod[]; } | null>(null);
+    const [modal, setModal] = useState<{ key: ModalKey; pods: Pod[]; operationName?: string; } | null>(null);
     const selectedPods = selectedList(selection);
 
     const clearSelection = () => setSelection({});
@@ -61,13 +62,15 @@ const WorkloadsPage = () => {
         if (!key || operation.disabled) {
             return;
         }
-        setModal({ key, pods: [pod] });
+        setModal({ key, pods: [pod], operationName: operation.name });
     };
 
     const modalProps = {
         appEnvID: appEnvID ?? '',
         pods: modal?.pods ?? [],
         environmentName,
+        /** 操作名，来自 RuntimeOperation.name */
+        operationName: modal?.operationName ?? '',
         onClose: () => setModal(null),
         onSuccess: handleSuccess,
     };
@@ -92,7 +95,7 @@ const WorkloadsPage = () => {
                         >
                             <BatchActionBar
                                 pods={selectedPods}
-                                onAction={key => setModal({ key: key as ModalKey, pods: selectedPods })}
+                                onAction={(key, operationName) => setModal({ key: key as ModalKey, pods: selectedPods, operationName })}
                                 onClose={clearSelection}
                             />
                         </BatchBarSlot>

@@ -79,12 +79,14 @@ export interface RestartInput {
     appEnvID: string;
     targets: RestartTarget[];
     exitTimeoutSeconds?: number;
+    /** 操作名，来自 RuntimeOperation.name */
+    operation: string;
 }
 
 export const restartWorkload = (input: RestartInput) =>
     triggerOperation({
         appEnvID: input.appEnvID,
-        operation: 'workload-restart',
+        operation: input.operation,
         targets: input.targets.map(t => ({
             clusterId: t.clusterId,
             resourceType: t.resourceType,
@@ -106,12 +108,14 @@ export interface HorizontalScaleTarget {
 export interface HorizontalScaleInput {
     appEnvID: string;
     targets: HorizontalScaleTarget[];
+    /** 操作名，来自 RuntimeOperation.name */
+    operation: string;
 }
 
 export const horizontalScale = (input: HorizontalScaleInput) =>
     triggerOperation({
         appEnvID: input.appEnvID,
-        operation: 'workload-horizontal-scale',
+        operation: input.operation,
         targets: input.targets.map(t => ({
             clusterId: t.clusterId,
             resourceType: t.resourceType,
@@ -133,12 +137,14 @@ export interface VerticalScaleTarget {
 export interface VerticalScaleInput {
     appEnvID: string;
     targets: VerticalScaleTarget[];
+    /** 操作名，来自 RuntimeOperation.name */
+    operation: string;
 }
 
 export const verticalScale = (input: VerticalScaleInput) =>
     triggerOperation({
         appEnvID: input.appEnvID,
-        operation: 'workload-vertical-scale',
+        operation: input.operation,
         targets: input.targets.map(t => ({
             clusterId: t.clusterId,
             resourceType: t.resourceType,
@@ -163,12 +169,14 @@ export interface PodRestartInput {
     targets: PodRestartTarget[];
     clusters?: { clusterId: string; maxUnavailable?: string; }[];
     exitTimeoutSeconds?: number;
+    /** 操作名，来自 RuntimeOperation.name */
+    operation: string;
 }
 
 export const restartPod = (input: PodRestartInput) =>
     triggerOperation({
         appEnvID: input.appEnvID,
-        operation: 'pod.restart',
+        operation: input.operation,
         targets: input.targets.map(t => ({
             clusterId: t.clusterId,
             resourceType: t.resourceType ?? 'v1/pods',
@@ -191,12 +199,14 @@ export interface PodDeleteInput {
     appEnvID: string;
     targets: PodDeleteTarget[];
     force?: boolean;
+    /** 操作名，来自 RuntimeOperation.name */
+    operation: string;
 }
 
 export const deletePod = (input: PodDeleteInput) =>
     triggerOperation({
         appEnvID: input.appEnvID,
-        operation: input.force ? 'pod.delete-force' : 'pod-delete',
+        operation: input.operation,
         targets: input.targets.map(t => ({
             clusterId: t.clusterId,
             resourceType: t.resourceType ?? 'v1/pods',

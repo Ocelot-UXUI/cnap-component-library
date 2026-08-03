@@ -21,6 +21,8 @@ export interface VerticalScaleContext {
     containerNames: string[];
     container?: string;
     rows: RowState[];
+    /** 操作名，来自 RuntimeOperation.name */
+    operationName: string;
     loadError?: string;
     submitError?: string;
 }
@@ -37,6 +39,8 @@ export interface VerticalScaleInputArgs {
     appEnvID: string;
     clusterId?: string;
     defaultGroupId?: string;
+    /** 操作名，来自 RuntimeOperation.name */
+    operationName: string;
 }
 
 export const verticalScaleMachine = setup({
@@ -64,6 +68,7 @@ export const verticalScaleMachine = setup({
         workloads: [],
         containerNames: [],
         rows: [],
+        operationName: input.operationName,
     }),
     initial: 'loadingGroups',
     states: {
@@ -133,7 +138,7 @@ export const verticalScaleMachine = setup({
         submitting: {
             invoke: {
                 src: 'submit',
-                input: ({ context }) => toVerticalScaleInput(context.appEnvID, context.rows, context.container),
+                input: ({ context }) => toVerticalScaleInput(context.appEnvID, context.rows, context.container, context.operationName),
                 onDone: { target: 'succeeded' },
                 onError: { target: 'ready', actions: assign({ submitError: () => '提交失败，请重试' }) },
             },

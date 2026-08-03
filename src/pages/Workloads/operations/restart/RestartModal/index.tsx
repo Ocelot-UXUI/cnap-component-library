@@ -23,6 +23,8 @@ interface RestartModalProps {
     environmentName?: string;
     defaultGroupId?: string;
     clusterId?: string;
+    /** 操作名，来自 RuntimeOperation.name */
+    operationName: string;
     open: boolean;
     onClose: () => void;
     onSuccess?: () => void;
@@ -36,12 +38,13 @@ export const RestartModal = ({
     environmentName,
     defaultGroupId,
     clusterId,
+    operationName,
     open,
     onClose,
     onSuccess,
 }: RestartModalProps) => {
     const [snapshot, send] = useMachine(restartMachine, {
-        input: { appEnvID, clusterId, defaultGroupId },
+        input: { appEnvID, clusterId, defaultGroupId, operationName },
     });
     const context = snapshot.context;
     const submitting = snapshot.matches('submitting');

@@ -65,10 +65,12 @@ export const WorkloadsHeader = () => {
 
     const { groups, groupId, setGroupId, operations } = useWorkloadsRuntime();
     const [activeOp, setActiveOp] = useState<OperationCapability | null>(null);
+    const [activeOperationName, setActiveOperationName] = useState<string | null>(null);
 
     const handleActionClick = (operation: RuntimeOperation) => {
         if (MODAL_CAPABILITIES.has(operation.capability)) {
             setActiveOp(operation.capability);
+            setActiveOperationName(operation.name);
             return;
         }
         // 占位：其余操作弹窗后续接入
@@ -129,11 +131,12 @@ export const WorkloadsHeader = () => {
             {appEnvID !== undefined && (
                 <WorkloadOperationModals
                     active={activeOp}
+                    operationName={activeOperationName}
                     appEnvID={appEnvID}
                     clusterId={clusterId}
                     environmentName={environmentName}
                     defaultGroupId={groupId}
-                    onClose={() => setActiveOp(null)}
+                    onClose={() => { setActiveOp(null); setActiveOperationName(null); }}
                 />
             )}
         </HeaderContainer>

@@ -20,6 +20,8 @@ export interface HorizontalScaleContext {
     containerNames: string[];
     container?: string;
     rows: HorizontalRow[];
+    /** 操作名，来自 RuntimeOperation.name */
+    operationName: string;
     loadError?: string;
     submitError?: string;
 }
@@ -35,6 +37,8 @@ export interface HorizontalScaleInputArgs {
     appEnvID: string;
     clusterId?: string;
     defaultGroupId?: string;
+    /** 操作名，来自 RuntimeOperation.name */
+    operationName: string;
 }
 
 export const horizontalScaleMachine = setup({
@@ -64,6 +68,7 @@ export const horizontalScaleMachine = setup({
         workloads: [],
         containerNames: [],
         rows: [],
+        operationName: input.operationName,
     }),
     initial: 'loadingGroups',
     states: {
@@ -129,7 +134,7 @@ export const horizontalScaleMachine = setup({
         submitting: {
             invoke: {
                 src: 'submit',
-                input: ({ context }) => toHorizontalScaleInput(context.appEnvID, context.rows),
+                input: ({ context }) => toHorizontalScaleInput(context.appEnvID, context.rows, context.operationName),
                 onDone: { target: 'succeeded' },
                 onError: { target: 'ready', actions: assign({ submitError: () => '提交失败，请重试' }) },
             },

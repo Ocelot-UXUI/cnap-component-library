@@ -13,6 +13,8 @@ interface VerticalScaleModalProps {
     environmentName?: string;
     defaultGroupId?: string;
     clusterId?: string;
+    /** 操作名，来自 RuntimeOperation.name */
+    operationName: string;
     open: boolean;
     onClose: () => void;
     onSuccess?: () => void;
@@ -25,12 +27,13 @@ export const VerticalScaleModal = ({
     environmentName,
     defaultGroupId,
     clusterId,
+    operationName,
     open,
     onClose,
     onSuccess,
 }: VerticalScaleModalProps) => {
     const [snapshot, send] = useMachine(verticalScaleMachine, {
-        input: { appEnvID, clusterId, defaultGroupId },
+        input: { appEnvID, clusterId, defaultGroupId, operationName },
     });
     const context = snapshot.context;
     const submitting = snapshot.matches('submitting');
