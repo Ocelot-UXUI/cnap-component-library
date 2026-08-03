@@ -23,6 +23,8 @@ export interface ContainerTerminalParams {
 }
 
 export interface ContainerTerminalHandlers {
+    /** WebSocket 已连接（socket.onopen），用于驱动 connected 态与首次 resize */
+    onOpen?: () => void;
     onData: (data: string) => void;
     onDone?: () => void;
     onError?: (error: unknown) => void;
@@ -79,25 +81,34 @@ export const connectContainerTerminal = (
     params: ContainerTerminalParams,
     handlers: ContainerTerminalHandlers,
 ): ContainerTerminalController => {
-    const socket = new WebSocket(buildContainerTerminalWsUrl(params), ['v5.channel.k8s.io']);
+    // 后端为自定义 relay，不做 WebSocket 子协议协商；传 'v5.channel.k8s.io' 会导致握手被拒，
+    // 故不带子协议，仅按 v5 channel 帧格式（首字节 channel id）收发。
+    const socket = new WebSocket(buildContainerTerminalWsUrl(params));
     socket.binaryType = 'arraybuffer';
     let clientClosed = false;
+    // 按通道保留流式解码器，支持跨帧多字节 UTF-8（stdout/stderr 分别装配）
+    const stdoutDecoder = new TextDecoder();
+    const stderrDecoder = new TextDecoder();
+
+    socket.onopen = () => handlers.onOpen?.();
 
     socket.onmessage = (event) => {
         if (typeof event.data === 'string') {
             handlers.onData(event.data);
             return;
         }
-        const view = new DataView(event.data as ArrayBuffer);
-        if (view.byteLength < 1) {
+        const buffer = event.data as ArrayBuffer;
+        if (buffer.byteLength < 1) {
             return;
         }
-        const channel = view.getUint8(0);
-        const payload = new TextDecoder().decode(new Uint8Array(event.data as ArrayBuffer, 1));
-        if (channel === CHANNEL.STDOUT || channel === CHANNEL.STDERR) {
-            handlers.onData(payload);
+        const channel = new DataView(buffer).getUint8(0);
+        const bytes = new Uint8Array(buffer, 1);
+        if (channel === CHANNEL.STDOUT) {
+            handlers.onData(stdoutDecoder.decode(bytes, {stream: true}));
+        } else if (channel === CHANNEL.STDERR) {
+            handlers.onData(stderrDecoder.decode(bytes, {stream: true}));
         } else if (channel === CHANNEL.ERROR) {
-            handlers.onError?.(new Error(payload));
+            handlers.onError?.(new Error(new TextDecoder().decode(bytes)));
         }
     };
 

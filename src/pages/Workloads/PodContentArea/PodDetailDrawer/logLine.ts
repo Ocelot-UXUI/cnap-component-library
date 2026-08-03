@@ -16,6 +16,22 @@ export interface HighlightSegment {
 /** 前端保留的最大日志行数，超出后丢弃最旧行以防内存膨胀 */
 export const MAX_LOG_LINES = 2000;
 
+/** 暂停期间增量缓存的时间窗上限（毫秒），超窗的最旧缓存增量被丢弃 */
+export const PAUSE_CACHE_WINDOW_MS = 3 * 60 * 1000;
+
+/** 暂停缓存条目：日志行 + 客户端到达时间（接口不下发时间戳，按到达时间裁剪时间窗） */
+export interface CachedLogLine {
+    line: LogLine;
+    at: number;
+}
+
+/** 按客户端到达时间裁剪暂停缓存，丢弃超出时间窗的最旧增量 */
+export const pruneCache = (
+    cache: CachedLogLine[],
+    now: number,
+    windowMs: number = PAUSE_CACHE_WINDOW_MS,
+): CachedLogLine[] => cache.filter(item => now - item.at <= windowMs);
+
 const LEVEL_ALIASES: Record<string, LogLevel> = {
     INFO: 'INFO',
     WARN: 'WARN',

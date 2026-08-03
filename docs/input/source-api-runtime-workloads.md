@@ -1206,6 +1206,12 @@ query 参数：
 
 resize 帧 payload 为 JSON：`{"Height": <rows>, "Width": <cols>}`。客户端需设置 `socket.binaryType = 'arraybuffer'`。
 
+> **后端补充说明（2026-08-03）**：
+>
+> - 终端接口已加上，**按 cnap1.0 对接 EKS 的协议实现**，前端可复用之前的代码先看能否连通。
+> - **目前没有鉴权步骤**（当前端点未做认证/授权校验）。
+> - 后续认证与授权接好后，会把之前对接 **EKS 和 SCI** 的那部分（双通道 / 认证链路）迁移过来。
+
 ## Raw Resource 接口
 
 Raw Resource 用于获取 Kubernetes 资源原始 JSON/YAML。

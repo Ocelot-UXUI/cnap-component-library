@@ -1,6 +1,6 @@
 # Feature: Pod 容器日志模块
 
-> 状态：进行中（2026-08-03）——传输层已定为 **WebSocket**（远端 ku 文档 2026-08-03 更新），首版 HTTP 流式实现已按此改造（`src/api/runtimeLogStream.ts`）；剩余暂停/续接行为重做为实现级待办
+> 状态：已实现（2026-08-03，待运行时手测）——传输层已定为 **WebSocket**（远端 ku 文档 2026-08-03 更新），`streamContainerLogs` 已改造；暂停/续接按「暂停不断流 + 缓存 3min + 开启 append」重做完成（`useContainerLogStream.ts` + `logLine.pruneCache`），默认跟随。Plan：`docs/plans/2026-08-03-pod-container-logs-websocket-plan.md`（partially completed，closure audit + 运行时手测 pending）
 > 来源：Figma「Frame 1444」(node 463:46340) + WebSocket 接口 `/ws/v1/.../logs`（`docs/input/source-api-runtime-workloads.md`）
 > 父需求：Pod Detail Drawer（`src/pages/Workloads/PodContentArea/PodDetailDrawer/`），本模块为容器子 Tab「日志」
 > 实现：流式消费 `src/api/runtimeLogStream.ts`（WebSocket）；UI `ContainerLogs.tsx` / `ContainerLogsToolbar.tsx` / `LogConsole.tsx` / `useContainerLogStream.ts` / `logLine.ts`

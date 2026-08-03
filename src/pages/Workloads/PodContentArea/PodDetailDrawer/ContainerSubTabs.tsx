@@ -53,7 +53,14 @@ export const ContainerSubTabs = ({
                     />
                 ),
             },
-            { key: 'terminal', label: '终端', children: <ContainerTerminal /> },
+            { key: 'terminal', label: '终端', children: (
+                <ContainerTerminal
+                    appEnvID={appEnvID}
+                    clusterId={clusterId}
+                    podName={podName}
+                    containerName={container.name}
+                />
+            ) },
             {
                 key: 'events',
                 label: '事件',

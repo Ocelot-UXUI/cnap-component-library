@@ -1,6 +1,6 @@
 # Feature: Pod 容器 Web 终端模块
 
-> 状态：进行中（2026-08-03）——传输层已定为 **WebSocket**（`v5.channel.k8s.io` 协议，远端 ku 文档 2026-08-03 更新）；接口层 `src/api/runtimeTerminal.ts` 已就绪，UI 交互（连接/断开、清屏、内容渲染）为实现级待办
+> 状态：已实现（2026-08-03，待运行时手测）——传输层 **WebSocket** `v5.channel.k8s.io`，接口层 `src/api/runtimeTerminal.ts`（含 `onOpen`）+ UI（xterm v6 `ContainerTerminal/`：连接/断开/清屏/全屏/resize）已落地。Plan：`docs/plans/2026-08-03-pod-container-terminal-plan.md`（partially completed，closure audit + 运行时手测 pending）
 > 来源：Figma「终端 Tab」截图（连接态切换 + 操作按钮 hover/禁用规则）+ WebSocket 接口 `/ws/v1/.../terminal`（`docs/input/source-api-runtime-workloads.md`）
 > 父需求：Pod Detail Drawer（`docs/requirements/pod-detail-drawer.md` 4d 节），本模块为容器子 Tab「终端」
 > 实现：连接消费 `src/api/runtimeTerminal.ts`（WebSocket `v5.channel.k8s.io`）；UI `ContainerTerminal.tsx`
@@ -12,8 +12,8 @@
 
 ## In Scope
 
-- 终端内容区：深色控制台样式（`rgba(12,12,12,1)`），渲染容器 Shell 的标准输出/标准错误，接受键盘输入
-- **Shell 类型选择**（工具栏 Select）：`current` / `bash` / `sh` 等，默认当前容器默认 Shell，作为连接的 `command` 参数
+- 终端内容区：深色控制台样式（复用 `semantic.logConsole.bg`/`.text`，与日志控制台一致），渲染容器 Shell 的标准输出/标准错误，接受键盘输入
+- **Shell 类型选择**（工具栏 Select）：`/bin/bash` / `/bin/sh`，默认 `/bin/bash`，选中值原样作为连接的 `command` 参数
 - **连接 / 断开**（切换按钮）：未连接=「连接」，连接后=「断开」；建立 / 关闭 WebSocket 会话
 - **清屏**：仅连接后可用，清除终端当前显示内容；未连接时置灰禁用
 - **全屏查看**（切换按钮）：终端区域扩展至全屏 ↔ 退出全屏
@@ -28,6 +28,7 @@
 - 终端内文件上传/下载、命令录制
 - 日志（日志子 Tab 由 `ContainerLogs` 单独负责，见 `pod-container-logs.md`）
 - 终端主题/字体自定义设置
+- EKS/SCI 双通道与独立认证链路：后端补充说明（2026-08-03）当前端点按 cnap1.0 EKS 协议实现、暂无鉴权；EKS/SCI 迁移由后端在认证/授权就绪后推进，非本期前端范围
 
 ## Toolbar 结构（对照 Figma 终端 Tab 截图 + pod-detail-drawer 4d）
 
@@ -85,10 +86,11 @@
 - **断开后内容**：断开连接后保留终端最后画面（不清空），便于用户回看；重新连接时再按需重置
 - **连接态与按钮**：未连接=「连接」（灰边白底）；已连接=「断开」（红边红字，`semantic.state.error`）
 - **清屏可用性**：仅连接后可用；未连接置灰禁用并提供 hover 提示
-- **协议**：`v5.channel.k8s.io`，二进制帧，首字节为 channel ID——`0x00` stdin（client→server）、`0x01` stdout、`0x02` stderr、`0x03` error（server→client）、`0x04` resize（client→server，payload 为 `{Height, Width}` JSON）；`socket.binaryType = 'arraybuffer'`
+- **协议**：`v5.channel.k8s.io` 帧格式，二进制帧，首字节为 channel ID——`0x00` stdin（client→server）、`0x01` stdout、`0x02` stderr、`0x03` error（server→client）、`0x04` resize（client→server，payload 为 `{Height, Width}` JSON）；`socket.binaryType = 'arraybuffer'`。**握手不携带 WebSocket 子协议**：后端为自定义 relay、不做子协议协商，传 `['v5.channel.k8s.io']` 会导致握手被拒（1006），故 `new WebSocket(url)` 不带第二参数（2026-08-03 联调确认）。
 - **切换重置**：切换容器、关闭 Drawer、离开终端页面均需关闭 WebSocket 会话，避免连接泄漏
-- **鉴权**：沿用现有 `AppLayout` 会话上下文；WebSocket 无法设置自定义 header，认证信息（`x-region` / `x-account-id` / `baggage`）转为 query 参数（见 `runtimeTerminal.ts`）
-- **内容区样式**：深色背景 `rgba(12,12,12,1)`，等宽字体
+- **鉴权**：后端补充说明（2026-08-03）当前终端端点**尚无鉴权步骤**；前端沿用 `AppLayout` 会话上下文、把认证信息（`x-region` / `x-account-id` / `baggage`）转 query 传递为**前瞻兼容**（当前后端未校验，不影响连通）。后端完成认证/授权后，会迁移 cnap1.0 的 EKS/SCI 双通道与认证链路——届时前端鉴权方式可能调整。
+- **内容区样式**：深色背景/前景复用 `semantic.logConsole.bg` / `semantic.logConsole.text`（与日志控制台一致，同步作为 xterm theme），等宽字体；禁止 hex 字面量
+- **连接态判定**：`connected` 由 WebSocket `onOpen` 事件驱动（非发起即置位）——连接中显示 loading，`onOpen` 后才切「断开」并发首次 resize；`onclose`/`onError` 恢复「连接」
 
 ## Edge Cases
 

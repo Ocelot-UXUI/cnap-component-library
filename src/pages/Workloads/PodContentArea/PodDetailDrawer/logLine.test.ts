@@ -2,11 +2,12 @@ import {describe, expect, it} from 'vitest';
 import {
     detectLogLevel,
     filterLogLines,
+    pruneCache,
     splitByKeyword,
     toLogLine,
     trimLogLines,
 } from './logLine';
-import type {LogLine} from './logLine';
+import type {CachedLogLine, LogLine} from './logLine';
 
 describe('detectLogLevel', () => {
     it('detects level from a standard "date time LEVEL message" line', () => {
@@ -73,5 +74,26 @@ describe('splitByKeyword', () => {
             { text: ' and ', match: false },
             { text: 'error', match: true },
         ]);
+    });
+});
+
+describe('pruneCache', () => {
+    const cache: CachedLogLine[] = [
+        { line: toLogLine('old', 0), at: 1000 },
+        { line: toLogLine('mid', 1), at: 4000 },
+        { line: toLogLine('new', 2), at: 7000 },
+    ];
+
+    it('drops entries older than the window relative to now', () => {
+        // now=7000, window=3000 → keep at >= 4000
+        expect(pruneCache(cache, 7000, 3000).map(item => item.line.id)).toEqual([1, 2]);
+    });
+
+    it('keeps all entries within the window', () => {
+        expect(pruneCache(cache, 7000, 10000).map(item => item.line.id)).toEqual([0, 1, 2]);
+    });
+
+    it('preserves arrival order and returns empty when all expired', () => {
+        expect(pruneCache(cache, 100000, 1000)).toEqual([]);
     });
 });
