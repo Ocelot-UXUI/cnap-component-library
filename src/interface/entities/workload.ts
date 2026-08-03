@@ -104,6 +104,8 @@ export interface WorkloadGroup {
  */
 export interface RuntimeWorkloadContainer {
     name: string;
+    type: string;
+    image: string;
     resourceLimits: ResourceQuota;
     resourceRequests: ResourceQuota;
 }
