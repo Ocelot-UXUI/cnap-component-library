@@ -20,6 +20,7 @@ const sharedConfig: UserConfig = {
             '/api': {
                 target: 'http://console.cloud-sandbox.baidu-int.com',
                 changeOrigin: true,
+                ws: true,
             },
         },
     },

@@ -2,8 +2,7 @@ import {tryConfirmSessionLost} from '@/auth/login';
 import qs from 'qs';
 import {getCommonOptionsForAppspace} from './services/primary/commonOptions';
 
-/** 与 services/primary 主工厂保持一致的 baseURL 前缀 */
-const LOG_BASE_URL = '/api/cnap/rest/v1';
+const LOG_WS_BASE_PATH = '/api/cnap/ws/v1';
 
 export interface ContainerLogStreamParams {
     /** 应用环境关系 ID */
@@ -55,84 +54,82 @@ export const createLineAssembler = () => {
     };
 };
 
-/** 纯逻辑：拼装容器日志请求 URL，query 序列化与主工厂 paramsSerializer 对齐 */
-export const buildContainerLogUrl = (params: ContainerLogStreamParams): string => {
-    const { appEnvID, clusterId, podName, containerName, ...query } = params;
+/** WebSocket 无法设置自定义 header，将 commonOptions 中的认证头转为 query 参数 */
+const buildAuthQuery = (): Record<string, string> => {
+    const {headers} = getCommonOptionsForAppspace();
+    const params: Record<string, string> = {};
+    if (headers['x-region']) {
+        params['x-region'] = headers['x-region'];
+    }
+    if (headers.baggage) {
+        params.baggage = headers.baggage;
+    }
+    if (headers['x-account-id']) {
+        params['x-account-id'] = headers['x-account-id'];
+    }
+    return params;
+};
+
+/** 纯逻辑：拼装容器日志 WebSocket 路径（含 query），不含 protocol/host */
+export const buildContainerLogWsPath = (params: ContainerLogStreamParams): string => {
+    const {appEnvID, clusterId, podName, containerName, ...query} = params;
     const path = `/application-environments/${encodeURIComponent(appEnvID)}`
         + `/runtime/clusters/${encodeURIComponent(clusterId)}`
         + `/pods/${encodeURIComponent(podName)}`
         + `/containers/${encodeURIComponent(containerName)}/logs`;
-    const search = qs.stringify(query, { arrayFormat: 'comma', skipNulls: true, allowDots: true });
-    return LOG_BASE_URL + path + (search ? `?${search}` : '');
+    const search = qs.stringify(
+        {...query, ...buildAuthQuery()},
+        {arrayFormat: 'comma', skipNulls: true, allowDots: true},
+    );
+    return LOG_WS_BASE_PATH + path + (search ? `?${search}` : '');
 };
 
-const safeParseBody = async (response: Response): Promise<unknown> => {
-    try {
-        return await response.json();
-    } catch {
-        return undefined;
-    }
+/** 拼装完整的容器日志 WebSocket URL */
+export const buildContainerLogWsUrl = (params: ContainerLogStreamParams): string => {
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    return `${protocol}//${window.location.host}${buildContainerLogWsPath(params)}`;
 };
 
-const pumpStream = async (
-    reader: ReadableStreamDefaultReader<Uint8Array>,
-    onLine: (line: string) => void,
-): Promise<void> => {
-    const decoder = new TextDecoder();
-    const assembler = createLineAssembler();
-    for (;;) {
-        const { done, value } = await reader.read();
-        if (done) {
-            break;
-        }
-        for (const line of assembler.push(decoder.decode(value, { stream: true }))) {
-            onLine(line);
-        }
-    }
-    // flush 解码器，避免末尾跨 chunk 的多字节字符被丢弃
-    for (const line of [...assembler.push(decoder.decode()), ...assembler.flush()]) {
-        onLine(line);
-    }
-};
-
-const consumeLogStream = async (
-    params: ContainerLogStreamParams,
-    handlers: ContainerLogStreamHandlers,
-    signal: AbortSignal,
-): Promise<void> => {
-    const { headers, withCredentials } = getCommonOptionsForAppspace();
-    try {
-        const response = await fetch(buildContainerLogUrl(params), {
-            method: 'GET',
-            headers,
-            credentials: withCredentials ? 'include' : 'same-origin',
-            signal,
-        });
-
-        if (!response.ok || !response.body) {
-            const data = await safeParseBody(response);
-            // 补齐主工厂 onReject 的 session 失效处理（原生 fetch 不经过该链路）
-            tryConfirmSessionLost(null, { status: response.status, data, headers: {} });
-            throw new Error(`容器日志请求失败: ${response.status} ${response.statusText}`);
-        }
-
-        await pumpStream(response.body.getReader(), handlers.onLine);
-        handlers.onDone?.();
-    } catch (error) {
-        // 主动中止（abort）不视为错误
-        if (signal.aborted) {
-            return;
-        }
-        handlers.onError?.(error);
-    }
-};
-
-/** 以原生 fetch + ReadableStream 消费容器日志流，逐行回调；返回控制器，abort() 中止流。 */
+/** 以 WebSocket 消费容器日志流，逐行回调；返回控制器，abort() 中止流。 */
 export const streamContainerLogs = (
     params: ContainerLogStreamParams,
     handlers: ContainerLogStreamHandlers,
 ): ContainerLogStreamController => {
-    const controller = new AbortController();
-    void consumeLogStream(params, handlers, controller.signal);
-    return { abort: () => controller.abort() };
+    const socket = new WebSocket(buildContainerLogWsUrl(params));
+    const assembler = createLineAssembler();
+    let clientClosed = false;
+
+    socket.onmessage = (event) => {
+        const text = typeof event.data === 'string' ? event.data : '';
+        for (const line of assembler.push(text)) {
+            handlers.onLine(line);
+        }
+    };
+
+    socket.onclose = (event) => {
+        for (const line of assembler.flush()) {
+            handlers.onLine(line);
+        }
+        if (clientClosed || event.code === 1000 || event.code === 1005) {
+            handlers.onDone?.();
+            return;
+        }
+        tryConfirmSessionLost(null, {status: event.code, data: undefined, headers: {}});
+        handlers.onError?.(new Error(`日志连接已关闭: ${event.code} ${event.reason}`));
+    };
+
+    socket.onerror = () => {
+        if (!clientClosed) {
+            handlers.onError?.(new Error('日志 WebSocket 连接失败'));
+        }
+    };
+
+    return {
+        abort: () => {
+            clientClosed = true;
+            if (socket.readyState === WebSocket.OPEN || socket.readyState === WebSocket.CONNECTING) {
+                socket.close(1000, 'client abort');
+            }
+        },
+    };
 };

@@ -6,9 +6,10 @@ processed: done
 # 运行时-工作负载接口（源：ku 知识库）
 
 - 源文档：<https://ku.baidu-int.com/knowledge/HFVrC7hq1Q/_SKPgSwp2G/7MvddZrBEx/XwQwllaSaX2yvP>
-- 抓取时间：2026-07-28
+- 抓取时间：2026-08-03
 - 抓取方式：`ku query-content --protocol markdown` (via WSL)
-- 更新内容：新增批量/单 Pod Usage 接口；ResourceQuota 改为 quantity 字符串并新增 gpus；补齐 Raw Resource 参数说明
+- 更新内容：查看容器日志和 Web 终端改为 WebSocket 通信；新增 `/ws/v1/` 前缀的 WebSocket 端点
+- 历史更新：新增批量/单 Pod Usage 接口；ResourceQuota 改为 quantity 字符串并新增 gpus；补齐 Raw Resource 参数说明
 - 校正说明：经接口确认，单 Pod Usage 的 `containers` 和 `initContainers` 均为同类型数组；Ku 示例中的单对象和字段遗漏已校正
 
 ---
@@ -30,7 +31,9 @@ processed: done
 | Pod          | GET  | `/rest/v1/application-environments/:appEnvID/runtime/clusters/:clusterId/pods/:podName`                                 |
 | Pod          | GET  | `/rest/v1/application-environments/:appEnvID/runtime/clusters/:clusterId/pods/:podName/usage`                           |
 | Pod          | GET  | `/rest/v1/application-environments/:appEnvID/runtime/clusters/:clusterId/pods/:podName/containers/:containerName/logs`  |
+| Pod          | WS   | `/ws/v1/application-environments/:appEnvID/runtime/clusters/:clusterId/pods/:podName/containers/:containerName/logs`  |
 | Pod          | GET  | `/rest/v1/application-environments/:appEnvID/runtime/clusters/:clusterId/pods/:podName/events`                          |
+| Pod          | WS   | `/ws/v1/application-environments/:appEnvID/runtime/clusters/:clusterId/pods/:podName/containers/:containerName/terminal`|
 | Raw Resource | GET  | `/rest/v1/application-environments/:appEnvID/runtime/clusters/:clusterId/raw-resources/core/:resource/:name`            |
 | Raw Resource | GET  | `/rest/v1/application-environments/:appEnvID/runtime/clusters/:clusterId/raw-resources/:group/:version/:resource/:name` |
 
@@ -1083,6 +1086,16 @@ query 参数：
 2026-07-09T10:00:01Z line two
 ```
 
+#### WebSocket 模式
+
+查看容器日志支持 WebSocket 模式，服务端消息为 text 类型，每条消息包含一行或多行日志文本。query 参数与 HTTP 模式一致（`source`、`tailLines`、`headLines`、`previous`、`filePath`、`follow`），通过 WS URL query 传递。
+
+```
+WS /ws/v1/application-environments/:appEnvID/runtime/clusters/:clusterID/pods/:podName/containers/:containerName/logs?tailLines=500&follow=true
+```
+
+> 远端文档附有消息格式截图（attachId=45f15e94336242788233805622e1ed4f），如需确认详细帧格式请联系后端。
+
 ### 查询 Pod 事件
 
 ```
@@ -1156,7 +1169,42 @@ query 参数：
 | `objectName`       | string        | 关联对象名称               |
 | `objectNamespace`  | string        | 关联对象 namespace         |
 | `sourceComponent`  | string        | 来源组件                   |
-| `sourceHost`       | string        | 来源节点                   |
+| `sourceHost`  | string        | 来源节点                   |
+
+### Web 终端
+
+通过 WebSocket 连接，使用 `v5.channel.k8s.io` 协议（跟原先 EKS 集群的 webssh 的协议相同，前端可以复用代码）。
+
+```
+WS /ws/v1/application-environments/:appEnvID/runtime/clusters/:clusterID/pods/:podName/containers/:containerName/terminal?command=/bin/sh
+```
+
+path 参数：
+
+| 参数            | 类型   | 必填 | 说明            |
+| --------------- | ------ | ---- | --------------- |
+| `appEnvID`      | string | 是   | 应用环境关系 ID |
+| `clusterId`     | string | 是   | 集群 ID         |
+| `podName`       | string | 是   | Pod 名称        |
+| `containerName` | string | 是   | 容器名称        |
+
+query 参数：
+
+| 参数      | 类型   | 必填 | 说明      |
+| --------- | ------ | ---- | --------- |
+| `command` | string | 否   | shell 路径 |
+
+`v5.channel.k8s.io` 协议使用二进制帧，每个帧首字节为 channel ID：
+
+| Channel | 含义  | 方向       |
+| ------- | ----- | ---------- |
+| `0x00`  | stdin | client→server |
+| `0x01`  | stdout | server→client |
+| `0x02`  | stderr | server→client |
+| `0x03`  | error | server→client |
+| `0x04`  | resize | client→server |
+
+resize 帧 payload 为 JSON：`{"Height": <rows>, "Width": <cols>}`。客户端需设置 `socket.binaryType = 'arraybuffer'`。
 
 ## Raw Resource 接口
 

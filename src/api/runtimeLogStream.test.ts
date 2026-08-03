@@ -1,5 +1,9 @@
-import {describe, expect, it} from 'vitest';
-import {buildContainerLogUrl, createLineAssembler} from './runtimeLogStream';
+import {beforeEach, describe, expect, it, vi} from 'vitest';
+import {buildContainerLogWsPath, createLineAssembler} from './runtimeLogStream';
+
+vi.mock('./services/primary/commonOptions', () => ({
+    getCommonOptionsForAppspace: () => ({headers: {}, withCredentials: false}),
+}));
 
 describe('createLineAssembler', () => {
     it('splits complete lines and retains a trailing partial line', () => {
@@ -24,7 +28,7 @@ describe('createLineAssembler', () => {
     });
 });
 
-describe('buildContainerLogUrl', () => {
+describe('buildContainerLogWsPath', () => {
     const base = {
         appEnvID: 'env-1',
         clusterId: 'cluster-a',
@@ -32,24 +36,27 @@ describe('buildContainerLogUrl', () => {
         containerName: 'main',
     };
 
-    it('builds a stdout follow URL without source', () => {
-        expect(buildContainerLogUrl({ ...base, follow: true, tailLines: 200 })).toBe(
-            '/api/cnap/rest/v1/application-environments/env-1/runtime/clusters/cluster-a'
-                + '/pods/pod-x/containers/main/logs?follow=true&tailLines=200',
+    beforeEach(() => {
+        localStorage.clear();
+    });
+
+    it('builds a stdout follow path without source', () => {
+        expect(buildContainerLogWsPath({...base, follow: true, tailLines: 200})).toBe(
+            '/api/cnap/ws/v1/application-environments/env-1/runtime/clusters/cluster-a'
+            + '/pods/pod-x/containers/main/logs?follow=true&tailLines=200',
         );
     });
 
-    it('builds a file source URL with filePath', () => {
-        const url = buildContainerLogUrl({ ...base, source: 'file', filePath: '/var/log/app.log', follow: true });
-        expect(url).toContain('source=file');
-        expect(url).toContain('filePath=%2Fvar%2Flog%2Fapp.log');
+    it('builds a file source path with filePath', () => {
+        const path = buildContainerLogWsPath({...base, source: 'file', filePath: '/var/log/app.log', follow: true});
+        expect(path).toContain('source=file');
+        expect(path).toContain('filePath=%2Fvar%2Flog%2Fapp.log');
     });
 
     it('omits path segment params from the query string', () => {
-        const url = buildContainerLogUrl(base);
-        expect(url).toBe(
-            '/api/cnap/rest/v1/application-environments/env-1/runtime/clusters/cluster-a'
-                + '/pods/pod-x/containers/main/logs',
+        expect(buildContainerLogWsPath(base)).toBe(
+            '/api/cnap/ws/v1/application-environments/env-1/runtime/clusters/cluster-a'
+            + '/pods/pod-x/containers/main/logs',
         );
     });
 });
