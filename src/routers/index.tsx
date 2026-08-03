@@ -38,6 +38,7 @@ const MonitorPage = lazy(() => import('@/pages/Monitor'));
 const AppRuntimeConfigPage = lazy(() => import('@/pages/AppRuntimeConfig'));
 const AppSettingsPage = lazy(() => import('@/pages/AppSettings'));
 const BorderGlowDemoPage = lazy(() => import('@/pages/BorderGlowDemo'));
+const ComponentPlaygroundPage = lazy(() => import('@/pages/ComponentPlayground'));
 
 const pageLoadingCss = css`
     display: flex;
@@ -193,6 +194,12 @@ export const router = createBrowserRouter([
             {
                 path: 'border-glow-demo',
                 element: withSuspense(BorderGlowDemoPage),
+            },
+            {
+                path: 'playground',
+                element: import.meta.env.PROD
+                    ? <Navigate to="/home" replace />
+                    : withSuspense(ComponentPlaygroundPage),
             },
         ],
     },

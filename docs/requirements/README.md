@@ -44,3 +44,7 @@
 - `horizontal-scale-dialog.md` — 横向扩缩弹窗（从 workloads-page 标题栏操作按钮打开）
 - `vertical-scale-dialog.md` — 纵向扩缩弹窗（从 workloads-page 标题栏操作按钮打开）
 - `delete-deployment-resource-dialog.md` — 删除部署资源弹窗（从 workloads-page "更多"下拉打开）
+
+### 组件规范工具
+
+- `cnap2-component-playground.md` — 组件视觉规范 Playground（批量核验被改造 token / 全局样式的 antd 组件）
