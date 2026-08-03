@@ -1,8 +1,8 @@
 # 2026-08-03-global-modal-drawer-registry 全局弹窗/抽屉注册与调用机制
 
-> Plan Status: proposed
+> Plan Status: planned
 > Owner: v_wangkaiyuan02
-> Last Reviewed: 2026-08-03
+> Last Reviewed: 2026-08-03（独立 draft review 通过：baseline 属实，确认代码库无现存 overlay 机制，可开始实现）
 > Source: docs/design/workloads-page-optimizations.md（req 2 前置需求）
 
 ## Current Baseline

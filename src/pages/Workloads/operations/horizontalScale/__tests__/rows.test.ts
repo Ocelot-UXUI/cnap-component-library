@@ -12,7 +12,13 @@ function workload(clusterId: string, containers: string[], replicas = 3): Runtim
         replicas,
         updateStrategy: { maxSurge: '15%', maxUnavailable: '15%' },
         availabilityTarget: '>95%',
-        podContainers: containers.map(name => ({ name, resourceRequests: {}, resourceLimits: {} })),
+        podContainers: containers.map(name => ({
+            name,
+            type: name === 'api' ? 'MAIN' : 'NORMAL',
+            image: `${name}:latest`,
+            resourceRequests: {},
+            resourceLimits: {},
+        })),
     };
 }
 

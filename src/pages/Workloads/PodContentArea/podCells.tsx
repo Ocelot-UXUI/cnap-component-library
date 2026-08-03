@@ -24,6 +24,20 @@ export function renderStatus(pod: Pod, detailed: boolean) {
     );
 }
 
+const VERSION_MAX_LENGTH = 12;
+
+export function truncateVersion(version: string): string {
+    return version.length > VERSION_MAX_LENGTH
+        ? `${version.slice(0, 5)}...${version.slice(-4)}`
+        : version;
+}
+
+function renderVersion(version: string) {
+    const truncated = truncateVersion(version);
+    const node = <span style={{ marginLeft: 8 }}>v{truncated}</span>;
+    return truncated === version ? node : <Tooltip title={`v${version}`}>{node}</Tooltip>;
+}
+
 export function renderName(pod: Pod, detailed: boolean) {
     return (
         <div>
@@ -31,7 +45,7 @@ export function renderName(pod: Pod, detailed: boolean) {
             {detailed && (
                 <div style={{ color: semantic.text.tertiary }}>
                     <span>{pod.clusterName ?? pod.clusterId}</span>
-                    {pod.version && <span style={{ marginLeft: 8 }}>v{pod.version}</span>}
+                    {pod.version && renderVersion(pod.version)}
                 </div>
             )}
         </div>

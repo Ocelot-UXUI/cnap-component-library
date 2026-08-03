@@ -27,6 +27,7 @@ interface PodGroupTableProps {
     onYamlView: () => void;
     onPodYamlView: (pod: Pod) => void;
     onPodOperation: (pod: Pod, operation: PodOperation) => void;
+    onWorkloadOperation: (groupId: string, operation: RuntimeOperation) => void;
 }
 
 export const PodGroupTable = ({
@@ -44,6 +45,7 @@ export const PodGroupTable = ({
     onYamlView,
     onPodYamlView,
     onPodOperation,
+    onWorkloadOperation,
 }: PodGroupTableProps) => {
     const { data, loading, error, query, setPage, setSort, reload } = useGroupPods(
         appEnvID,
@@ -80,6 +82,7 @@ export const PodGroupTable = ({
                 clusterSelected={!!clusterId}
                 onToggle={onToggle}
                 onYamlView={onYamlView}
+                onWorkloadOperation={operation => onWorkloadOperation(group.id, operation)}
             />
             {expanded && (
                 error

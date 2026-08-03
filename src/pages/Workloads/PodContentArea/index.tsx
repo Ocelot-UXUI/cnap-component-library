@@ -3,7 +3,9 @@ import {useMemo, useState} from 'react';
 
 import {useAppEnvID, useNavigationSnapshot} from '@/contexts/NavigationContext';
 import type {Pod, PodOperation} from '@/interface/entities/pod';
+import type {OperationCapability, RuntimeOperation} from '@/interface/entities/runtimeOperation';
 import {useWorkloadsRuntime} from '../useWorkloadsRuntime';
+import {MODAL_CAPABILITIES, WorkloadOperationModals} from '../WorkloadsHeader/OperationModals';
 import {DrawerHost} from './DrawerHost';
 import type {DrawerView} from './DrawerHost';
 import {AreaContainer, GroupSection} from './PodContentArea.style';
@@ -29,7 +31,9 @@ interface PodContentAreaProps {
 
 export const PodContentArea = ({ selection, onGroupSelectionChange, onPodOperation }: PodContentAreaProps) => {
     const appEnvID = useAppEnvID();
-    const clusterId = useNavigationSnapshot().clusterId;
+    const snapshot = useNavigationSnapshot();
+    const clusterId = snapshot.clusterId;
+    const environmentName = snapshot.environments.find(item => item.id === snapshot.environmentId)?.environmentName;
 
     const {
         groups: allGroups,
@@ -47,6 +51,9 @@ export const PodContentArea = ({ selection, onGroupSelectionChange, onPodOperati
     const [collapsed, setCollapsed] = useState<Set<string>>(new Set());
     const [refreshNonce, setRefreshNonce] = useState(0);
     const [drawer, setDrawer] = useState<DrawerView | null>(null);
+    const [activeOp, setActiveOp] = useState<OperationCapability | null>(null);
+    const [activeOperationName, setActiveOperationName] = useState<string | null>(null);
+    const [activeGroupId, setActiveGroupId] = useState<string | undefined>(undefined);
 
     const availableStatuses = useMemo(() => stats?.statuses.map(item => item.status) ?? [], [stats]);
     const statusOptions = (stats?.statuses ?? []).map(item => ({
@@ -79,6 +86,20 @@ export const PodContentArea = ({ selection, onGroupSelectionChange, onPodOperati
             }
             return next;
         });
+
+    const handleWorkloadOperation = (targetGroupId: string, operation: RuntimeOperation) => {
+        if (MODAL_CAPABILITIES.has(operation.capability)) {
+            setActiveOp(operation.capability);
+            setActiveOperationName(operation.name);
+            setActiveGroupId(targetGroupId);
+        }
+    };
+
+    const closeWorkloadModal = () => {
+        setActiveOp(null);
+        setActiveOperationName(null);
+        setActiveGroupId(undefined);
+    };
 
     if (appEnvID === undefined) {
         return (
@@ -135,11 +156,21 @@ export const PodContentArea = ({ selection, onGroupSelectionChange, onPodOperati
                                 }}
                                 onPodYamlView={pod => setDrawer({ type: 'yaml', target: podYamlTarget(appEnvID, pod) })}
                                 onPodOperation={onPodOperation}
+                                onWorkloadOperation={handleWorkloadOperation}
                             />
                         ))}
                     </GroupSection>
                 )}
             {drawer && <DrawerHost appEnvID={appEnvID} drawer={drawer} onClose={() => setDrawer(null)} />}
+            <WorkloadOperationModals
+                active={activeOp}
+                operationName={activeOperationName}
+                appEnvID={appEnvID}
+                clusterId={clusterId}
+                environmentName={environmentName}
+                defaultGroupId={activeGroupId}
+                onClose={closeWorkloadModal}
+            />
         </AreaContainer>
     );
 };

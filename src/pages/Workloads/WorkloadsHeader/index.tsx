@@ -32,9 +32,9 @@ function isDangerous(operation: RuntimeOperation): boolean {
     return dangerousCapabilities.has(operation.capability);
 }
 
-// 标题栏仅展示 targetKind 为 None / Workload 的操作（Pod 操作归 Pod 行内/批量）
+// 标题栏仅展示 targetKind 为 None 的操作（Workload 操作归 Group 头部，Pod 操作归 Pod 行内/批量）
 function isHeaderOperation(operation: RuntimeOperation): boolean {
-    return (operation.targetKind === 'None' || operation.targetKind === 'Workload') && !operation.disabled;
+    return operation.targetKind === 'None' && !operation.disabled;
 }
 
 function buildMoreMenuItems(

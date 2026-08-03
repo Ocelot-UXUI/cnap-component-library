@@ -18,7 +18,7 @@ Update it in place. Do not create dated copies.
 
 - Active requirement: docs/requirements/mvp.md, docs/requirements/vertical-scale-dialog.md, docs/requirements/horizontal-scale-dialog.md
 - Active owner doc: docs/design/app-overview.md
-- Active plan: docs/plans/2026-07-28-runtime-pod-usage-api-sync.md
+- Active plan: docs/plans/2026-08-03-global-modal-drawer-registry-plan.md (planned, 暂挂起), docs/plans/2026-08-03-pod-detail-drawer-ops-standalone-page-plan.md (proposed, 暂挂起, gated on registry plan); 已完成: docs/plans/2026-08-03-workloads-detail-optimizations-plan.md (req1/3/4, closure audit 通过)
 - Active backlog item: docs/backlog/README.md#age-setup
 - AI autonomy: implement
 - Current blocker: none

@@ -91,7 +91,7 @@ export const HorizontalScaleModal = ({
                     style={{ width: 160 }}
                     placeholder="容器"
                     value={context.container}
-                    options={context.containerNames.map(name => ({ value: name, label: name }))}
+                    options={context.containerNames.map(item => ({ value: item.name, label: item.name }))}
                     onChange={container => send({ type: 'SELECT_CONTAINER', container })}
                 />
             </SelectorBar>

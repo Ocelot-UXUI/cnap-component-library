@@ -7,7 +7,7 @@ import type {VerticalScaleInput} from '@/api/runtimeOperation';
 import type {ResourceKind} from '@/domain/workload';
 import type {RuntimeWorkload, WorkloadGroup} from '@/interface/entities/workload';
 import {loadGroups, loadWorkloads} from '../shared/loader';
-import type {WorkloadsBundle} from '../shared/loader';
+import type {ContainerOption, WorkloadsBundle} from '../shared/loader';
 import {buildRows, editField, toggleCluster, toggleLimit} from './rows';
 import type {FieldState, RowState} from './rows';
 import {toVerticalScaleInput} from './submit';
@@ -18,7 +18,7 @@ export interface VerticalScaleContext {
     groups: WorkloadGroup[];
     groupId?: string;
     workloads: RuntimeWorkload[];
-    containerNames: string[];
+    containerNames: ContainerOption[];
     container?: string;
     rows: RowState[];
     /** 操作名，来自 RuntimeOperation.name */
@@ -82,6 +82,14 @@ export const verticalScaleMachine = setup({
                         target: 'loadingWorkloads',
                         actions: assign({ groups: ({ event }) => event.output }),
                     },
+                    {
+                        guard: ({ event }) => event.output.length > 0,
+                        target: 'loadingWorkloads',
+                        actions: assign({
+                            groups: ({ event }) => event.output,
+                            groupId: ({ event }) => event.output[0]?.id,
+                        }),
+                    },
                     { target: 'ready', actions: assign({ groups: ({ event }) => event.output }) },
                 ],
                 onError: { target: 'ready', actions: assign({ loadError: () => '工作负载分组加载失败' }) },
@@ -95,7 +103,8 @@ export const verticalScaleMachine = setup({
                     target: 'ready',
                     actions: assign(({ event }) => {
                         const bundle = event.output as WorkloadsBundle;
-                        const container = bundle.containerNames[0];
+                        const mainContainer = bundle.containerNames.find(item => item.type === 'MAIN') ?? bundle.containerNames[0];
+                        const container = mainContainer?.name;
                         return {
                             workloads: bundle.workloads,
                             containerNames: bundle.containerNames,

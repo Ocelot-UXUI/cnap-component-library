@@ -14,6 +14,8 @@ function workload(clusterId: string, containers: string[]): RuntimeWorkload {
         availabilityTarget: '>95%',
         podContainers: containers.map(name => ({
             name,
+            type: name === 'api' ? 'MAIN' : 'NORMAL',
+            image: `${name}:latest`,
             resourceRequests: { cpu: '4c', memory: '8Gi' },
             resourceLimits: { cpu: '8c', memory: '16Gi' },
         })),

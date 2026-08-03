@@ -33,11 +33,12 @@ interface GroupHeaderProps {
     clusterSelected: boolean;
     onToggle: () => void;
     onYamlView?: () => void;
+    onWorkloadOperation: (operation: RuntimeOperation) => void;
 }
 
 function buildMenu(operations: RuntimeOperation[], clusterSelected: boolean): MenuProps['items'] {
     const items: NonNullable<MenuProps['items']> = operations
-        .filter(op => op.targetKind === 'Workload' || op.targetKind === 'None')
+        .filter(op => op.targetKind === 'Workload')
         .map(op => ({ key: op.name, label: op.displayName, disabled: op.disabled }));
     items.push({ type: 'divider' });
     items.push({
@@ -49,13 +50,18 @@ function buildMenu(operations: RuntimeOperation[], clusterSelected: boolean): Me
 }
 
 export const GroupHeader = (
-    { group, expanded, summary, operations, clusterSelected, onToggle, onYamlView }: GroupHeaderProps,
+    { group, expanded, summary, operations, clusterSelected, onToggle, onYamlView, onWorkloadOperation }: GroupHeaderProps,
 ) => {
     const counts = summary ? computeQuickCounts(summary) : undefined;
 
     const handleMenuClick: NonNullable<MenuProps['onClick']> = ({ key }) => {
         if (key === 'workload-yaml') {
             onYamlView?.();
+            return;
+        }
+        const operation = operations.find(op => op.name === key);
+        if (operation) {
+            onWorkloadOperation(operation);
         }
     };
     const versionContent = (
