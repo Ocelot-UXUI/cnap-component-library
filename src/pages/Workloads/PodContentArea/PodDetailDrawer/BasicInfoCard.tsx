@@ -3,7 +3,7 @@ import {useState} from 'react';
 import styled from '@emotion/styled';
 import {Button} from 'antd';
 
-import ChevronUp from '@/assets/chevron-up.svg?react';
+import {ChevronUp} from '@/assets/icons';
 import {semantic} from '@/constants/colors';
 import {radius} from '@/constants/radius';
 import {shadow} from '@/constants/shadow';

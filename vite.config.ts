@@ -1,14 +1,16 @@
+import qiankun from '@tiny-codes/vite-plugin-qiankun';
 import react from '@vitejs/plugin-react';
 import * as process from 'process';
 import {defineConfig, UserConfig} from 'vite';
-import qiankun from '@tiny-codes/vite-plugin-qiankun';
 import svgr from 'vite-plugin-svgr';
 
 const buildTarget = ['chrome89', 'edge89', 'firefox89', 'safari15'];
 
 // const isDev = process.env.NODE_ENV !== 'production';
 // const CNAP_BASE_URL = isDev ? '/' : 'https://cnap2-sandbox.now.baidu-int.com/';
-const CNAP_BASE_URL = process.env.FCNAP === 'true' ? `${process.env.FCNAP_CDN_HOST}/${process.env.FCNAP_CDN_PATH}` : 'https://cnap2-sandbox.now.baidu-int.com/';
+const CNAP_BASE_URL = process.env.FCNAP === 'true'
+    ? `${process.env.FCNAP_CDN_HOST}/${process.env.FCNAP_CDN_PATH}`
+    : 'https://cnap2-sandbox.now.baidu-int.com/';
 
 const sharedConfig: UserConfig = {
     base: CNAP_BASE_URL,
@@ -61,7 +63,15 @@ const applicationConfig: UserConfig = {
         react({
             jsxImportSource: '@emotion/react',
         }),
-        svgr(),
+        svgr({
+            include: '**/assets/icons/**/*.svg?react',
+            svgrOptions: {
+                replaceAttrValues: { '#545454': 'currentColor' },
+            },
+        }),
+        svgr({
+            include: '**/assets/illustrations/**/*.svg?react',
+        }),
         qiankun('cnap'),
     ],
 };

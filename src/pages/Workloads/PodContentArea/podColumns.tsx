@@ -1,8 +1,7 @@
 import {Button, Tooltip} from 'antd';
 import type {TableColumnsType} from 'antd';
 
-import Code from '@/assets/code.svg?react';
-import Details from '@/assets/details.svg?react';
+import {Code, Details} from '@/assets/icons';
 import {semantic} from '@/constants/colors';
 import type {Pod, PodOperation} from '@/interface/entities/pod';
 import {
@@ -14,16 +13,14 @@ import {
     renderRestarts,
     renderStatus,
 } from './podCells';
-import {GpuUsageCard} from './PodDetailDrawer/GpuUsageCard';
 import {GpuCellList} from './podColumns.style';
+import {GpuUsageCard} from './PodDetailDrawer/GpuUsageCard';
 import {renderCpu, renderMemory} from './podUsageCells';
 import type {ViewMode} from './types';
 
 /** 该组是否存在 GPU 资源（无则整列隐藏） */
 export function groupHasGpu(pods: Pod[]): boolean {
-    return pods.some(pod =>
-        Boolean(pod.resourceRequests?.gpus?.length)
-    );
+    return pods.some(pod => Boolean(pod.resourceRequests?.gpus?.length));
 }
 
 /** GPU 列：复用 ResourceUsageView 的 GpuUsageCard 渲染结构化 GPU；无结构化数据时回退文本。 */

@@ -1,6 +1,5 @@
-import Block from '@/assets/block.svg?react';
+import {Block, Switch} from '@/assets/icons';
 import moreDot from '@/assets/pod-row-actions-more-dot.png';
-import Switch from '@/assets/switch.svg?react';
 import deleteIconRaw from '@/assets/workloads-header-menu-delete.png';
 import {IconFrame, IconPart, MoreDots, SvgIcon} from './PodOperationIcons.style';
 

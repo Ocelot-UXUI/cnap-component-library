@@ -1,6 +1,6 @@
 import {Input, Select} from 'antd';
 
-import Search from '@/assets/search.svg?react';
+import {Search} from '@/assets/icons';
 import {FilterForm, FilterRow, SearchPrefix} from './PodContentArea.style';
 import type {QuickFilterCounts, QuickFilterKey} from './quickFilter';
 import {QuickFilters} from './QuickFilters';

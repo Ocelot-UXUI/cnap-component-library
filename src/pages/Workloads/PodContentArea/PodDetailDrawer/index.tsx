@@ -1,6 +1,6 @@
 import {Button, Drawer} from 'antd';
 
-import Standalone from '@/assets/standalone.svg?react';
+import {Standalone} from '@/assets/icons';
 import {APP_BASENAME} from '@/constants/app';
 
 import {renderOperations} from '../podCells';

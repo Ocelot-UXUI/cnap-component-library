@@ -1,10 +1,7 @@
 import {FlagOutlined, PlayCircleOutlined} from '@ant-design/icons';
 import {Button, Input, Segmented, Select, Tooltip} from 'antd';
 
-import Pause from '@/assets/pause.svg?react';
-import Standalone from '@/assets/standalone.svg?react';
-import ZoomIn from '@/assets/zoom-in.svg?react';
-import ZoomOut from '@/assets/zoom-out.svg?react';
+import {Pause, Standalone, ZoomIn, ZoomOut} from '@/assets/icons';
 import {Toolbar, ToolbarLeft, ToolbarRight} from './PodDetailDrawer.style';
 
 import type {LogLevelFilter} from './logLine';

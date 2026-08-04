@@ -1,7 +1,7 @@
 import {Dropdown, Popover} from 'antd';
 
-import ChevronDown from '@/assets/chevron-down.svg?react';
 import moreDot from '@/assets/group-header-more-dot.png';
+import {ChevronDown} from '@/assets/icons';
 
 import {
     CountText,
@@ -50,7 +50,8 @@ function buildMenu(operations: RuntimeOperation[], clusterSelected: boolean): Me
 }
 
 export const GroupHeader = (
-    { group, expanded, summary, operations, clusterSelected, onToggle, onYamlView, onWorkloadOperation }: GroupHeaderProps,
+    { group, expanded, summary, operations, clusterSelected, onToggle, onYamlView, onWorkloadOperation }:
+        GroupHeaderProps,
 ) => {
     const counts = summary ? computeQuickCounts(summary) : undefined;
 

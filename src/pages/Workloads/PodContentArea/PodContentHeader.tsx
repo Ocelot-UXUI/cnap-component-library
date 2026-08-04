@@ -1,10 +1,8 @@
 import {Button, Tooltip} from 'antd';
 
-import Expand from '@/assets/expand.svg?react';
-import Refresh from '@/assets/refresh.svg?react';
-import Unexpand from '@/assets/unexpand.svg?react';
-import moreLines from '@/assets/view-detailed.svg';
-import lessLines from '@/assets/view-simple.svg';
+import {Expand, Refresh, Unexpand} from '@/assets/icons';
+import moreLines from '@/assets/icons/view-detailed.svg';
+import lessLines from '@/assets/icons/view-simple.svg';
 
 import {HeaderActions, HeaderRow, HeaderTitle} from './PodContentArea.style';
 import {

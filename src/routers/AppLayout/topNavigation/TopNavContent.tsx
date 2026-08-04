@@ -5,7 +5,7 @@ import {
     SearchOutlined,
 } from '@ant-design/icons';
 
-import icloudLogo from '@/assets/icloud-logo.svg';
+import icloudLogo from '@/assets/illustrations/icloud-logo.svg';
 import {ThemeSwitcher} from '@/components/ThemeSwitcher';
 import {UserAvatar} from '@/components/UserAvatar';
 import {APP_IS_DEV} from '@/constants/app';

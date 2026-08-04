@@ -2,9 +2,7 @@ import {ClearOutlined} from '@ant-design/icons';
 import {Alert, Button, message, Select, Tooltip} from 'antd';
 import {useState} from 'react';
 
-import Standalone from '@/assets/standalone.svg?react';
-import ZoomIn from '@/assets/zoom-in.svg?react';
-import ZoomOut from '@/assets/zoom-out.svg?react';
+import {Standalone, ZoomIn, ZoomOut} from '@/assets/icons';
 import {semantic} from '@/constants/colors';
 
 import {Toolbar, ToolbarLeft, ToolbarRight} from '../PodDetailDrawer.style';

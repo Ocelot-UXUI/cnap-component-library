@@ -1,9 +1,6 @@
 import deleteRebuildIcon from '@/assets/batch-action-bar-delete-rebuild.png';
 import forceDeleteIcon from '@/assets/batch-action-bar-force-delete.png';
-import Block from '@/assets/block.svg?react';
-import Close from '@/assets/close.svg?react';
-import Restart from '@/assets/restart.svg?react';
-import Unblock from '@/assets/unblock.svg?react';
+import {Block, Close, Restart, Unblock} from '@/assets/icons';
 
 import {FullIcon, SvgIcon} from './BatchActionBar.style';
 
