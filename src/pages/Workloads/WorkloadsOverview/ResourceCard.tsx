@@ -1,6 +1,6 @@
-import cpuIcon from '@/assets/workloads-overview-cpu.png';
-import gpuIcon from '@/assets/workloads-overview-gpu.png';
-import memoryIcon from '@/assets/workloads-overview-memory.png';
+import cpuIcon from '@/assets/images/workloads-overview-cpu.png';
+import gpuIcon from '@/assets/images/workloads-overview-gpu.png';
+import memoryIcon from '@/assets/images/workloads-overview-memory.png';
 
 import {useWorkloadsRuntime} from '../useWorkloadsRuntime';
 import {

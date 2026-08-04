@@ -6,7 +6,7 @@
 
 - `icons/` — **单色图标 SVG**。源文件统一以 `#545454` 着色；由 `vite-plugin-svgr` 作用域（见 `vite.config.ts`）在导入期把 `#545454` 注入为 `currentColor`，因此以**组件**方式消费时颜色随容器 `color` 变化。
 - `illustrations/` — **多彩插画 SVG**（保留设计原色，不做颜色替换）。当前仅 `icloud-logo.svg`。
-- 根目录 `*.png` — 遗留位图（资源用量、概览插画、复合碎片、菜单图标等）。整体迁移到 `assets/images/` 由 `docs/plans/2026-07-30-workloads-icon-upgrade-plan.md` 负责，本目录暂时保留。
+- `images/` — **遗留位图 PNG**（资源用量、概览插画、复合碎片、菜单图标等），以 URL 消费。由 `docs/plans/2026-08-04-png-assets-images-relocation-plan.md` 从根目录迁入。
 
 ## 使用方式
 
@@ -40,4 +40,4 @@ import icloudLogo from '@/assets/illustrations/icloud-logo.svg';
 ## 资源计数（2026-08-04）
 
 - SVG：**70** = `icons/` 69 个单色 + `illustrations/` 1 个多彩（`icloud-logo`）。
-- PNG：**22**（根目录遗留位图，待迁移 `images/`）。
+- PNG：**20**（`images/` 遗留位图；原 22，已删 2 个无引用孤儿）。

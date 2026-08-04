@@ -1,7 +1,7 @@
 import {Progress} from 'antd';
 
-import cpuIcon from '@/assets/pod-resource-usage-cpu.png';
-import memoryIcon from '@/assets/pod-resource-usage-memory.png';
+import cpuIcon from '@/assets/images/pod-resource-usage-cpu.png';
+import memoryIcon from '@/assets/images/pod-resource-usage-memory.png';
 import {semantic} from '@/constants/colors';
 
 import {formatCpu, formatMemory, isHighLoad, usagePercent} from './PodDetailDrawer/resourceUsage';
@@ -43,30 +43,32 @@ function renderUsageCell(
             limitNumeric={limitNumeric}
             format={format}
         >
-            {detailed ? (
-                <DetailedCell>
-                    <DetailedValue>
+            {detailed
+                ? (
+                    <DetailedCell>
+                        <DetailedValue>
+                            <UsageCellIcon src={icon} alt="" aria-hidden="true" />
+                            <span>{format(usage)}/{format(request)}/{format(limit)}</span>
+                        </DetailedValue>
+                        <DetailedBar>
+                            <Progress
+                                percent={percent ?? 0}
+                                showInfo={false}
+                                size="small"
+                                strokeColor={highLoad ? semantic.state.error.default : undefined}
+                            />
+                            <DetailedPercent data-high-load={highLoad}>
+                                {percent === undefined ? '-' : `${percent}%`}
+                            </DetailedPercent>
+                        </DetailedBar>
+                    </DetailedCell>
+                )
+                : (
+                    <UsageCell>
                         <UsageCellIcon src={icon} alt="" aria-hidden="true" />
-                        <span>{format(usage)}/{format(request)}/{format(limit)}</span>
-                    </DetailedValue>
-                    <DetailedBar>
-                        <Progress
-                            percent={percent ?? 0}
-                            showInfo={false}
-                            size="small"
-                            strokeColor={highLoad ? semantic.state.error.default : undefined}
-                        />
-                        <DetailedPercent data-high-load={highLoad}>
-                            {percent === undefined ? '-' : `${percent}%`}
-                        </DetailedPercent>
-                    </DetailedBar>
-                </DetailedCell>
-            ) : (
-                <UsageCell>
-                    <UsageCellIcon src={icon} alt="" aria-hidden="true" />
-                    <span>{percent === undefined ? '-' : `${percent}%`}</span>
-                </UsageCell>
-            )}
+                        <span>{percent === undefined ? '-' : `${percent}%`}</span>
+                    </UsageCell>
+                )}
         </ResourceUsageTooltip>
     );
 }

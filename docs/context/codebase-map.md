@@ -31,6 +31,7 @@ Compact routing map for AI agents. Keep current enough to route common work.
 | Change app shell    | src/routers/AppLayout/index.tsx        | src/routers/AppLayout/topNavigation/ or workspace/ | yarn lint-type |
 | Add route           | src/routers/index.tsx                  | src/routers/AppLayout/workspace/navigation/        | yarn lint-type |
 | Change AI executor  | src/executor/AIExecutorProvider.tsx    | src/executor/agentLoop.ts                          | yarn lint-type |
+| Add / Change SVG icon | src/assets/icons/（放 #545454 单色 SVG）+ icons/index.ts barrel | docs/architecture/svg-icon-system.md；vite.config.ts svgr 作用域 | yarn lint-type |
 | Change theme        | src/constants/themes/presets.ts        | src/contexts/ThemeContext.tsx                      | yarn start     |
 
 ## Large Or Fragile Files

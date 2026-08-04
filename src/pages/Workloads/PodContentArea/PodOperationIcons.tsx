@@ -1,6 +1,6 @@
 import {Block, Switch} from '@/assets/icons';
-import moreDot from '@/assets/pod-row-actions-more-dot.png';
-import deleteIconRaw from '@/assets/workloads-header-menu-delete.png';
+import moreDot from '@/assets/images/pod-row-actions-more-dot.png';
+import deleteIconRaw from '@/assets/images/workloads-header-menu-delete.png';
 import {IconFrame, IconPart, MoreDots, SvgIcon} from './PodOperationIcons.style';
 
 import type {PodOperation} from '@/interface/entities/pod';

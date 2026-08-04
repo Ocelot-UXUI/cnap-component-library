@@ -1,7 +1,7 @@
 import {Dropdown, Popover} from 'antd';
 
-import moreDot from '@/assets/group-header-more-dot.png';
 import {ChevronDown} from '@/assets/icons';
+import moreDot from '@/assets/images/group-header-more-dot.png';
 
 import {
     CountText,

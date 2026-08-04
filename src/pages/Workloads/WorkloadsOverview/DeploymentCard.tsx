@@ -1,5 +1,5 @@
-import arrowIcon from '@/assets/workloads-overview-arrow-right.png';
-import deploymentArtwork from '@/assets/workloads-overview-deployment-artwork.png';
+import arrowIcon from '@/assets/images/workloads-overview-arrow-right.png';
+import deploymentArtwork from '@/assets/images/workloads-overview-deployment-artwork.png';
 
 import {overviewData} from '../mockData';
 import {

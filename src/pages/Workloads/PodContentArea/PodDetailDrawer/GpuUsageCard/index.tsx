@@ -1,7 +1,7 @@
-import genericGpuIcon from '@/assets/pod-resource-usage-gpu.png';
-import huaweiGpuIcon from '@/assets/pod-resource-usage-huawei.png';
-import kunlunxinGpuIcon from '@/assets/pod-resource-usage-kunlunxin.png';
-import nvidiaGpuIcon from '@/assets/pod-resource-usage-nvidia.png';
+import genericGpuIcon from '@/assets/images/pod-resource-usage-gpu.png';
+import huaweiGpuIcon from '@/assets/images/pod-resource-usage-huawei.png';
+import kunlunxinGpuIcon from '@/assets/images/pod-resource-usage-kunlunxin.png';
+import nvidiaGpuIcon from '@/assets/images/pod-resource-usage-nvidia.png';
 
 import {GpuCard, GpuContent, GpuCount, GpuDetails, GpuModel, GpuProfile} from './GpuUsageCard.style';
 

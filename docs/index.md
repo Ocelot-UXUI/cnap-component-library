@@ -32,6 +32,7 @@
 | 理解当前技术基线                   | `docs/architecture/system-baseline.md`                  | `docs/architecture/module-boundaries.md`              |
 | 理解 owner-doc 优先级和真源边界    | `docs/context/source-of-truth-and-precedence.md`        | 相关的 owner doc                                      |
 | 查找代码库入口点和变更路径         | `docs/context/codebase-map.md`                          | 目标文件的实际代码                                    |
+| 理解 / 新增 / 修改 SVG 图标        | `docs/architecture/svg-icon-system.md`                  | `src/assets/README.md`、`vite.config.ts`              |
 | 创建或执行计划                     | `docs/plans/00-plan-authoring-and-execution-guide.md`   | `docs/audits/00-audit-execution-guide.md`             |
 | 执行审计                           | `docs/audits/00-audit-execution-guide.md`               | `docs/skills/README.md`                               |
 | 选择可复用 prompt / playbook       | `docs/skills/README.md`                                 | 具体 prompt 文件                                      |

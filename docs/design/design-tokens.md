@@ -320,3 +320,11 @@ antd 的 seed → map → alias token 是级联派生：改 `colorPrimary` 会�
 - 新增语义：改 `semantic.ts` + 本文档 § 5。
 - 新增 antd 组件覆盖：改 `themes/presets.ts` 的 `cnap2.components`。
 - 涉及品牌色分布决策的调整：需在 `docs/discussions/` 讨论后落档，本文档同步。
+
+## 11. 图标（icon）着色
+
+单色图标统一以 `#545454`（= `semantic.text.secondary`）着色，由 `vite-plugin-svgr` 作用域在导入期注入为 `currentColor`（详见 `docs/architecture/svg-icon-system.md`）。
+
+- 单色图标以组件方式消费（`import { X } from '@/assets/icons'`）时颜色随容器 `color` 变化；改色请设容器 `color`，勿在 SVG 源写死颜色或改成品牌绿。
+- 多彩插画放 `src/assets/illustrations/`，保留原色，不受色 token 约束。
+- 图标目录 / 新增 / 消费的完整规范以 `docs/architecture/svg-icon-system.md` 为准。

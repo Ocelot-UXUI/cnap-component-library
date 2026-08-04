@@ -1,7 +1,7 @@
 import {Progress} from 'antd';
 
-import cpuIcon from '@/assets/pod-resource-usage-cpu.png';
-import memoryIcon from '@/assets/pod-resource-usage-memory.png';
+import cpuIcon from '@/assets/images/pod-resource-usage-cpu.png';
+import memoryIcon from '@/assets/images/pod-resource-usage-memory.png';
 import {semantic} from '@/constants/colors';
 
 import {GpuUsageCard} from './GpuUsageCard';

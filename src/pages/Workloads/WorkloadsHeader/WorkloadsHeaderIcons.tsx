@@ -1,9 +1,9 @@
 import {Restart} from '@/assets/icons';
 import horizontalScaleIcon from '@/assets/icons/scale-horizontal.svg';
 import verticalScaleIcon from '@/assets/icons/scale-vertical.svg';
-import debugIcon from '@/assets/workloads-header-menu-debug.png';
-import deleteIcon from '@/assets/workloads-header-menu-delete.png';
-import temporaryAuthIcon from '@/assets/workloads-header-menu-temporary-auth.png';
+import debugIcon from '@/assets/images/workloads-header-menu-debug.png';
+import deleteIcon from '@/assets/images/workloads-header-menu-delete.png';
+import temporaryAuthIcon from '@/assets/images/workloads-header-menu-temporary-auth.png';
 
 import {FullIcon, SvgIcon} from './WorkloadsHeaderActions.style';
 

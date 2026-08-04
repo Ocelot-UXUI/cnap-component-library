@@ -3,7 +3,7 @@ import type {MenuProps} from 'antd';
 
 import {useState} from 'react';
 
-import moreDot from '@/assets/workloads-header-actions-more-dot.png';
+import moreDot from '@/assets/images/workloads-header-actions-more-dot.png';
 import {useAppEnvID, useNavigationSnapshot} from '@/contexts/NavigationContext';
 
 import {useWorkloadsRuntime} from '../useWorkloadsRuntime';
@@ -136,7 +136,10 @@ export const WorkloadsHeader = () => {
                     clusterId={clusterId}
                     environmentName={environmentName}
                     defaultGroupId={groupId}
-                    onClose={() => { setActiveOp(null); setActiveOperationName(null); }}
+                    onClose={() => {
+                        setActiveOp(null);
+                        setActiveOperationName(null);
+                    }}
                 />
             )}
         </HeaderContainer>
