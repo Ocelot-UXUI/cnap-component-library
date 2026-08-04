@@ -27,4 +27,4 @@ const host = window.location.host;
 export const APP_WEBSOCKET_PREFIX = `${protocol}://${host}`;
 
 /** 线上生产环境标识 */
-export const APP_IS_ONLINE_PRODUCTION = !APP_IS_DEV && process.env.NODE_ENV === 'production';
+export const APP_IS_ONLINE_PRODUCTION = window.location.host === 'console.cloud.baidu-int.com';

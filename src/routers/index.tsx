@@ -3,7 +3,7 @@ import {css} from '@emotion/css';
 import {ComponentType, lazy, LazyExoticComponent, Suspense} from 'react';
 import {createBrowserRouter, Navigate} from 'react-router-dom';
 
-import {APP_BASENAME} from '@/constants/app';
+import {APP_BASENAME, APP_IS_ONLINE_PRODUCTION} from '@/constants/app';
 import {semantic} from '@/constants/colors';
 import {typography} from '@/constants/typography';
 
@@ -204,7 +204,7 @@ export const router = createBrowserRouter([
     },
     {
         path: '/playground',
-        element: import.meta.env.PROD
+        element: APP_IS_ONLINE_PRODUCTION
             ? <Navigate to="/home" replace />
             : withSuspense(ComponentPlaygroundPage),
     },
