@@ -200,13 +200,13 @@ export const router = createBrowserRouter([
                 path: 'border-glow-demo',
                 element: withSuspense(BorderGlowDemoPage),
             },
-            {
-                path: 'playground',
-                element: import.meta.env.PROD
-                    ? <Navigate to="/home" replace />
-                    : withSuspense(ComponentPlaygroundPage),
-            },
         ],
+    },
+    {
+        path: '/playground',
+        element: import.meta.env.PROD
+            ? <Navigate to="/home" replace />
+            : withSuspense(ComponentPlaygroundPage),
     },
     {
         path: '*',

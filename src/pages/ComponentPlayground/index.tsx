@@ -8,6 +8,12 @@ import {
     RightPanel,
 } from './ComponentPlayground.style';
 import {sections} from './sections';
+import {ConfigProvider} from 'antd';
+
+import {useTheme} from '@/contexts/ThemeContext';
+import {OverlayHost, OverlayProvider} from '@/overlay';
+
+import {antPrefixCls} from '@/constants/design';
 
 function ComponentPlayground() {
     const [activeKey, setActiveKey] = useState(sections[0].key);
@@ -37,4 +43,17 @@ function ComponentPlayground() {
     );
 }
 
-export default ComponentPlayground;
+function RootConfig() {
+    const { themeConfig } = useTheme();
+
+    return (
+        <ConfigProvider theme={themeConfig} prefixCls={antPrefixCls}>
+            <OverlayProvider>
+                <ComponentPlayground />
+                <OverlayHost />
+            </OverlayProvider>
+        </ConfigProvider>
+    );
+}
+
+export default RootConfig;
