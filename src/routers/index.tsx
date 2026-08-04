@@ -31,6 +31,7 @@ const RecentPage = lazy(() => import('@/pages/Recent'));
 const PipelinesPage = lazy(() => import('@/pages/Pipelines'));
 const ChangelogPage = lazy(() => import('@/pages/Changelog'));
 const WorkloadsPage = lazy(() => import('@/pages/Workloads'));
+const PodDetailPage = lazy(() => import('@/pages/Workloads/PodDetailPage'));
 const ServiceExposurePage = lazy(() => import('@/pages/ServiceExposure'));
 const LogsPage = lazy(() => import('@/pages/Logs'));
 const TerminalPage = lazy(() => import('@/pages/Terminal'));
@@ -154,6 +155,10 @@ export const router = createBrowserRouter([
             {
                 path: 'workloads',
                 element: withSuspense(WorkloadsPage),
+            },
+            {
+                path: 'workloads/pods/:appEnvID/:clusterId/:podName',
+                element: withSuspense(PodDetailPage),
             },
             {
                 path: 'service-exposure',

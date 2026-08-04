@@ -87,6 +87,14 @@ Pod Table 操作列（`podCells.tsx:101-134`，`renderOperations`）根据 `pod.
 
 - 独立 Pod 详情页面在 `AppLayout` 内渲染（保留顶导航和侧边栏），不渲染 `WorkloadsHeader`。
 
+### 实现状态
+
+- 已实现，见 `docs/plans/2026-08-03-pod-detail-drawer-ops-standalone-page-plan.md`（三阶段 completed）。落地要点：
+  - 操作弹窗入口抽为共享 hook `Workloads/usePodOperationModal.ts`（经全局 overlay `openModal` 打开），表格 / Drawer / 独立页面共用。
+  - Drawer 详情内容抽为 `PodDetailDrawer/{usePodDetail, PodDetailContent, PodDetailTitle}`，Drawer 与独立页面复用同一内容组件。
+  - 独立页面 `Workloads/PodDetailPage/`，标识取自路由参数（`useParams`，支持新标签页深链），路由 `workloads/pods/:appEnvID/:clusterId/:podName`。
+  - `Standalone` 按钮 `window.open(..., '_blank')` 打开独立页面。
+
 ---
 
 ## 3. 操作弹窗 Group/容器默认选择

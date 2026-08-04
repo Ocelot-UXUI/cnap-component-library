@@ -2,7 +2,7 @@ import {describe, expect, it} from 'vitest';
 
 import type {Pod, PodDetailUsage, PodList} from '@/interface/entities/pod';
 import {gpuText, groupHasGpu} from '../podColumns';
-import {mergePodDetailUsage} from '../PodDetailDrawer';
+import {mergePodDetailUsage} from '../PodDetailDrawer/usePodDetail';
 import {mergePodUsages} from '../useGroupPods';
 
 const pod = (name: string): Pod => ({

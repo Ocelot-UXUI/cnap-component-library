@@ -161,7 +161,14 @@ export const PodContentArea = ({ selection, onGroupSelectionChange, onPodOperati
                         ))}
                     </GroupSection>
                 )}
-            {drawer && <DrawerHost appEnvID={appEnvID} drawer={drawer} onClose={() => setDrawer(null)} />}
+            {drawer && (
+                <DrawerHost
+                    appEnvID={appEnvID}
+                    drawer={drawer}
+                    onClose={() => setDrawer(null)}
+                    onPodOperation={onPodOperation}
+                />
+            )}
             <WorkloadOperationModals
                 active={activeOp}
                 operationName={activeOperationName}

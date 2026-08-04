@@ -10,6 +10,7 @@ Compact routing map for AI agents. Keep current enough to route common work.
 | ------------ | ------------------------------- | --------------------------------------------------------------------- | ------------- | ---------- |
 | Frontend app | src/index.tsx                   | App bootstrap, provider nesting, router mount                         | 2026-06-10    | high       |
 | Routers      | src/routers/index.tsx           | All route definitions, lazy loading                                   | 2026-06-10    | high       |
+| Pod detail page | src/pages/Workloads/PodDetailPage/ | Standalone Pod 详情路由 `workloads/pods/:appEnvID/:clusterId/:podName`；标识取路由参数，复用 `PodDetailDrawer/{usePodDetail,PodDetailContent,PodDetailTitle}` | 2026-08-03 | high |
 | App Layout   | src/routers/AppLayout/index.tsx | Global shell; top nav and workspace modules live in subdirectories    | 2026-07-03    | high       |
 | API layer    | src/api/services/primary/       | axios-interface factory (AppSpace); onResolve/onReject/enhance + mock | 2026-07-13    | high       |
 | Auth         | src/auth/login.ts               | UUAP login, session management                                        | 2026-06-10    | high       |
