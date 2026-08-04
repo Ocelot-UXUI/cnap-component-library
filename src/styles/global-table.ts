@@ -45,4 +45,33 @@ injectGlobal({
             borderBottomColor: semantic.border.divider,
         },
     },
+    '.ant-5-checkbox-checked ,.ant-5-checkbox-indeterminate': {
+        backgroundColor: semantic.button.primary.bg,
+        borderColor: semantic.button.primary.bg,
+    },
+    '.ant-5-checkbox-indeterminate:after': {
+        height: '2px',
+    },
+    '.ant-5-checkbox-wrapper:not(.ant-5-checkbox-wrapper-disabled):hover .ant-5-checkbox, .ant-5-checkbox:not(.ant-5-checkbox-disabled):hover .ant-5-checkbox': {
+        borderColor: semantic.button.primary.bg,
+    },
+    '.ant-5-checkbox-indeterminate:not(.ant-5-checkbox-disabled):hover': {
+        backgroundColor: semantic.button.primary.bg,
+    },
+    '.ant-5-checkbox-disabled:after': {
+        borderColor: semantic.button.primary.text
+    },
+    '.ant-5-checkbox-wrapper:not(.ant-5-checkbox-wrapper-disabled):hover .ant-5-checkbox-checked:not(.ant-5-checkbox-disabled)': {
+        backgroundColor: semantic.button.primary.bg
+    },
+    '.ant-5-select-multiple .ant-5-select-content .ant-5-select-selection-item-content, .ant-5-select-multiple .ant-5-select-content .ant-5-select-selection-item-remove >.anticon': {
+        color: semantic.state.brand.active,
+    },
+    '.ant-5-tooltip .ant-5-tooltip-container': {
+        background: semantic.bg.default,
+        color: semantic.text.primary,
+    },
+    '.ant-5-tooltip': {
+        '--ant-5-tooltip-arrow-background-color': semantic.bg.default,
+    }
 });

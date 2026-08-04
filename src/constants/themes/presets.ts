@@ -143,6 +143,7 @@ export const themePresets: Record<ThemeKey, ThemeConfig> = {
                 optionSelectedColor: semantic.text.primary,
                 optionActiveBg: semantic.state.component.selectHover,
                 borderRadius: radius.md,
+                multipleItemBg: semantic.state.component.selectActive,
             },
             TreeSelect: {
                 nodeSelectedBg: semantic.state.component.selectActive,
@@ -179,9 +180,9 @@ export const themePresets: Record<ThemeKey, ThemeConfig> = {
                 colorWhite: semantic.icon.brand,
             },
             Radio: {
-                colorPrimary: palette.brand[6],
-                colorPrimaryHover: palette.brand[5],
                 dotColorDisabled: semantic.text.disabled,
+                buttonBg: semantic.bg.default,
+                buttonCheckedBg: semantic.bg.default,
             },
             Switch: {
                 colorPrimary: palette.brand[6],

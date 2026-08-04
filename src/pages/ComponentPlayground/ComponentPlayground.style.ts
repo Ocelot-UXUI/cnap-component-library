@@ -19,13 +19,13 @@ export const LeftPanel = styled.nav`
     overflow-y: auto;
 `;
 
-export const ListItem = styled.button<{ $selected: boolean }>`
+export const ListItem = styled.button<{ $selected: boolean; }>`
     display: block;
     width: 100%;
     text-align: left;
     border: none;
-    background: ${({$selected}) => ($selected ? semantic.state.component.selectActive : 'transparent')};
-    color: ${({$selected}) => ($selected ? semantic.text.primary : semantic.text.secondary)};
+    background: ${({ $selected }) => ($selected ? semantic.state.component.selectActive : 'transparent')};
+    color: ${({ $selected }) => ($selected ? semantic.text.primary : semantic.text.secondary)};
     font-size: ${typography.body.regular.fontSize}px;
     line-height: ${typography.body.regular.lineHeight};
     padding: ${spacing.s}px ${spacing.m}px;
@@ -61,6 +61,19 @@ export const StateGroup = styled.div`
     flex-wrap: wrap;
     align-items: center;
     gap: ${spacing.m}px ${spacing.l}px;
+`;
+
+export const SubGroupTitle = styled.h4`
+    font-size: ${typography.body.medium.fontSize}px;
+    font-weight: ${typography.body.medium.fontWeight};
+    color: ${semantic.text.secondary};
+    margin: ${spacing.l}px 0 ${spacing.s}px;
+`;
+
+export const HintText = styled.p`
+    color: ${semantic.text.tertiary};
+    font-size: ${typography.caption.regular.fontSize}px;
+    margin: ${spacing.s}px 0 0;
 `;
 
 export const StateLabel = styled.span`

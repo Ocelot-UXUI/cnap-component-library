@@ -1,6 +1,7 @@
 import {PageLayoutHeader} from '@/design/Layouts/PageLayout';
 import {useState} from 'react';
 
+import {ConfigProvider} from 'antd';
 import {
     LeftPanel,
     ListItem,
@@ -8,7 +9,6 @@ import {
     RightPanel,
 } from './ComponentPlayground.style';
 import {sections} from './sections';
-import {ConfigProvider} from 'antd';
 
 import {useTheme} from '@/contexts/ThemeContext';
 import {OverlayHost, OverlayProvider} from '@/overlay';

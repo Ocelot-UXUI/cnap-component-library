@@ -1,4 +1,4 @@
-import {Button, Drawer, message, Modal, Space, Table} from 'antd';
+import {Button, Drawer, Modal, Space, Table} from 'antd';
 import {Key, useState} from 'react';
 
 import {StateLabel} from '../ComponentPlayground.style';
@@ -30,31 +30,16 @@ function ModalSection() {
     );
 }
 
-function MessageSection() {
-    return (
-        <SectionShell title="Message 全局提示">
-            <StateLabel>success</StateLabel>
-            <Button onClick={() => message.success('操作成功')}>success</Button>
-            <StateLabel>error</StateLabel>
-            <Button onClick={() => message.error('操作失败')}>error</Button>
-            <StateLabel>warning</StateLabel>
-            <Button onClick={() => message.warning('警告提示')}>warning</Button>
-            <StateLabel>info</StateLabel>
-            <Button onClick={() => message.info('信息提示')}>info</Button>
-        </SectionShell>
-    );
-}
-
 const tableData = [
-    {key: '1', name: '容器A', status: '运行中', replicas: '1/1'},
-    {key: '2', name: '容器B', status: '异常', replicas: '0/1'},
-    {key: '3', name: '容器C', status: '运行中', replicas: '2/2'},
+    { key: '1', name: '容器A', status: '运行中', replicas: '1/1' },
+    { key: '2', name: '容器B', status: '异常', replicas: '0/1' },
+    { key: '3', name: '容器C', status: '运行中', replicas: '2/2' },
 ];
 
 const columns = [
-    {title: '名称', dataIndex: 'name', key: 'name'},
-    {title: '状态', dataIndex: 'status', key: 'status'},
-    {title: '副本', dataIndex: 'replicas', key: 'replicas'},
+    { title: '名称', dataIndex: 'name', key: 'name' },
+    { title: '状态', dataIndex: 'status', key: 'status' },
+    { title: '副本', dataIndex: 'replicas', key: 'replicas' },
 ];
 
 function TableSection() {
@@ -62,10 +47,10 @@ function TableSection() {
     return (
         <SectionShell title="Table 表格">
             <Table
-                rowSelection={{selectedRowKeys: selected, onChange: setSelected}}
+                rowSelection={{ selectedRowKeys: selected, onChange: setSelected }}
                 columns={columns}
                 dataSource={tableData}
-                pagination={{pageSize: 2}}
+                pagination={{ pageSize: 2 }}
             />
             <Space>
                 <span>多选行核验：行选中浅绿背景</span>
@@ -74,4 +59,4 @@ function TableSection() {
     );
 }
 
-export {DrawerSection, ModalSection, MessageSection, TableSection};
+export {DrawerSection, ModalSection, TableSection};
