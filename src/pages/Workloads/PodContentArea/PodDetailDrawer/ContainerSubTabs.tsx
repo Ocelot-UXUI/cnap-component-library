@@ -14,6 +14,9 @@ const ContainerContentTabs = styled(Tabs)`
     &.ant-5-tabs-top > .ant-5-tabs-content-holder {
         padding-inline: ${spacing.l}px;
     }
+    &.ant-5-tabs-top > .ant-5-tabs-body-holder {
+        padding-inline: 16px;
+    }
 `;
 
 interface ContainerSubTabsProps {

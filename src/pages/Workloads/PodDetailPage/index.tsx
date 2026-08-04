@@ -8,9 +8,12 @@ import {PodDetailContent} from '../PodContentArea/PodDetailDrawer/PodDetailConte
 import {PodDetailTitle} from '../PodContentArea/PodDetailDrawer/PodDetailTitle';
 import {usePodDetail} from '../PodContentArea/PodDetailDrawer/usePodDetail';
 import {usePodOperationModal} from '../usePodOperationModal';
+import {semantic} from '@/constants/colors';
 
 const PageRoot = styled.div`
-    height: 100%;
+    min-height: 100%;
+    background: ${semantic.bg.default};
+    padding: 12px 24px;
 `;
 
 type PodDetailParams = {

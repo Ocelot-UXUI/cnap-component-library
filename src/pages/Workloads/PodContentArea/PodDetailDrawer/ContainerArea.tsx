@@ -45,6 +45,9 @@ const ContainerTabs = styled(Tabs)`
     &.ant-5-tabs-top > .ant-5-tabs-content-holder {
         background: ${semantic.bg.default};
     }
+    &.ant-5-tabs-top > .ant-5-tabs-body-holder{
+        background: ${semantic.bg.default};
+    }
 `;
 
 const ContainerTabLabel = styled.span`
