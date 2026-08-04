@@ -115,6 +115,7 @@ export const themePresets: Record<ThemeKey, ThemeConfig> = {
                 defaultActiveBg: palette.gray[2],
                 defaultActiveBorderColor: palette.gray[7],
                 borderRadius: radius.lg,
+                onlyIconSize: '16px'
             },
             Input: {
                 colorBorder: semantic.state.component.borderDefault,

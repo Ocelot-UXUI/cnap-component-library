@@ -17,6 +17,7 @@ import {GpuCellList} from './podColumns.style';
 import {GpuUsageCard} from './PodDetailDrawer/GpuUsageCard';
 import {renderCpu, renderMemory} from './podUsageCells';
 import type {ViewMode} from './types';
+import Icon from '@ant-design/icons';
 
 /** 该组是否存在 GPU 资源（无则整列隐藏） */
 export function groupHasGpu(pods: Pod[]): boolean {
@@ -101,15 +102,13 @@ export function buildPodColumns(
                 <Tooltip title="详情">
                     <Button
                         type="text"
-                        size="small"
-                        icon={<Details width="1em" height="1em" />}
+                        icon={<Icon component={Details} />}
                         onClick={() => onOpenDetail(pod)}
                     />
                 </Tooltip>
                 <Tooltip title="查看 YAML">
                     <Button
                         type="text"
-                        size="small"
                         icon={<Code width="1em" height="1em" />}
                         onClick={() => onPodYamlView(pod)}
                     />

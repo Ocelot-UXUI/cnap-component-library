@@ -122,7 +122,6 @@ export function renderOperations(pod: Pod, onOperation: (pod: Pod, operation: Po
                 <Tooltip key={op.name} title={op.displayName}>
                     <Button
                         type="text"
-                        size="small"
                         icon={getPodOperationIcon(op, <ThunderboltOutlined />)}
                         onClick={() => onOperation(pod, op)}
                     />
@@ -140,7 +139,7 @@ export function renderOperations(pod: Pod, onOperation: (pod: Pod, operation: Po
                         },
                     }}
                 >
-                    <Button type="text" size="small" aria-label="更多操作" icon={moreIcon} />
+                    <Button type="text" aria-label="更多操作" icon={moreIcon} />
                 </Dropdown>
             )}
         </div>
