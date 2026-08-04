@@ -97,6 +97,7 @@ export function buildPodColumns(
         title: '操作',
         key: 'operations',
         width: 200,
+        fixed: 'right',
         render: (_, pod) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Tooltip title="详情">

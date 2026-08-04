@@ -43,7 +43,7 @@ export const SegmentSeparator = styled.span`
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    margin: 0 ${spacing.m}px;
+    margin: 0 0 0 ${spacing.m}px;
     color: ${semantic.text.placeholder};
     ${typography.body.regular};
     flex: 0 0 auto;
