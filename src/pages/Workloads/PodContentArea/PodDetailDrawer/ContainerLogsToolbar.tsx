@@ -1,4 +1,4 @@
-import {FlagOutlined, PlayCircleOutlined} from '@ant-design/icons';
+import Icon, {FlagOutlined, PlayCircleOutlined} from '@ant-design/icons';
 import {Button, Input, Segmented, Select, Tooltip} from 'antd';
 
 import {Pause, Standalone, ZoomIn, ZoomOut} from '@/assets/icons';
@@ -77,7 +77,7 @@ export const ContainerLogsToolbar = ({
                     size="small"
                     danger={following}
                     icon={following
-                        ? <Pause width="1em" height="1em" />
+                        ? <Icon component={Pause} />
                         : <PlayCircleOutlined />}
                     onClick={onToggleFollow}
                 />
@@ -86,14 +86,14 @@ export const ContainerLogsToolbar = ({
                 <Button size="small" icon={<FlagOutlined />} onClick={onMark} />
             </Tooltip>
             <Tooltip title="在窗口查看">
-                <Button size="small" icon={<Standalone width="1em" height="1em" />} />
+                <Button size="small" icon={<Icon component={Standalone} />} />
             </Tooltip>
             <Tooltip title={fullscreen ? '退出全屏' : '全屏'}>
                 <Button
                     size="small"
                     icon={fullscreen
-                        ? <ZoomOut width="1em" height="1em" />
-                        : <ZoomIn width="1em" height="1em" />}
+                        ? <Icon component={ZoomOut} />
+                        : <Icon component={ZoomIn} />}
                     onClick={onToggleFullscreen}
                 />
             </Tooltip>

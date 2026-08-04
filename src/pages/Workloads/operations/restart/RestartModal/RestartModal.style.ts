@@ -24,13 +24,6 @@ export const NoticeBar = styled.div`
     }
 `;
 
-export const SelectorBar = styled.div`
-    display: flex;
-    align-items: center;
-    gap: ${spacing.m}px;
-    margin-bottom: ${spacing.xl2}px;
-`;
-
 export const SectionTitle = styled.div`
     ${typography.body.medium}
     display: flex;

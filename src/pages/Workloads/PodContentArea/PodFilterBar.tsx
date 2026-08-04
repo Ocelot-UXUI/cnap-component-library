@@ -42,7 +42,7 @@ export const PodFilterBar = ({
                     mode="multiple"
                     allowClear
                     placeholder="Pod 状态"
-                    style={{ minWidth: 120 }}
+                    style={{ width: 200 }}
                     maxTagCount="responsive"
                     value={filter.status}
                     options={statusOptions}

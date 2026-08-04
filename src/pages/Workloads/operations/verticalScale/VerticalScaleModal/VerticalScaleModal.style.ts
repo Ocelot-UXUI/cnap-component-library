@@ -17,12 +17,6 @@ export const SubTitle = styled.p`
     margin: 0 0 ${spacing.l}px;
 `;
 
-export const SelectorBar = styled.div`
-    display: flex;
-    gap: ${spacing.m}px;
-    margin-bottom: ${spacing.l}px;
-`;
-
 export const FooterBar = styled.div`
     display: flex;
     align-items: center;

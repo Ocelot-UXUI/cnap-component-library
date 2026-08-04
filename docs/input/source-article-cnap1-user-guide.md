@@ -369,15 +369,15 @@ appspaceChartVersion: health-v1appspace:container:replicaCount:8  resources:cpu:
 Appspace在容器环境中默认提供以下环境变量，用户可以在代码中直接使用
 
 - APPSPACE_IDC_NAME： 机房的名称，例如bjdd、gzbh、szth
-- APPSPACE_POD_IP：pod ip地址
-- APPSPACE_POD_NAME： pod名称
+- APPSPACE_Pod_IP：pod ip地址
+- APPSPACE_Pod_NAME： pod名称
 - APPSPACE_NAMESPACE：namespace名称
 - APPSPACE_ENS_GROUP_NAME/APPSPACE_BNS_GROUP_NAME： CNAP提供的该环境的bns group名称，如group.appspace-test-demo-dev.K8S.all
 - APPSPACE_MAIN_PORT：名称为main的端口，通常在values文件中定义
 - ENS_LIDC：用于ENS的逻辑机房名称，例如hbe
 - ENS_PIDC：用于ENS的IDC名称，其值等同于APPSPACE_IDC_NAME，例如bjdd
 - ENS_PRODUCT：用于ENS的产品线名称，当前为固定值default
-- ENS_HOST_ADDRESS：用于ENS的pod ip地址，等同于APPSPACE_POD_IP
+- ENS_HOST_ADDRESS：用于ENS的pod ip地址，等同于APPSPACE_Pod_IP
 - MATRIX_RESOURCE_CPU_PHYSICAL_CORES: 容器分配到的百度智能云度厂版CPU标准核数
 - MATRIX_RESOURCE_CPU_CORES: 容器分配到的百度智能云度厂版CPU归一化核数（=标准核*15）
 
@@ -987,7 +987,7 @@ spec:
 - 状态筛选：可按状态选择pod；
 - pod搜索：可搜索pod IP；
 - 批量删除：可以批量删除重建pod；
-- pod概览：包括pod名称、状态、所属集群、包版本、POD IP、重启次数、CPU和内存的使用情况、创建时间、流量接入情况；
+- pod概览：包括pod名称、状态、所属集群、包版本、Pod IP、重启次数、CPU和内存的使用情况、创建时间、流量接入情况；
 - pod操作：可选择一个pod后，执行webssh登录、查看标准输出日志、重建pod、屏蔽流量、查看yaml、复制CLI命令等操作。
 
 ![](https://rte.weiyun.baidu.com/wiki/attach/image/api/imageDownloadAddress?attachId=33ef9c7206ea43ccb23587e6fcc3ea49&docGuid=xbZzZUlHFc60jb)

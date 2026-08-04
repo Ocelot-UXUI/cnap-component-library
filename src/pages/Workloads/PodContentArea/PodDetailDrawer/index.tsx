@@ -1,3 +1,4 @@
+import Icon from '@ant-design/icons';
 import {Button, Drawer} from 'antd';
 
 import {Standalone} from '@/assets/icons';
@@ -43,7 +44,7 @@ export const PodDetailDrawer = (
                     <Button
                         type="text"
                         aria-label="在新页面打开"
-                        icon={<Standalone width="1em" height="1em" />}
+                        icon={<Icon component={Standalone} />}
                         onClick={openStandalone}
                     />
                 </TitleActions>

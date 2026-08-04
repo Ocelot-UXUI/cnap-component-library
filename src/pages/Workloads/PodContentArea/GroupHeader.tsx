@@ -19,6 +19,7 @@ import {
 } from './GroupHeader.style';
 import {MoreDots, MoreTrigger, VersionList, VersionRow} from './GroupHeaderPopover.style';
 import {computeQuickCounts} from './quickFilter';
+import {getMenuOperationIcon} from '../WorkloadsHeader/WorkloadsHeaderIcons';
 
 import type {RuntimeOperation} from '@/interface/entities/runtimeOperation';
 import type {PodStatistics} from '@/interface/entities/runtimeSummary';
@@ -39,7 +40,12 @@ interface GroupHeaderProps {
 function buildMenu(operations: RuntimeOperation[], clusterSelected: boolean): MenuProps['items'] {
     const items: NonNullable<MenuProps['items']> = operations
         .filter(op => op.targetKind === 'Workload')
-        .map(op => ({ key: op.name, label: op.displayName, disabled: op.disabled }));
+        .map(op => ({
+            key: op.name,
+            label: op.displayName,
+            icon: getMenuOperationIcon(op.capability, op.displayName),
+            disabled: op.disabled,
+        }));
     items.push({ type: 'divider' });
     items.push({
         key: 'workload-yaml',

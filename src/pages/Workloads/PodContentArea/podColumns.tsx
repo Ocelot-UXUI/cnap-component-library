@@ -59,7 +59,7 @@ export function buildPodColumns(
     const detailed = mode === 'detailed';
     const columns: TableColumnsType<Pod> = [
         {
-            title: detailed ? 'POD 名称 / 集群' : 'POD 名称',
+            title: detailed ? 'Pod 名称 / 集群' : 'Pod 名称',
             key: 'name',
             width: 220,
             fixed: 'left',
@@ -73,7 +73,7 @@ export function buildPodColumns(
             render: (_, pod) => renderStatus(pod, detailed),
         },
         {
-            title: detailed ? 'POD IP / 节点 IP' : 'POD IP',
+            title: detailed ? 'Pod IP / 节点 IP' : 'Pod IP',
             key: 'podIp',
             width: 160,
             render: (_, pod) => renderIp(pod, detailed),
@@ -98,7 +98,7 @@ export function buildPodColumns(
         key: 'operations',
         width: 200,
         render: (_, pod) => (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Tooltip title="详情">
                     <Button
                         type="text"
@@ -109,7 +109,7 @@ export function buildPodColumns(
                 <Tooltip title="查看 YAML">
                     <Button
                         type="text"
-                        icon={<Code width="1em" height="1em" />}
+                        icon={<Icon component={Code} />}
                         onClick={() => onPodYamlView(pod)}
                     />
                 </Tooltip>

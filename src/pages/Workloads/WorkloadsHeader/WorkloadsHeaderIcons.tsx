@@ -1,43 +1,48 @@
-import {Restart} from '@/assets/icons';
-import horizontalScaleIcon from '@/assets/icons/scale-horizontal.svg';
-import verticalScaleIcon from '@/assets/icons/scale-vertical.svg';
-import debugIcon from '@/assets/images/workloads-header-menu-debug.png';
-import deleteIcon from '@/assets/images/workloads-header-menu-delete.png';
-import temporaryAuthIcon from '@/assets/images/workloads-header-menu-temporary-auth.png';
-
-import {FullIcon, SvgIcon} from './WorkloadsHeaderActions.style';
-
+import {Restart, RightUser} from '@/assets/icons';
+import {ScaleHorizontal, ScaleVertical} from '@/assets/icons';
 import type {OperationCapability} from '@/interface/entities/runtimeOperation';
 import type {ReactNode} from 'react';
+import Icon, {BugOutlined, DeleteOutlined} from '@ant-design/icons';
+import {css} from '@emotion/css';
 
-const restartIcon = (
-    <SvgIcon>
-        <Restart />
-    </SvgIcon>
-);
+// TODO 还是得在调整一下svg icon的处理方式
+const fillNone = css`
+    svg{
+        fill: none;
+    }
+`
 
 export function getPrimaryOperationIcon(capability: OperationCapability): ReactNode {
     switch (capability) {
         case 'Restart':
-            return restartIcon;
+            return <Icon component={Restart} className={fillNone} />;
         case 'HorizontalScale':
-            return <FullIcon src={horizontalScaleIcon} alt="" aria-hidden="true" />;
+            return <Icon component={ScaleHorizontal} />;
         case 'VerticalScale':
-            return <FullIcon src={verticalScaleIcon} alt="" aria-hidden="true" />;
+            return <Icon component={ScaleVertical} />;
         default:
             return undefined;
     }
 }
 
 export function getMenuOperationIcon(capability: OperationCapability, displayName: string): ReactNode {
-    if (capability === 'ApplicationUninstall') {
-        return <FullIcon src={deleteIcon} size={14} alt="" aria-hidden="true" />;
+    switch (capability) {
+        case 'ApplicationUninstall':
+            return <DeleteOutlined />;
+        case 'HorizontalScale':
+            return <Icon component={ScaleHorizontal} />;
+        case 'VerticalScale':
+            return <Icon component={ScaleVertical} />;
+        case 'Restart':
+            return <Icon component={Restart} />;
+        default:
+            break;
     }
     switch (displayName) {
         case '应用临时授权':
-            return <FullIcon src={temporaryAuthIcon} size={14} alt="" aria-hidden="true" />;
+            return <Icon component={RightUser} />;
         case '开启调试':
-            return <FullIcon src={debugIcon} size={14} alt="" aria-hidden="true" />;
+            return <BugOutlined />;
         default:
             return undefined;
     }

@@ -1,12 +1,13 @@
 import {useMachine} from '@xstate/react';
-import {Button, message, Modal, Select} from 'antd';
+import {Button, message, Modal} from 'antd';
 import {useEffect} from 'react';
 
 import {OperationModalTitle} from '../../shared/OperationModalTitle';
+import {WorkloadContainerSelector} from '../../shared/WorkloadContainerSelector';
 import {horizontalScaleMachine} from '../machine';
 import {selectBottomHint, selectCanSubmit} from '../selectors';
 import {ClusterTable} from './ClusterTable';
-import {FooterBar, FooterHint, SelectorBar, SubTitle} from './HorizontalScaleModal.style';
+import {FooterBar, FooterHint, SubTitle} from './HorizontalScaleModal.style';
 
 interface HorizontalScaleModalProps {
     appEnvID: string;
@@ -79,22 +80,14 @@ export const HorizontalScaleModal = ({
             destroyOnHidden
         >
             <SubTitle>{SUBTITLE}</SubTitle>
-            <SelectorBar>
-                <Select
-                    style={{ width: 240 }}
-                    placeholder="请选择工作负载"
-                    value={context.groupId}
-                    options={context.groups.map(group => ({ value: group.id, label: group.name }))}
-                    onChange={groupId => send({ type: 'SELECT_GROUP', groupId })}
-                />
-                <Select
-                    style={{ width: 160 }}
-                    placeholder="容器"
-                    value={context.container}
-                    options={context.containerNames.map(item => ({ value: item.name, label: item.name }))}
-                    onChange={container => send({ type: 'SELECT_CONTAINER', container })}
-                />
-            </SelectorBar>
+            <WorkloadContainerSelector
+                groups={context.groups}
+                groupId={context.groupId}
+                containerNames={context.containerNames}
+                container={context.container}
+                onSelectGroup={groupId => send({ type: 'SELECT_GROUP', groupId })}
+                onSelectContainer={container => send({ type: 'SELECT_CONTAINER', container })}
+            />
             <ClusterTable
                 rows={context.rows}
                 onToggleCluster={key => send({ type: 'TOGGLE_CLUSTER', key })}

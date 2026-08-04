@@ -45,27 +45,6 @@ export const MoreButton = styled(Button)`
     }
 `;
 
-export const SvgIcon = styled.span`
-    display: inline-flex;
-    width: 16px;
-    height: 16px;
-    flex: 0 0 auto;
-    align-items: center;
-    justify-content: center;
-    color: ${semantic.text.secondary};
-
-    svg {
-        width: 16px;
-        height: 16px;
-    }
-`;
-
-export const FullIcon = styled.img<{ size?: number; }>`
-    width: ${({ size = 16 }) => size}px;
-    height: ${({ size = 16 }) => size}px;
-    object-fit: contain;
-`;
-
 export const MoreDots = styled.span`
     display: flex;
     align-items: center;

@@ -100,7 +100,7 @@ Status: done
 Status: done
 
 - Add：`GroupHeader`（展开/收起、组名、类型 Badge、API 版本 + hover Popover(clusterName/currentVersion)、右侧 运行中/异常/已屏蔽/共N 计数、⋮ 操作菜单 = 后端 operations + 末尾"工作负载 YAML"占位项，YAML 仅在已选集群时可用）。Skill: none
-- Add：`PodGroupTable`（antd Table，每组独立分页 10/20/50；详细/精简双模式；列：复选框/POD名称(+集群)/状态(+容器)/PodIP(+节点IP)/端口/服务暴露(占位)/重启/存活/CPU/内存/GPU(无则整列隐藏)/操作(≤5 外露，第5为更多)；状态徽章配色；重启/存活/状态 3 列排序；POD 名称列头快捷批量选择 Dropdown：全选本页/反选本页/取消全部；Pod名/IP 复制）。快捷批量选择的「全选所有/反选所有」按需求详情表标注**暂时去掉**（不实现，与需求 AC 行 454 的差异以此为准）。Skill: none
+- Add：`PodGroupTable`（antd Table，每组独立分页 10/20/50；详细/精简双模式；列：复选框/Pod名称(+集群)/状态(+容器)/PodIP(+节点IP)/端口/服务暴露(占位)/重启/存活/CPU/内存/GPU(无则整列隐藏)/操作(≤5 外露，第5为更多)；状态徽章配色；重启/存活/状态 3 列排序；Pod 名称列头快捷批量选择 Dropdown：全选本页/反选本页/取消全部；Pod名/IP 复制）。快捷批量选择的「全选所有/反选所有」按需求详情表标注**暂时去掉**（不实现，与需求 AC 行 454 的差异以此为准）。Skill: none
 - Proof：GPU 列显隐、详细模式扩展行为空列垂直居中等以构建 + 探索性验证为准；纯派生（列可见性、排序参数）尽量抽函数加单测。Skill: none
 
 [x] Exit Criteria:

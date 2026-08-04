@@ -35,6 +35,12 @@ injectGlobal({
         '.ant-5-table-thead > tr > th::before': {
             display: 'none',
         },
+        '.ant-5-table-thead .ant-5-table-column-sorters': {
+            justifyContent: 'flex-start',
+            '.ant-5-table-column-title': {
+                flex: 'none',
+            },
+        },
         '.ant-5-table-thead > tr > th, .ant-5-table-tbody > tr > td': {
             borderBottomColor: semantic.border.divider,
         },

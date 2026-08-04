@@ -248,7 +248,7 @@ export const themePresets: Record<ThemeKey, ThemeConfig> = {
             Table: {
                 headerBg: semantic.bg.page,
                 headerColor: semantic.text.primary,
-                rowHoverBg: palette.gray[1],
+                rowHoverBg: palette.warning[1],
                 rowSelectedBg: palette.brand[1],
                 rowSelectedHoverBg: palette.brand[2],
                 borderColor: semantic.border.divider,

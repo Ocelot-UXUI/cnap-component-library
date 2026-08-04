@@ -1,12 +1,12 @@
-import {ThunderboltOutlined} from '@ant-design/icons';
+import {EllipsisOutlined, ThunderboltOutlined} from '@ant-design/icons';
 import {Button, Dropdown, Tooltip, Typography} from 'antd';
 
 import {semantic} from '@/constants/colors';
 import type {ContainerPort, Pod, PodOperation} from '@/interface/entities/pod';
 import {formatAge} from './duration';
-import {getPodOperationIcon, moreIcon} from './PodOperationIcons';
+import {getPodOperationIcon} from './PodOperationIcons';
 import {statusLabel, statusTone} from './podStatus';
-import {StatusTag} from './podCells.style';
+import {StatusTag, TruncateStart} from './podCells.style';
 
 export function renderStatus(pod: Pod, detailed: boolean) {
     const tone = statusTone(pod.status);
@@ -40,8 +40,12 @@ function renderVersion(version: string) {
 
 export function renderName(pod: Pod, detailed: boolean) {
     return (
-        <div>
-            <Typography.Text copyable={{ text: pod.name }}>{pod.name}</Typography.Text>
+        <div style={{maxWidth: '250px'}}>
+            <Typography.Text copyable={{ text: pod.name }}>
+                <Tooltip title={pod.name}>
+                    <TruncateStart>{pod.name}</TruncateStart>
+                </Tooltip>
+            </Typography.Text>
             {detailed && (
                 <div style={{ color: semantic.text.tertiary }}>
                     <span>{pod.clusterName ?? pod.clusterId}</span>
@@ -117,7 +121,7 @@ export function renderOperations(pod: Pod, onOperation: (pod: Pod, operation: Po
     const outer = ops.length > 3 ? ops.slice(0, 2) : ops.slice(0, 3);
     const rest = ops.slice(outer.length);
     return (
-        <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+        <>
             {outer.map(op => (
                 <Tooltip key={op.name} title={op.displayName}>
                     <Button
@@ -139,9 +143,9 @@ export function renderOperations(pod: Pod, onOperation: (pod: Pod, operation: Po
                         },
                     }}
                 >
-                    <Button type="text" aria-label="更多操作" icon={moreIcon} />
+                    <Button type="text" aria-label="更多操作" icon={<EllipsisOutlined />} />
                 </Dropdown>
             )}
-        </div>
+        </>
     );
 }

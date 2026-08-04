@@ -1,8 +1,9 @@
 import {useMachine} from '@xstate/react';
-import {Button, Input, message, Modal, Select} from 'antd';
+import {Button, Input, message, Modal} from 'antd';
 import {useEffect} from 'react';
 
 import {OperationModalTitle} from '../../shared/OperationModalTitle';
+import {WorkloadContainerSelector} from '../../shared/WorkloadContainerSelector';
 import {restartMachine} from '../machine';
 import {isTimeoutValid} from '../rows';
 import {selectBottomHint, selectCanSubmit} from '../selectors';
@@ -13,7 +14,6 @@ import {
     NoticeBar,
     SectionHint,
     SectionTitle,
-    SelectorBar,
     SubTitle,
     TimeoutRow,
 } from './RestartModal.style';
@@ -94,22 +94,14 @@ export const RestartModal = ({
                 <p>1. 重启过程中不会销毁容器，仅重新拉起进程。</p>
                 <p>2. 重启过程中会对重启 Pod 进行流量屏蔽操作，请关注重启完成后 ENS 的恢复状态。</p>
             </NoticeBar>
-            <SelectorBar>
-                <Select
-                    style={{ width: 240 }}
-                    placeholder="请选择工作负载"
-                    value={context.groupId}
-                    options={context.groups.map(group => ({ value: group.id, label: group.name }))}
-                    onChange={groupId => send({ type: 'SELECT_GROUP', groupId })}
-                />
-                <Select
-                    style={{ width: 160 }}
-                    placeholder="容器"
-                    value={context.container}
-                    options={context.containerNames.map(item => ({ value: item.name, label: item.name }))}
-                    onChange={container => send({ type: 'SELECT_CONTAINER', container })}
-                />
-            </SelectorBar>
+            <WorkloadContainerSelector
+                groups={context.groups}
+                groupId={context.groupId}
+                containerNames={context.containerNames}
+                container={context.container}
+                onSelectGroup={groupId => send({ type: 'SELECT_GROUP', groupId })}
+                onSelectContainer={container => send({ type: 'SELECT_CONTAINER', container })}
+            />
             <SectionTitle>超时时间配置</SectionTitle>
             <TimeoutRow>
                 <span className="timeout-label">超时时间</span>

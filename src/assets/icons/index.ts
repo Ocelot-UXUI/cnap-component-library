@@ -76,6 +76,7 @@ export {default as ScaleHorizontal} from './scale-horizontal.svg?react';
 export {default as ScaleVertical} from './scale-vertical.svg?react';
 export {default as Scaling} from './scaling.svg?react';
 export {default as Unblock} from './unblock.svg?react';
+export {default as RightUser} from './right-user.svg?react';
 
 // 平台资源域
 export {default as BasicInfo} from './basic-info.svg?react';
