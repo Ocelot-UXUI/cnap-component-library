@@ -1,14 +1,29 @@
 import Icon, {FlagOutlined, PlayCircleOutlined} from '@ant-design/icons';
-import {Button, Input, Segmented, Select, Tooltip} from 'antd';
+import {Button, Input, Select, Tooltip} from 'antd';
 
-import {Pause, Standalone, ZoomIn, ZoomOut} from '@/assets/icons';
+import {Document, Pause, Standalone, Terminal, ZoomIn, ZoomOut} from '@/assets/icons';
+import {SourceIcon, SourceSegmented} from './ContainerLogsToolbar.style';
 import {Toolbar, ToolbarLeft, ToolbarRight} from './PodDetailDrawer.style';
 
 import type {LogLevelFilter} from './logLine';
 
 const SOURCE_OPTIONS = [
-    { label: '标准输出', value: 'stdout' },
-    { label: '文件输出', value: 'file' },
+    {
+        label: (
+            <Tooltip title="标准输出">
+                <SourceIcon aria-label="标准输出"><Terminal /></SourceIcon>
+            </Tooltip>
+        ),
+        value: 'stdout',
+    },
+    {
+        label: (
+            <Tooltip title="文件输出">
+                <SourceIcon aria-label="文件输出"><Document /></SourceIcon>
+            </Tooltip>
+        ),
+        value: 'file',
+    },
 ];
 
 const LEVEL_OPTIONS: Array<{ label: string; value: LogLevelFilter; }> = [
@@ -52,7 +67,7 @@ export const ContainerLogsToolbar = ({
 }: ContainerLogsToolbarProps) => (
     <Toolbar>
         <ToolbarLeft>
-            <Segmented size="small" value={source} onChange={onSourceChange} options={SOURCE_OPTIONS} />
+            <SourceSegmented value={source} onChange={onSourceChange} options={SOURCE_OPTIONS} />
             {source === 'file' && (
                 <Input.Search
                     style={{ width: 220 }}
