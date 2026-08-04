@@ -1,9 +1,10 @@
 import {yaml} from '@codemirror/lang-yaml';
-import {search, SearchQuery, setSearchQuery} from '@codemirror/search';
 import {EditorView} from '@codemirror/view';
 import CodeMirror from '@uiw/react-codemirror';
 import type {ReactCodeMirrorRef} from '@uiw/react-codemirror';
 import {useEffect, useRef} from 'react';
+
+import {setHighlightKeyword, yamlSearchHighlight} from './searchHighlight';
 
 interface YamlViewerProps {
     value: string;
@@ -23,7 +24,7 @@ export const YamlViewer = ({ value, keyword = '' }: YamlViewerProps) => {
         if (!view) {
             return;
         }
-        view.dispatch({ effects: setSearchQuery.of(new SearchQuery({ search: keyword })) });
+        view.dispatch({ effects: setHighlightKeyword.of(keyword) });
     }, [keyword, value]);
 
     return (
@@ -33,7 +34,7 @@ export const YamlViewer = ({ value, keyword = '' }: YamlViewerProps) => {
             readOnly
             editable={false}
             height="calc(100vh - 120px)"
-            extensions={[yaml(), search(), EditorView.lineWrapping]}
+            extensions={[yaml(), yamlSearchHighlight(), EditorView.lineWrapping]}
             basicSetup={{
                 lineNumbers: true,
                 foldGutter: true,
