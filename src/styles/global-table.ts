@@ -64,6 +64,19 @@ injectGlobal({
     '.ant-5-checkbox-wrapper:not(.ant-5-checkbox-wrapper-disabled):hover .ant-5-checkbox-checked:not(.ant-5-checkbox-disabled)': {
         backgroundColor: semantic.button.primary.bg
     },
+    // Radio 选中态为 outline 形态：白底 + 黑环(border) + 黑色中心圆点。
+    // antd 默认 checked 为「实心圆盘 + 白点」，故需覆盖 inner 背景与 ::after 圆点颜色。
+    '.ant-5-radio-wrapper .ant-5-radio-checked': {
+        backgroundColor: semantic.bg.default,
+        borderColor: semantic.state.component.borderFocus,
+    },
+    '.ant-5-radio-wrapper .ant-5-radio:after': {
+        backgroundColor: semantic.state.component.borderFocus,
+    },
+    '.ant-5-radio-wrapper:hover .ant-5-radio-checked:not(.ant-5-radio-disabled)': {
+        backgroundColor: semantic.bg.default,
+        borderColor: semantic.state.component.borderFocus,
+    },
     '.ant-5-select-multiple .ant-5-select-content .ant-5-select-selection-item-content, .ant-5-select-multiple .ant-5-select-content .ant-5-select-selection-item-remove >.anticon': {
         color: semantic.state.brand.active,
     },

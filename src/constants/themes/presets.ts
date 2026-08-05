@@ -180,6 +180,11 @@ export const themePresets: Record<ThemeKey, ThemeConfig> = {
                 colorWhite: semantic.icon.brand,
             },
             Radio: {
+                // 视觉规范：Radio 选中态为 outline 形态（白底 + 黑环 + 黑点），且 hover/focus 环走黑不走品牌绿。
+                // colorPrimary 在此收敛 hover/focus 的中性黑；选中态的白底填充与黑色圆点在 global-table.ts 覆盖。
+                colorPrimary: semantic.state.component.borderFocus,
+                colorPrimaryHover: semantic.state.component.borderFocus,
+                colorPrimaryActive: semantic.state.component.borderFocus,
                 dotColorDisabled: semantic.text.disabled,
                 buttonBg: semantic.bg.default,
                 buttonCheckedBg: semantic.bg.default,
