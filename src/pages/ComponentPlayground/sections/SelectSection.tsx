@@ -1,5 +1,7 @@
 import {Select} from 'antd';
 
+import {MultiSelect} from '@/design/MultiSelect';
+
 import {HintText, StateLabel} from '../ComponentPlayground.style';
 import {RichSection, SubGroup} from './SectionShell';
 
@@ -24,6 +26,8 @@ function SelectSection() {
                 <Select style={{ width: 180 }} placeholder="请选择内容" options={OPTIONS} />
                 <StateLabel>多选 Multiple</StateLabel>
                 <Select mode="multiple" style={{ width: 180 }} placeholder="请选择内容" options={OPTIONS} />
+                <StateLabel>多选 + Checkbox（MultiSelect）</StateLabel>
+                <MultiSelect style={{ width: 180 }} placeholder="请选择内容" options={OPTIONS} />
                 <StateLabel>无边框 Borderless</StateLabel>
                 <Select variant="borderless" style={{ width: 180 }} placeholder="请选择内容" options={OPTIONS} />
             </SubGroup>
@@ -35,6 +39,8 @@ function SelectSection() {
                 <Select style={{ width: 180 }} defaultValue="1" options={OPTIONS} />
                 <StateLabel>多选已选 Selected</StateLabel>
                 <Select mode="multiple" style={{ width: 180 }} defaultValue={['1']} options={OPTIONS} />
+                <StateLabel>多选 + Checkbox 已选 Selected</StateLabel>
+                <MultiSelect style={{ width: 180 }} defaultValue={['1']} options={OPTIONS} />
                 <StateLabel>禁用 Disabled</StateLabel>
                 <Select disabled style={{ width: 180 }} placeholder="请选择内容" options={OPTIONS} />
             </SubGroup>
