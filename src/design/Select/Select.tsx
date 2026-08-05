@@ -1,5 +1,5 @@
 import {useMemo, useState} from 'react';
-import {Checkbox, Select} from 'antd';
+import {Checkbox, Select as AntdSelect} from 'antd';
 import styled from '@emotion/styled';
 import {spacing} from '@/constants/spacing';
 
@@ -19,11 +19,6 @@ const VisualCheckbox = styled(Checkbox)`
 
 type SelectValue = SelectProps['value'];
 
-export type MultiSelectProps = Omit<SelectProps, 'mode'> & {
-    /** 多选模式，默认 multiple；tags 模式同样适用 */
-    mode?: 'multiple' | 'tags';
-};
-
 const toValueSet = (value: SelectValue): Set<unknown> => {
     if (!Array.isArray(value)) {
         return new Set();
@@ -37,22 +32,25 @@ const toValueSet = (value: SelectValue): Set<unknown> => {
     );
 };
 
+const isMultipleMode = (mode: SelectProps['mode']): boolean =>
+    mode === 'multiple' || mode === 'tags';
+
 /**
- * 多选 Select：在标准 antd Select 的基础上，为下拉框中的每一项渲染前增加一个 Checkbox。
+ * Select：对 antd Select 的透明封装。
+ * - 未设置 mode（或非 multiple / tags）时，行为与 antd Select 完全一致。
+ * - mode 为 multiple / tags 时，为下拉项前置一个 Checkbox 呈现多选态。
  * 主题色 / Token 由 ConfigProvider 统一注入，此处不做二次覆盖。
  */
-export const MultiSelect = ({
-    mode = 'multiple',
-    value,
-    defaultValue,
-    onChange,
-    optionRender,
-    menuItemSelectedIcon,
-    ...restProps
-}: MultiSelectProps) => {
+export const Select = (props: SelectProps) => {
+    const {value, defaultValue, onChange, optionRender, menuItemSelectedIcon, ...restProps} = props;
     const [innerValue, setInnerValue] = useState<SelectValue>(defaultValue);
     const mergedValue = value !== undefined ? value : innerValue;
     const selectedSet = useMemo(() => toValueSet(mergedValue), [mergedValue]);
+
+    // 非多选模式：不注入任何多选专属逻辑，表现与 antd Select 完全一致。
+    if (!isMultipleMode(props.mode)) {
+        return <AntdSelect {...props} />;
+    }
 
     const handleChange: NonNullable<SelectProps['onChange']> = (nextValue, option) => {
         if (value === undefined) {
@@ -75,9 +73,8 @@ export const MultiSelect = ({
     };
 
     return (
-        <Select
+        <AntdSelect
             {...restProps}
-            mode={mode}
             value={value}
             defaultValue={defaultValue}
             onChange={handleChange}
