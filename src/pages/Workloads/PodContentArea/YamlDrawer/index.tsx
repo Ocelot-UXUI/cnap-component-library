@@ -1,7 +1,8 @@
-import {Alert, Drawer, Input, Spin} from 'antd';
+import {Alert, Input, Spin} from 'antd';
 import {useEffect, useState} from 'react';
 
 import rawResourceApi from '@/api/rawResource';
+import {Drawer} from '@/design/Drawer';
 import {parseResourceType} from './resourceType';
 import {SearchRow, StatusBox, ViewerFrame} from './YamlDrawer.style';
 import {YamlViewer} from './YamlViewer';

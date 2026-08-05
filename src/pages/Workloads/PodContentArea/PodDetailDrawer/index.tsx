@@ -1,8 +1,9 @@
 import Icon from '@ant-design/icons';
-import {Button, Drawer} from 'antd';
+import {Button} from 'antd';
 
 import {Standalone} from '@/assets/icons';
 import {APP_BASENAME} from '@/constants/app';
+import {Drawer} from '@/design/Drawer';
 
 import {renderOperations} from '../podCells';
 import {PodDetailContent} from './PodDetailContent';

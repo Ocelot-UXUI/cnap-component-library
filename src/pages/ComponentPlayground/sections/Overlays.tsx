@@ -1,5 +1,7 @@
-import {Button, Drawer, Modal, Space, Table} from 'antd';
+import {Button, Modal, Space, Table} from 'antd';
 import {Key, useState} from 'react';
+
+import {Drawer} from '@/design/Drawer';
 
 import {StateLabel} from '../ComponentPlayground.style';
 import {SectionShell} from './SectionShell';
@@ -10,8 +12,19 @@ function DrawerSection() {
         <SectionShell title="Drawer 抽屉">
             <StateLabel>触发</StateLabel>
             <Button type="primary" onClick={() => setOpen(true)}>打开抽屉</Button>
-            <Drawer title="示例抽屉" open={open} onClose={() => setOpen(false)} width={480}>
-                <p>抽屉内容：核验阴影 + 滑入动画。</p>
+            <Drawer
+                title="示例抽屉"
+                open={open}
+                onClose={() => setOpen(false)}
+                width={480}
+                extra={
+                    <Space>
+                        <Button size="small">刷新</Button>
+                        <Button size="small" type="primary">保存</Button>
+                    </Space>
+                }
+            >
+                <p>标题居左，关闭按钮居右，关闭按钮左侧为额外操作插槽。</p>
             </Drawer>
         </SectionShell>
     );
