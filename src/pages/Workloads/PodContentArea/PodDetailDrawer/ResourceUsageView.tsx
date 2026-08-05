@@ -9,7 +9,7 @@ import {
     formatCpu,
     formatMemory,
     isHighLoad,
-    isUsageValid,
+    isUsageValuable,
     usagePercent,
 } from './resourceUsage';
 import {ResourceUsageTooltip} from './ResourceUsageTooltip';
@@ -48,7 +48,7 @@ interface MetricProps {
 
 // 展示规则：数值行为 usage/request/limit，进度条按 usage/limit 比例，其后百分比为 usage/limit。
 const Metric = ({ icon, label, usage, request, limit, usageNumeric, limitNumeric, format }: MetricProps) => {
-    const percent = isUsageValid(usage, limit) ? usagePercent(usageNumeric, limitNumeric) : undefined;
+    const percent = isUsageValuable(usage, limit) ? usagePercent(usageNumeric, limitNumeric) : undefined;
     const highLoad = isHighLoad(percent);
     return (
         <ResourceUsageTooltip

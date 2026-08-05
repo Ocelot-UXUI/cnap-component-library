@@ -4,7 +4,7 @@ import cpuIcon from '@/assets/images/pod-resource-usage-cpu.png';
 import memoryIcon from '@/assets/images/pod-resource-usage-memory.png';
 import {semantic} from '@/constants/colors';
 
-import {formatCpu, formatMemory, isHighLoad, isUsageValid, usagePercent} from './PodDetailDrawer/resourceUsage';
+import {formatCpu, formatMemory, isHighLoad, isUsageValuable, usagePercent} from './PodDetailDrawer/resourceUsage';
 import {ResourceUsageTooltip} from './PodDetailDrawer/ResourceUsageTooltip';
 import {
     DetailedBar,
@@ -31,7 +31,7 @@ function renderUsageCell(
     const limit = pod.resourceLimits?.[displayKey];
     const usageNumeric = pod.resourceUsages?.[numericKey];
     const limitNumeric = pod.resourceLimits?.[numericKey];
-    const percent = isUsageValid(usage, limit) ? usagePercent(usageNumeric, limitNumeric) : undefined;
+    const percent = isUsageValuable(usage, limit) ? usagePercent(usageNumeric, limitNumeric) : undefined;
     const highLoad = isHighLoad(percent);
     return (
         <ResourceUsageTooltip

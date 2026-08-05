@@ -1,11 +1,11 @@
 /** 资源用量展示（纯逻辑）：百分比与空值占位。 */
 
-import {isNumber} from "lodash";
+import {isNil} from "lodash";
 
 const HIGH_LOAD_PCT = 80;
 
-export function isUsageValid(usage?: string, limit?: string): boolean {
-    return isNumber(usage) && isNumber(limit);
+export function isUsageValuable(usage?: string, limit?: string): boolean {
+    return !isNil(usage) && !isNil(limit) && usage !== '-' && limit !== '-';
 }
 
 /**
