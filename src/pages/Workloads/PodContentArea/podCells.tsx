@@ -3,7 +3,7 @@ import {Button, Dropdown, Tooltip, Typography} from 'antd';
 
 import {semantic} from '@/constants/colors';
 import type {ContainerPort, Pod, PodOperation} from '@/interface/entities/pod';
-import {formatAge} from './duration';
+import {formatAbsoluteTime, formatAge} from './duration';
 import {getPodOperationIcon} from './PodOperationIcons';
 import {statusLabel, statusTone} from './podStatus';
 import {StatusTag, TruncateStart} from './podCells.style';
@@ -106,14 +106,18 @@ export function renderRestarts(pod: Pod) {
         ? semantic.state.warning.default
         : semantic.text.primary;
     return (
-        <Tooltip title={pod.lastStartedAt ? `上次启动：${pod.lastStartedAt}` : undefined}>
+        <Tooltip title={pod.lastStartedAt ? `上次启动：${formatAbsoluteTime(pod.lastStartedAt)}` : undefined}>
             <span style={{ color }}>{restarts}</span>
         </Tooltip>
     );
 }
 
 export function renderAge(pod: Pod) {
-    return formatAge(pod.creationTimestamp);
+    const age = formatAge(pod.creationTimestamp);
+    if (!pod.creationTimestamp) {
+        return age;
+    }
+    return <Tooltip title={formatAbsoluteTime(pod.creationTimestamp)}><span>{age}</span></Tooltip>;
 }
 
 export function renderOperations(pod: Pod, onOperation: (pod: Pod, operation: PodOperation) => void) {

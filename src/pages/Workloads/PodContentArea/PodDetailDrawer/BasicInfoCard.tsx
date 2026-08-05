@@ -1,7 +1,7 @@
 import {useState} from 'react';
 
 import styled from '@emotion/styled';
-import {Button} from 'antd';
+import {Button, Tooltip} from 'antd';
 
 import {ChevronUp} from '@/assets/icons';
 import {semantic} from '@/constants/colors';
@@ -10,7 +10,7 @@ import {shadow} from '@/constants/shadow';
 import {spacing} from '@/constants/spacing';
 import {typography} from '@/constants/typography';
 import type {Pod} from '@/interface/entities/pod';
-import {formatAge} from '../duration';
+import {formatAbsoluteTime, formatAge} from '../duration';
 import {InfoCard, InfoGrid, InfoItem} from './PodDetailDrawer.style';
 
 const ExpandedInfoCard = styled(InfoCard)`
@@ -118,7 +118,13 @@ export const BasicInfoCard = ({ pod }: BasicInfoCardProps) => {
                 </InfoItem>
                 <InfoItem>
                     <label>存活时间</label>
-                    <span>{formatAge(pod.creationTimestamp)}</span>
+                    {pod.creationTimestamp
+                        ? (
+                            <Tooltip title={formatAbsoluteTime(pod.creationTimestamp)}>
+                                <span>{formatAge(pod.creationTimestamp)}</span>
+                            </Tooltip>
+                        )
+                        : <span>{formatAge(pod.creationTimestamp)}</span>}
                 </InfoItem>
                 <InfoItem>
                     <label>暴露</label>

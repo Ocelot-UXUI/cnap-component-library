@@ -28,6 +28,7 @@
 | 理解项目目标和产品形态             | `docs/design/app-overview.md`                           | `docs/architecture/system-baseline.md`                |
 | 理解当前应用层基线                 | `docs/design/app-overview.md`                           | `docs/design/feature-inventory.md`                    |
 | 理解导航系统                       | `docs/design/navigation-system.md`                      | `docs/architecture/navigation-system.md`              |
+| 查通用 UI 交互约定                 | `docs/design/interaction-guidelines.md`                 | `docs/design/design-tokens.md`                        |
 | 理解 Agent 上下文能力边界          | `docs/architecture/agent-context-capabilities.md`       | `docs/architecture/navigation-system.md`              |
 | 理解当前技术基线                   | `docs/architecture/system-baseline.md`                  | `docs/architecture/module-boundaries.md`              |
 | 理解 owner-doc 优先级和真源边界    | `docs/context/source-of-truth-and-precedence.md`        | 相关的 owner doc                                      |

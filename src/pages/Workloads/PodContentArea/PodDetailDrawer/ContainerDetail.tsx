@@ -1,9 +1,9 @@
 import {CopyOutlined} from '@ant-design/icons';
-import {Button, Tag} from 'antd';
+import {Button, Tag, Tooltip} from 'antd';
 
 import {semantic} from '@/constants/colors';
 import type {Container} from '@/interface/entities/pod';
-import {formatAge} from '../duration';
+import {formatAbsoluteTime, formatAge} from '../duration';
 import {statusLabel, statusTone} from '../podStatus';
 import {copyPortAddresses, EnvTable, MountsTable, PortsTable} from './detailTables';
 import {LastTerminationSection} from './LastTerminationSection';
@@ -41,7 +41,13 @@ export const ContainerDetail = ({ container, creationTimestamp, podIp }: Contain
                 </InfoItem>
                 <InfoItem>
                     <label>存活时间</label>
-                    <span>{formatAge(creationTimestamp)}</span>
+                    {creationTimestamp
+                        ? (
+                            <Tooltip title={formatAbsoluteTime(creationTimestamp)}>
+                                <span>{formatAge(creationTimestamp)}</span>
+                            </Tooltip>
+                        )
+                        : <span>{formatAge(creationTimestamp)}</span>}
                 </InfoItem>
                 <InfoItem>
                     <label>类型</label>

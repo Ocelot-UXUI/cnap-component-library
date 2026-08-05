@@ -27,3 +27,12 @@ export function formatAge(creationTimestamp?: string, now: dayjs.ConfigType = un
     }
     return `${minutes}m`;
 }
+
+/** 绝对时间格式化：timestamp → 'YYYY-MM-DD HH:mm:ss'，缺失/非法返回 '-' */
+export function formatAbsoluteTime(timestamp?: string): string {
+    if (!timestamp) {
+        return '-';
+    }
+    const time = dayjs(timestamp);
+    return time.isValid() ? time.format('YYYY-MM-DD HH:mm:ss') : '-';
+}
