@@ -22,10 +22,9 @@ export interface HorizontalRow {
     availabilityTarget: string;
 }
 
-/** 以选中容器过滤 Workload 并构建表格行；期望副本数默认取当前副本数、集群默认未选中 */
-export function buildRows(workloads: RuntimeWorkload[], container?: string): HorizontalRow[] {
+/** 构建表格行（每集群一行）；期望副本数默认取当前副本数、集群默认未选中 */
+export function buildRows(workloads: RuntimeWorkload[]): HorizontalRow[] {
     return workloads
-        .filter(w => !container || w.podContainers.some(c => c.name === container))
         .map(w => ({
             key: w.clusterId,
             clusterId: w.clusterId,

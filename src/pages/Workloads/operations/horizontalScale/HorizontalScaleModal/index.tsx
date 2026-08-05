@@ -1,9 +1,8 @@
 import {useMachine} from '@xstate/react';
-import {Button, message, Modal} from 'antd';
+import {Button, Form, message, Modal, Select} from 'antd';
 import {useEffect} from 'react';
 
 import {OperationModalTitle} from '../../shared/OperationModalTitle';
-import {WorkloadContainerSelector} from '../../shared/WorkloadContainerSelector';
 import {horizontalScaleMachine} from '../machine';
 import {selectBottomHint, selectCanSubmit} from '../selectors';
 import {ClusterTable} from './ClusterTable';
@@ -80,14 +79,16 @@ export const HorizontalScaleModal = ({
             destroyOnHidden
         >
             <SubTitle>{SUBTITLE}</SubTitle>
-            <WorkloadContainerSelector
-                groups={context.groups}
-                groupId={context.groupId}
-                containerNames={context.containerNames}
-                container={context.container}
-                onSelectGroup={groupId => send({ type: 'SELECT_GROUP', groupId })}
-                onSelectContainer={container => send({ type: 'SELECT_CONTAINER', container })}
-            />
+            <Form layout="vertical">
+                <Form.Item label="工作负载" required>
+                    <Select
+                        placeholder="请选择工作负载"
+                        value={context.groupId}
+                        options={context.groups.map(group => ({ value: group.id, label: group.name }))}
+                        onChange={groupId => send({ type: 'SELECT_GROUP', groupId })}
+                    />
+                </Form.Item>
+            </Form>
             <ClusterTable
                 rows={context.rows}
                 onToggleCluster={key => send({ type: 'TOGGLE_CLUSTER', key })}

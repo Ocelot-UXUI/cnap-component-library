@@ -6,7 +6,7 @@ import runtimeOperationApi from '@/api/runtimeOperation';
 import type {HorizontalScaleInput} from '@/api/runtimeOperation';
 import type {RuntimeWorkload, WorkloadGroup} from '@/interface/entities/workload';
 import {loadGroups, loadWorkloads} from '../shared/loader';
-import type {ContainerOption, WorkloadsBundle} from '../shared/loader';
+import type {WorkloadsBundle} from '../shared/loader';
 import {buildRows, editDesired, toggleCluster} from './rows';
 import type {HorizontalRow} from './rows';
 import {toHorizontalScaleInput} from './submit';
@@ -17,8 +17,6 @@ export interface HorizontalScaleContext {
     groups: WorkloadGroup[];
     groupId?: string;
     workloads: RuntimeWorkload[];
-    containerNames: ContainerOption[];
-    container?: string;
     rows: HorizontalRow[];
     /** 操作名，来自 RuntimeOperation.name */
     operationName: string;
@@ -28,7 +26,6 @@ export interface HorizontalScaleContext {
 
 export type HorizontalScaleEvent =
     | { type: 'SELECT_GROUP'; groupId: string; }
-    | { type: 'SELECT_CONTAINER'; container: string; }
     | { type: 'TOGGLE_CLUSTER'; key: string; }
     | { type: 'EDIT_DESIRED'; key: string; desired: string; }
     | { type: 'SUBMIT'; };
@@ -66,7 +63,6 @@ export const horizontalScaleMachine = setup({
         groups: [],
         groupId: input.defaultGroupId,
         workloads: [],
-        containerNames: [],
         rows: [],
         operationName: input.operationName,
     }),
@@ -103,13 +99,9 @@ export const horizontalScaleMachine = setup({
                     target: 'ready',
                     actions: assign(({ event }) => {
                         const bundle = event.output as WorkloadsBundle;
-                        const mainContainer = bundle.containerNames.find(item => item.type === 'MAIN') ?? bundle.containerNames[0];
-                        const container = mainContainer?.name;
                         return {
                             workloads: bundle.workloads,
-                            containerNames: bundle.containerNames,
-                            container,
-                            rows: buildRows(bundle.workloads, container),
+                            rows: buildRows(bundle.workloads),
                             loadError: undefined,
                         };
                     }),
@@ -122,12 +114,6 @@ export const horizontalScaleMachine = setup({
                 SELECT_GROUP: {
                     target: 'loadingWorkloads',
                     actions: assign({ groupId: ({ event }) => event.groupId }),
-                },
-                SELECT_CONTAINER: {
-                    actions: assign({
-                        container: ({ event }) => event.container,
-                        rows: ({ context, event }) => buildRows(context.workloads, event.container),
-                    }),
                 },
                 TOGGLE_CLUSTER: {
                     actions: assign({ rows: ({ context, event }) => toggleCluster(context.rows, event.key) }),

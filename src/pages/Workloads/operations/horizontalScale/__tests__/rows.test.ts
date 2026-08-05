@@ -25,8 +25,8 @@ function workload(clusterId: string, containers: string[], replicas = 3): Runtim
 const workloads = [workload('cluster-a', ['api', 'sidecar'], 3), workload('cluster-b', ['api'], 5)];
 
 describe('buildRows', () => {
-    it('filters workloads by container and defaults desired to current replicas', () => {
-        const rows = buildRows(workloads, 'api');
+    it('builds one row per workload and defaults desired to current replicas', () => {
+        const rows = buildRows(workloads);
         expect(rows).toHaveLength(2);
         expect(rows[0].desired).toBe('3');
         expect(rows[0].replicas).toBe(3);
@@ -34,9 +34,9 @@ describe('buildRows', () => {
         expect(rows[0].maxUnavailable).toBe('15%');
     });
 
-    it('excludes workloads missing the selected container', () => {
-        const rows = buildRows(workloads, 'sidecar');
-        expect(rows.map(r => r.key)).toEqual(['cluster-a']);
+    it('returns all clusters regardless of container composition', () => {
+        const rows = buildRows(workloads);
+        expect(rows.map(r => r.key)).toEqual(['cluster-a', 'cluster-b']);
     });
 });
 
@@ -54,19 +54,19 @@ describe('isDesiredValid', () => {
 
 describe('validation and submit mapping', () => {
     it('requires at least one selected valid row', () => {
-        const rows = buildRows(workloads, 'api');
+        const rows = buildRows(workloads);
         expect(canSubmit(rows)).toBe(false);
         expect(canSubmit(toggleCluster(rows, 'cluster-a'))).toBe(true);
     });
 
     it('rejects selected row with invalid desired value', () => {
-        let rows = toggleCluster(buildRows(workloads, 'api'), 'cluster-a');
+        let rows = toggleCluster(buildRows(workloads), 'cluster-a');
         rows = editDesired(rows, 'cluster-a', '0');
         expect(canSubmit(rows)).toBe(false);
     });
 
     it('maps only selected rows to targets with numeric replicas', () => {
-        let rows = toggleCluster(buildRows(workloads, 'api'), 'cluster-b');
+        let rows = toggleCluster(buildRows(workloads), 'cluster-b');
         rows = editDesired(rows, 'cluster-b', '8');
         const targets = toHorizontalScaleTargets(rows);
         expect(targets).toEqual([
