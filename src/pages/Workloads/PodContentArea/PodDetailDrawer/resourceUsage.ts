@@ -1,6 +1,12 @@
 /** 资源用量展示（纯逻辑）：百分比与空值占位。 */
 
+import {isNumber} from "lodash";
+
 const HIGH_LOAD_PCT = 80;
+
+export function isUsageValid(usage?: string, limit?: string): boolean {
+    return isNumber(usage) && isNumber(limit);
+}
 
 /**
  * 用量百分比：直接吃后端预派生的无单位字段（cpuMilli / memoryBytes / ephemeralStorageBytes）。

@@ -1,4 +1,4 @@
-import {Alert, Button, Input, Select, Table, Tag} from 'antd';
+import {Alert, Button, Flex, Input, Select, Table, Tag, Typography} from 'antd';
 import type {TableColumnsType} from 'antd';
 import {useEffect, useState} from 'react';
 
@@ -6,7 +6,8 @@ import runtimeResourceApi from '@/api/runtimeResource';
 import {semantic} from '@/constants/colors';
 import type {PodEvent, PodEventType} from '@/interface/entities/podEvent';
 import {Toolbar, ToolbarLeft} from './PodDetailDrawer.style';
-import {eventTone, matchEvent, relativeTime} from './podEventView';
+import {eventTone, matchEvent} from './podEventView';
+import {formatISOTime} from '@/utils/date';
 
 const toneColor = {
     success: semantic.state.success.default,
@@ -69,19 +70,23 @@ export const ContainerEvents = ({ appEnvID, clusterId, podName, container }: Con
             key: 'object',
             width: 260,
             render: (_, e) => (
-                <span>
-                    <span style={{ color: semantic.text.primary }}>{e.objectKind}</span>
-                    <span style={{ color: semantic.text.tertiary }}>{e.objectName}</span>
-                </span>
+                <Flex vertical>
+                    <Typography.Text type="secondary">{e.objectKind}</Typography.Text>
+                    <Typography.Text>{e.objectName}</Typography.Text>
+                </Flex>
             ),
         },
         {
             title: '时间',
             key: 'time',
             width: 120,
-            render: (_, e) => `${relativeTime(e.lastSeen)}${e.count > 1 ? ` x${e.count}` : ''}`,
+            render: (_, e) => `${formatISOTime(e.firstSeen)}~${formatISOTime(e.lastSeen)}${e.count > 1 ? ` x${e.count}` : ''}`,
         },
-        { title: '消息', dataIndex: 'message', key: 'message' },
+        { title: '消息', dataIndex: 'message', key: 'message', render: (_, e) => (
+            <Typography.Paragraph ellipsis={{ tooltip: e.message, rows: 2 }}>
+                {e.message}
+            </Typography.Paragraph>
+        ) },
     ];
 
     const visible = items.filter(event => matchEvent(event, keyword));

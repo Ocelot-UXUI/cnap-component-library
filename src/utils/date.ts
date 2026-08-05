@@ -37,7 +37,7 @@ export const normalizeDateValue = (date: string | number[] | undefined): string 
 export const formatISOTime = (dateString: string | number, formatRule = 'YYYY-MM-DD HH:mm:ss') => {
     try {
         return dayjs(dateString).format(formatRule);
-    } catch (e) {
+    } catch {
         return '';
     }
 };

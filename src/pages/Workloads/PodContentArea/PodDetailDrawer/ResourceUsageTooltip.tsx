@@ -3,7 +3,7 @@ import {Progress, Tooltip} from 'antd';
 import {semantic} from '@/constants/colors';
 import {spacing} from '@/constants/spacing';
 
-import {isHighLoad, usagePercent} from './resourceUsage';
+import {isHighLoad, isUsageValid, usagePercent} from './resourceUsage';
 import {
     LegendDot,
     LegendRow,
@@ -41,12 +41,12 @@ export const ResourceUsageTooltip = ({
     format,
     children,
 }: ResourceUsageTooltipProps) => {
-    const percent = usagePercent(usageNumeric, limitNumeric);
+    const percent = isUsageValid(usage, limit) ? usagePercent(usageNumeric, limitNumeric) : undefined;
     const highLoad = isHighLoad(percent);
     const legend = [
-        { tone: 'limit', label: 'Limit', value: limit },
         { tone: 'usage', label: 'usage', value: usage },
         { tone: 'request', label: 'request', value: request },
+        { tone: 'limit', label: 'Limit', value: limit },
     ] as const;
 
     const content = (
