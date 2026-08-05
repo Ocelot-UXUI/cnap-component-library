@@ -23,6 +23,28 @@ interface SelectionResult {
     persistCurrent: boolean;
 }
 
+// 上一级变化后，若下一级待选项唯一则自动选中，并按层级继续向下级联（保守策略：仅在唯一时选）。
+function autoSelectSingleChild(
+    context: NavigationContextState,
+    candidates: NavigationContextCandidates,
+    from: 'account' | 'application',
+): NavigationContextState {
+    const next = { ...context };
+    if (from === 'account' && next.accountId && !next.applicationId) {
+        const apps = candidates.applications.filter(application => application.accountId === next.accountId);
+        if (apps.length === 1) {
+            next.applicationId = String(apps[0].id);
+        }
+    }
+    if (next.applicationId && !next.environmentId) {
+        const envs = candidates.environments.filter(environment => environment.applicationId === next.applicationId);
+        if (envs.length === 1) {
+            next.environmentId = envs[0].id;
+        }
+    }
+    return next;
+}
+
 function resolveHierarchySelection(
     context: NavigationMachineContext,
     event: NavigationSelectionEvent,
@@ -30,11 +52,23 @@ function resolveHierarchySelection(
 ): SelectionResult | undefined {
     switch (event.type) {
         case 'selectAccount':
-            return { ...base, nextContext: { accountId: event.accountId } };
+            return {
+                ...base,
+                nextContext: autoSelectSingleChild({ accountId: event.accountId }, context.candidates, 'account'),
+            };
         case 'selectApplication':
             return {
                 ...base,
-                nextContext: { ...context.current, applicationId: event.applicationId, environmentId: undefined },
+                nextContext: autoSelectSingleChild(
+                    {
+                        ...context.current,
+                        applicationId: event.applicationId,
+                        environmentId: undefined,
+                        clusterId: undefined,
+                    },
+                    context.candidates,
+                    'application',
+                ),
             };
         case 'selectEnvironment':
             return {
