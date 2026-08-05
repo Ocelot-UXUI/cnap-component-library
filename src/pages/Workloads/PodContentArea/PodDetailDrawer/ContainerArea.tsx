@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import {Badge, Empty, Tabs} from 'antd';
+import {Badge, Empty, Tabs} from '@/design';
 import {useMemo, useState} from 'react';
 
 import {semantic} from '@/constants/colors';

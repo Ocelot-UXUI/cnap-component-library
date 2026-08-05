@@ -1,7 +1,7 @@
 import {useState} from 'react';
 
 import styled from '@emotion/styled';
-import {Button, Tooltip} from 'antd';
+import {Button, Tooltip} from '@/design';
 
 import {ChevronUp} from '@/assets/icons';
 import {semantic} from '@/constants/colors';

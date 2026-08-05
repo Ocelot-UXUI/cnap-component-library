@@ -1,4 +1,4 @@
-import {Alert, Empty, Spin} from 'antd';
+import {Alert, Empty, Spin} from '@/design';
 import {useMemo, useState} from 'react';
 
 import {useAppEnvID, useNavigationSnapshot} from '@/contexts/NavigationContext';

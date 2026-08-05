@@ -1,4 +1,4 @@
-import {Tooltip} from 'antd';
+import {Tooltip} from '@/design';
 import {Fragment} from 'react';
 
 import type {Pod} from '@/interface/entities/pod';

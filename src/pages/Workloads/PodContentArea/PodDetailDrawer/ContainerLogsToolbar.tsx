@@ -1,5 +1,5 @@
 import Icon, {FlagOutlined, PlayCircleOutlined} from '@ant-design/icons';
-import {Button, Input, Select, Tooltip} from 'antd';
+import {Button, Input, Select, Tooltip} from '@/design';
 
 import {Document, Pause, Standalone, Terminal, ZoomIn, ZoomOut} from '@/assets/icons';
 import {SourceIcon, SourceSegmented} from './ContainerLogsToolbar.style';

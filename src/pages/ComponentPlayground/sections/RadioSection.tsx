@@ -1,4 +1,4 @@
-import {Radio, Space} from 'antd';
+import {Radio, Space} from '@/design';
 
 import {StateLabel} from '../ComponentPlayground.style';
 import {SectionShell} from './SectionShell';

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import {Layout} from 'antd';
+import {Layout} from '@/design';
 
 import {semantic} from '@/constants/colors';
 import {HEADER_HEIGHT} from '@/constants/layout';

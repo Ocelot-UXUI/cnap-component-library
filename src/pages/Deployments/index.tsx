@@ -20,8 +20,8 @@ import {
     Switch,
     Table,
     Tag,
-} from 'antd';
-import type {TableColumnsType} from 'antd';
+} from '@/design';
+import type {TableColumnsType} from '@/design';
 import {useState} from 'react';
 import {useParams} from 'react-router-dom';
 

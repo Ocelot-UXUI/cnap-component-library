@@ -1,5 +1,5 @@
 import {CheckCircleOutlined} from '@ant-design/icons';
-import {Tag} from 'antd';
+import {Tag} from '@/design';
 import type {CSSProperties, MouseEvent} from 'react';
 
 import {palette, semantic} from '@/constants/colors';

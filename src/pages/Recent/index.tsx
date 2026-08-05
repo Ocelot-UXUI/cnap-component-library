@@ -1,6 +1,6 @@
 import {PageLayoutHeader} from '@/design/Layouts/PageLayout';
 import {HistoryOutlined} from '@ant-design/icons';
-import {Empty} from 'antd';
+import {Empty} from '@/design';
 
 export default function RecentPage() {
     return (

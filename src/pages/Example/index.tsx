@@ -1,5 +1,5 @@
 import {css} from '@emotion/css';
-import {Button, Card, Form, Input, message, Modal, Space, Table} from 'antd';
+import {Button, Card, Form, Input, message, Modal, Space, Table} from '@/design';
 import {useState} from 'react';
 
 const containerClass = css`

@@ -9,7 +9,7 @@ import {
 } from '@/routes';
 import {ArrowLeftOutlined} from '@ant-design/icons';
 import {css} from '@emotion/css';
-import {Button, Space, Tabs} from 'antd';
+import {Button, Space, Tabs} from '@/design';
 import {useEffect, useRef} from 'react';
 import {Outlet, useLocation, useNavigate, useParams} from 'react-router-dom';
 

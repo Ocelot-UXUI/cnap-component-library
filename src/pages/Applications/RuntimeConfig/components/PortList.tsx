@@ -1,6 +1,6 @@
 /* eslint-disable max-lines */
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
-import {Button, Input, InputNumber, Select, Space} from 'antd';
+import {Button, Input, InputNumber, Select, Space} from '@/design';
 import React from 'react';
 
 // ── 端口类型定义（对应 CNAP1.0）──────────────────────────────────

@@ -1,4 +1,4 @@
-import {Checkbox} from 'antd';
+import {Checkbox} from '@/design';
 
 import {HintText, StateLabel} from '../ComponentPlayground.style';
 import {RichSection, SubGroup} from './SectionShell';

@@ -10,7 +10,7 @@ import {
     SettingOutlined,
     UserOutlined,
 } from '@ant-design/icons';
-import {Button, Card, Col, Row, theme, Timeline, Typography} from 'antd';
+import {Button, Card, Col, Row, theme, Timeline, Typography} from '@/design';
 import {useNavigate} from 'react-router-dom';
 import {activities} from './data';
 import type {ActivityType} from './data';

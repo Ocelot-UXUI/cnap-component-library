@@ -1,5 +1,5 @@
-import {Button, Tooltip} from 'antd';
-import type {TooltipProps} from 'antd';
+import {Button, Tooltip} from '@/design';
+import type {TooltipProps} from '@/design';
 import {Fragment, type ReactNode} from 'react';
 
 import {HintText, StateLabel} from '../ComponentPlayground.style';

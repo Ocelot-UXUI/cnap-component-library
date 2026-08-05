@@ -1,6 +1,6 @@
 import {navigationActions, useNavigationSnapshot} from '@/contexts/NavigationContext';
 import {css} from '@emotion/css';
-import {Select} from 'antd';
+import {Select} from '@/design';
 
 import type {ContextRequirements} from '@/navigation';
 import {isNil} from 'lodash';

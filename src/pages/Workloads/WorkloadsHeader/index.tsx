@@ -1,5 +1,5 @@
-import {Dropdown, Select} from 'antd';
-import type {MenuProps} from 'antd';
+import {Dropdown, Select} from '@/design';
+import type {MenuProps} from '@/design';
 
 import {useState} from 'react';
 

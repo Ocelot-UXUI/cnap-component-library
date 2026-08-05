@@ -1,4 +1,4 @@
-import {Button, Modal, Space, Table} from 'antd';
+import {Button, Modal, Space, Table} from '@/design';
 import {Key, useState} from 'react';
 
 import {Drawer} from '@/design/Drawer';

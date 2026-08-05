@@ -1,5 +1,5 @@
 import {useMachine} from '@xstate/react';
-import {Button, Input, message, Modal} from 'antd';
+import {Button, Input, message, Modal} from '@/design';
 import {useEffect} from 'react';
 
 import {OperationModalTitle} from '../../shared/OperationModalTitle';

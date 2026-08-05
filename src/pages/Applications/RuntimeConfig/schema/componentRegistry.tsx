@@ -1,4 +1,4 @@
-import {Checkbox, Input, InputNumber, Radio, Select, Slider, Switch} from 'antd';
+import {Checkbox, Input, InputNumber, Radio, Select, Slider, Switch} from '@/design';
 import React from 'react';
 import {ConfigReferenceList} from '../components/ConfigReferenceList';
 import {ContainerList} from '../components/ContainerList';

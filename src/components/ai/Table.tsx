@@ -3,8 +3,8 @@
  */
 import type {AISemanticProps} from '@/types/semantic';
 import {css} from '@emotion/css';
-import {Table as AntTable} from 'antd';
-import type {TableProps} from 'antd';
+import {Table as AntTable} from '@/design';
+import type {TableProps} from '@/design';
 
 const tableHoverClass = css`
     .ant-5-table-row {

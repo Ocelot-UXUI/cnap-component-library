@@ -15,8 +15,8 @@ import {
     VerticalAlignTopOutlined,
 } from '@ant-design/icons';
 import {css} from '@emotion/css';
-import {Button, Col, Form, Modal, Row, Tooltip} from 'antd';
-import type {FormInstance, Rule} from 'antd/es/form';
+import {Button, Col, Form, Modal, Row, Tooltip} from '@/design';
+import type {FormInstance, Rule} from '@/design';
 import React, {useCallback, useMemo, useState} from 'react';
 import {componentRegistry} from './schema/componentRegistry';
 import type {

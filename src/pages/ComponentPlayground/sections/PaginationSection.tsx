@@ -1,5 +1,5 @@
 import {css} from '@emotion/css';
-import {Pagination} from 'antd';
+import {Pagination} from '@/design';
 
 import {semantic} from '@/constants/colors';
 import {antPrefixCls} from '@/constants/design';

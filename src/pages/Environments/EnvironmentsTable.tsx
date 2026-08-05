@@ -18,8 +18,8 @@ import {
     UnlockOutlined,
     WarningOutlined,
 } from '@ant-design/icons';
-import {Tag, Tooltip} from 'antd';
-import type {ColumnsType} from 'antd/es/table';
+import {Tag, Tooltip} from '@/design';
+import type {ColumnsType} from '@/design';
 import {
     actionIconClass,
     clusterTagClass,

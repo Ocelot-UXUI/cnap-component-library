@@ -1,5 +1,5 @@
-import {Checkbox, Table} from 'antd';
-import type {TableColumnsType} from 'antd';
+import {Checkbox, Table} from '@/design';
+import type {TableColumnsType} from '@/design';
 
 import {ClusterNameLabel} from '@/components/ClusterNameLabel';
 import type {ResourceKind} from '@/domain/workload';

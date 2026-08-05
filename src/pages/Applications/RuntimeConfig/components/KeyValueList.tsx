@@ -1,5 +1,5 @@
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
-import {Button, Input, Space, Table} from 'antd';
+import {Button, Input, Space, Table} from '@/design';
 import React from 'react';
 
 export interface KeyValueEntry {

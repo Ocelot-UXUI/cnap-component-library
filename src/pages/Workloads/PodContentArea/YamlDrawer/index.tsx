@@ -1,4 +1,4 @@
-import {Alert, Input, Spin} from 'antd';
+import {Alert, Input, Spin} from '@/design';
 import {useEffect, useState} from 'react';
 
 import rawResourceApi from '@/api/rawResource';

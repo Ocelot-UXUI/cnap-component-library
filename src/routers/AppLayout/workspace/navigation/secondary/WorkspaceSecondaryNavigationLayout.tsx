@@ -1,6 +1,6 @@
 import {CustomerServiceOutlined} from '@ant-design/icons';
 import {cx} from '@emotion/css';
-import {Tooltip} from 'antd';
+import {Tooltip} from '@/design';
 
 import {
     secondaryControlClass,

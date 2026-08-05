@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import {Tabs} from 'antd';
+import {Tabs} from '@/design';
 
 import {spacing} from '@/constants/spacing';
 import type {Container} from '@/interface/entities/pod';

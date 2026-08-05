@@ -1,4 +1,4 @@
-import {Button, message} from 'antd';
+import {Button, message} from '@/design';
 
 import {HintText, StateLabel} from '../ComponentPlayground.style';
 import {RichSection, SubGroup} from './SectionShell';

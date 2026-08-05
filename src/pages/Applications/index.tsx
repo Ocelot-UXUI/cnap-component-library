@@ -7,7 +7,7 @@ import {PageLayoutHeader} from '@/design/Layouts/PageLayout';
 import {applicationDeployments, applicationSettings} from '@/routes';
 import {AppstoreOutlined, PlusOutlined, UnorderedListOutlined} from '@ant-design/icons';
 import {css, cx} from '@emotion/css';
-import {Alert, Empty, Space, Spin, theme} from 'antd';
+import {Alert, Empty, Space, Spin, theme} from '@/design';
 import {LayoutGroup, motion} from 'framer-motion';
 import {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';

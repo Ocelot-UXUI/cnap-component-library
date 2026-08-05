@@ -1,4 +1,4 @@
-import {Alert, Button} from 'antd';
+import {Alert, Button} from '@/design';
 import {useEffect, useMemo, useState} from 'react';
 
 import {LogsPanel} from './ContainerLogs.style';

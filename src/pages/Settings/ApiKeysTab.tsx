@@ -12,7 +12,7 @@ import {
     EyeOutlined,
     PlusOutlined,
 } from '@ant-design/icons';
-import {Button, Card, message, Space} from 'antd';
+import {Button, Card, message, Space} from '@/design';
 import {useState} from 'react';
 import {
     apiKeyActionsClass,

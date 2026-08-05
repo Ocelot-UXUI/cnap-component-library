@@ -4,7 +4,7 @@ import {MotionEmpty, MotionItem, MotionList} from '@/design/Motion';
 import {hexToHslStr} from '@/utils/color';
 import {PlusOutlined, SearchOutlined, UserOutlined} from '@ant-design/icons';
 import {css} from '@emotion/css';
-import {Col, Input, Row, Space, Tag, theme} from 'antd';
+import {Col, Input, Row, Space, Tag, theme} from '@/design';
 import {useState} from 'react';
 
 interface Account {

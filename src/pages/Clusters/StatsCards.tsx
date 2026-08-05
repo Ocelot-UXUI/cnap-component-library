@@ -3,7 +3,7 @@
  */
 import {Cluster} from '@/types/cluster';
 import {CloudOutlined, ClusterOutlined, HddOutlined, ShareAltOutlined} from '@ant-design/icons';
-import {Card, Col, Row} from 'antd';
+import {Card, Col, Row} from '@/design';
 import {statsCardContentClass, statsIconClass, statsLabelClass, statsValueClass} from './styles';
 
 interface StatsCardsProps {

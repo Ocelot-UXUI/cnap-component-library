@@ -41,7 +41,7 @@ const isMultipleMode = (mode: SelectProps['mode']): boolean =>
  * - mode 为 multiple / tags 时，为下拉项前置一个 Checkbox 呈现多选态。
  * 主题色 / Token 由 ConfigProvider 统一注入，此处不做二次覆盖。
  */
-export const Select = (props: SelectProps) => {
+const InternalSelect = (props: SelectProps) => {
     const {value, defaultValue, onChange, optionRender, menuItemSelectedIcon, ...restProps} = props;
     const [innerValue, setInnerValue] = useState<SelectValue>(defaultValue);
     const mergedValue = value !== undefined ? value : innerValue;
@@ -84,3 +84,7 @@ export const Select = (props: SelectProps) => {
         />
     );
 };
+
+// 运行时使用增强实现，类型对齐 antd Select（保留泛型调用签名与 Option / OptGroup 静态成员），
+// 使其成为完全可替换的 drop-in。
+export const Select = InternalSelect as unknown as typeof AntdSelect;

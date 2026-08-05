@@ -1,4 +1,4 @@
-import {Tag, Tooltip, Typography} from 'antd';
+import {Tag, Tooltip, Typography} from '@/design';
 
 import {semantic} from '@/constants/colors';
 import type {Container} from '@/interface/entities/pod';

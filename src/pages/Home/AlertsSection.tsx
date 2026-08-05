@@ -1,6 +1,6 @@
 import {AlertOutlined, LoadingOutlined, PauseCircleOutlined} from '@ant-design/icons';
 import {css} from '@emotion/css';
-import {Alert, Button, Card, Progress, Space, Tag, theme, Typography} from 'antd';
+import {Alert, Button, Card, Progress, Space, Tag, theme, Typography} from '@/design';
 import {deployments, userAlerts} from './data';
 
 const { Text } = Typography;

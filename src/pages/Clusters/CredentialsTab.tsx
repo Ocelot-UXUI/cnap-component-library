@@ -1,7 +1,7 @@
 /**
  * 凭证管理 Tab 组件
  */
-import {Card, Empty} from 'antd';
+import {Card, Empty} from '@/design';
 
 export const CredentialsTab = () => {
     return (

@@ -1,7 +1,7 @@
 /* eslint-disable max-lines */
 /* eslint-disable max-len */
 import {DeleteOutlined, PlusOutlined, QuestionCircleOutlined} from '@ant-design/icons';
-import {Button, Input, Select, Space, Table, Tooltip} from 'antd';
+import {Button, Input, Select, Space, Table, Tooltip} from '@/design';
 import React from 'react';
 
 // ── 环境变量引用类型（与 CNAP1.0 一致）─────────────────────────────

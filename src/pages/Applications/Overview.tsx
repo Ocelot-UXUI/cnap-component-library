@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import {css} from '@emotion/react';
-import {Col, Descriptions, Row, Space, Statistic, Tag} from 'antd';
+import {Col, Descriptions, Row, Space, Statistic, Tag} from '@/design';
 import {useParams} from 'react-router-dom';
 
 const containerStyles = css`

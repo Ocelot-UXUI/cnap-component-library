@@ -1,4 +1,4 @@
-import {Form, Select} from 'antd';
+import {Form, Select} from '@/design';
 
 import type {WorkloadGroup} from '@/interface/entities/workload';
 import type {ContainerOption} from '../loader';

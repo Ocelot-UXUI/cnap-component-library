@@ -1,5 +1,5 @@
-import {Alert, Button, Flex, Input, Select, Table, Tag, Typography} from 'antd';
-import type {TableColumnsType} from 'antd';
+import {Alert, Button, Flex, Input, Select, Table, Tag, Typography} from '@/design';
+import type {TableColumnsType} from '@/design';
 import {useEffect, useState} from 'react';
 
 import runtimeResourceApi from '@/api/runtimeResource';

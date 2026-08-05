@@ -1,4 +1,4 @@
-import {Button, Input, message, Modal} from 'antd';
+import {Button, Input, message, Modal} from '@/design';
 import {useState} from 'react';
 
 import runtimeOperationApi from '@/api/runtimeOperation';

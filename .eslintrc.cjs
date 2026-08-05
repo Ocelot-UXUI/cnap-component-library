@@ -45,6 +45,27 @@ module.exports = {
         'route-links/no-direct-route-import': 'error',
         'route-links/no-hardcoded-route-url': 'error',
 
+        // --- 基础组件引用收敛 ---
+        // 除设计系统实现层与主题基础设施外，禁止业务代码直接从 antd 引入；
+        // 统一走 @/design（详见 docs/context/conventions.md）。
+        'no-restricted-imports': [
+            'error',
+            {
+                'paths': [
+                    {
+                        'name': 'antd',
+                        'message': '禁止直接从 antd 引入，请改用 @/design（基础组件统一在 src/design 下实现与再导出）。',
+                    },
+                ],
+                'patterns': [
+                    {
+                        'group': ['antd/*'],
+                        'message': '禁止直接从 antd 子路径引入，请改用 @/design。',
+                    },
+                ],
+            },
+        ],
+
         // --- 代码质量规则 ---
 
         // 保持文件在 140 行以内
@@ -102,6 +123,22 @@ module.exports = {
             files: ['src/api/**/*.ts', 'src/interface/entities/**/*.ts', 'src/**/*Machine.ts'],
             rules: {
                 'max-lines': 'off',
+            },
+        },
+        {
+            // 设计系统实现层与主题基础设施：允许直接依赖 antd
+            //   - src/design/**            基础组件的实现与再导出层
+            //   - src/constants/**         主题 token / preset 派生
+            //   - 应用根 ConfigProvider / theme 装配
+            files: [
+                'src/design/**',
+                'src/constants/**',
+                'src/index.tsx',
+                'src/routers/AppLayout/index.tsx',
+                'src/contexts/ThemeContext.tsx',
+            ],
+            rules: {
+                'no-restricted-imports': 'off',
             },
         },
     ],

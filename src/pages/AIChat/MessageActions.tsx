@@ -4,7 +4,7 @@
 import {copyText} from '@/utils/clipboard';
 import {CopyOutlined, DislikeOutlined, LikeOutlined, ReloadOutlined} from '@ant-design/icons';
 import {Actions} from '@ant-design/x';
-import {message} from 'antd';
+import {message} from '@/design';
 import type {DisplayMessage} from '@/api/ai/types';
 
 interface MessageActionsProps {

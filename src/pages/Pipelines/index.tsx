@@ -1,7 +1,7 @@
 import {Button} from '@/components/ai';
 import {PageLayoutHeader} from '@/design/Layouts/PageLayout';
 import {BranchesOutlined} from '@ant-design/icons';
-import {Empty} from 'antd';
+import {Empty} from '@/design';
 
 export default function PipelinesPage() {
     return (

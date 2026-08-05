@@ -1,4 +1,4 @@
-import {Card} from 'antd';
+import {Card} from '@/design';
 
 export default function ServiceExposurePage() {
     return (

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import {Layout} from 'antd';
+import {Layout} from '@/design';
 import {motion} from 'framer-motion';
 import {Outlet} from 'react-router-dom';
 

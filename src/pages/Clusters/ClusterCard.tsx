@@ -14,8 +14,8 @@ import {
     ShareAltOutlined,
     WarningOutlined,
 } from '@ant-design/icons';
-import {Card, Progress, Space, Tag} from 'antd';
-import type {MenuProps} from 'antd';
+import {Card, Progress, Space, Tag} from '@/design';
+import type {MenuProps} from '@/design';
 import {
     appCountClass,
     clusterActionsIconClass,

@@ -5,7 +5,7 @@ import {useEffect, useRef} from 'react';
 
 import {RobotOutlined, UserOutlined} from '@ant-design/icons';
 import {Bubble} from '@ant-design/x';
-import {Avatar} from 'antd';
+import {Avatar} from '@/design';
 
 import {useAIChat} from '@/contexts/AIChatContext';
 

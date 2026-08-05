@@ -2,8 +2,8 @@
  * AI 语义化 Select 组件
  */
 import type {AISemanticProps} from '@/types/semantic';
-import {Select as AntSelect} from 'antd';
-import type {SelectProps} from 'antd';
+import {Select as AntSelect} from '@/design';
+import type {SelectProps} from '@/design';
 
 type AISelectProps = SelectProps & AISemanticProps;
 

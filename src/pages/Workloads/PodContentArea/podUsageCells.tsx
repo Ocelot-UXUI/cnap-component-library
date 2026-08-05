@@ -1,4 +1,4 @@
-import {Progress} from 'antd';
+import {Progress} from '@/design';
 
 import cpuIcon from '@/assets/images/pod-resource-usage-cpu.png';
 import memoryIcon from '@/assets/images/pod-resource-usage-memory.png';

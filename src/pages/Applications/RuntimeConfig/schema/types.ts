@@ -1,5 +1,5 @@
-import type {FormItemProps} from 'antd';
-import type {FormInstance, Rule} from 'antd/es/form';
+import type {FormItemProps} from '@/design';
+import type {FormInstance, Rule} from '@/design';
 
 // ── 支持的组件类型 ────────────────────────────────────────────────
 export type ComponentType =

@@ -1,5 +1,5 @@
 import {css} from '@emotion/css';
-import {theme} from 'antd';
+import {theme} from '@/design';
 import {AnimatePresence, motion} from 'framer-motion';
 import type {ReactNode} from 'react';
 

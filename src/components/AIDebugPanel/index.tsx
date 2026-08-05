@@ -6,7 +6,7 @@
 import {useAIExecutor} from '@/executor';
 import type {TaskPlan} from '@/types/aiExecutor';
 import {PlayCircleOutlined, StopOutlined} from '@ant-design/icons';
-import {Button, Card, Input, message, Space, Tag, Typography} from 'antd';
+import {Button, Card, Input, message, Space, Tag, Typography} from '@/design';
 import {useState} from 'react';
 
 const { TextArea } = Input;

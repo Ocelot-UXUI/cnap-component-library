@@ -4,7 +4,7 @@
 import {MotionItem, MotionList} from '@/design/Motion';
 import {CloudProvider, Cluster} from '@/types/cluster';
 import {CloudOutlined, SearchOutlined} from '@ant-design/icons';
-import {Badge, Col, Input, Row, Select} from 'antd';
+import {Badge, Col, Input, Row, Select} from '@/design';
 import {useMemo, useState} from 'react';
 import {ClusterCard} from './ClusterCard';
 import {StatsCards} from './StatsCards';

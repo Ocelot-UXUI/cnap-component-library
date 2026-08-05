@@ -1,6 +1,6 @@
 import {PageLayoutHeader} from '@/design/Layouts/PageLayout';
 import {css} from '@emotion/css';
-import {Flex} from 'antd';
+import {Flex} from '@/design';
 import {AlertsSection} from './AlertsSection';
 import {DashboardStats} from './DashboardStats';
 import {FavoriteApps} from './FavoriteApps';

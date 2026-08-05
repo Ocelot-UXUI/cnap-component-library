@@ -2,8 +2,8 @@
  * AI 语义化 Menu 组件
  */
 import type {AISemanticProps} from '@/types/semantic';
-import {Menu as AntMenu} from 'antd';
-import type {MenuProps} from 'antd';
+import {Menu as AntMenu} from '@/design';
+import type {MenuProps} from '@/design';
 
 type AIMenuProps = MenuProps & AISemanticProps;
 

@@ -157,6 +157,16 @@ CNAP 前端使用轻量级 Attractor-Guided Engineering (AGE) 工作流进行 AI
 - 品牌绿 (`#41D08D`) 只允许出现在 Switch / Radio / Checkbox / Slider / Progress / Sider 一级选中；Input / Select / Menu / Tabs / Pagination 一律走黑或灰。
 - 新增 antd 组件覆盖时，先看 `src/constants/themes/presets.ts` 中的 `cnap2` preset，参照现有污染防护模式扩展，不要单独引入新的 primary 派生绿色。
 
+## Base Components (强制)
+
+基础组件引用统一收敛到设计系统，详见 `docs/context/conventions.md → Base Component Imports`。核心红线：
+
+- 禁止在 `src/design/` 以外的代码直接 `import ... from 'antd'`（含 `antd/*` 子路径与类型）；一律走 `@/design`。
+- 所有基础组件必须在 `src/design/` 下实现或再导出（透传组件放同名目录，仅 `export {X} from 'antd'`）。
+- 需要新 antd 组件时，先在 `src/design/<Name>/` 建目录并补 `src/design/index.ts` 出口，再在业务侧引用。
+- 豁免：`src/design/**`、`src/constants/**`、应用根 `ConfigProvider`/主题装配（`src/index.tsx`、`src/routers/AppLayout/index.tsx`、`src/contexts/ThemeContext.tsx`）。
+- 由 `.eslintrc.cjs` 的 `no-restricted-imports` 强制，`yarn lint` 拦截违规。
+
 ## Docs Maintenance
 
 完成任何重要代码变更后:

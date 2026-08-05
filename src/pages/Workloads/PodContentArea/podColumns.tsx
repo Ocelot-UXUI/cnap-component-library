@@ -1,5 +1,5 @@
-import {Button, Tooltip} from 'antd';
-import type {TableColumnsType} from 'antd';
+import {Button, Tooltip} from '@/design';
+import type {TableColumnsType} from '@/design';
 
 import {Code, Details} from '@/assets/icons';
 import {semantic} from '@/constants/colors';

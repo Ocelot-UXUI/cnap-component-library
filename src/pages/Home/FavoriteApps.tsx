@@ -1,6 +1,6 @@
 import {ClockCircleOutlined, LinkOutlined, MoreOutlined} from '@ant-design/icons';
 import {css} from '@emotion/css';
-import {Badge, Button, Card, Col, List, Row, Space, Tag, theme, Typography} from 'antd';
+import {Badge, Button, Card, Col, List, Row, Space, Tag, theme, Typography} from '@/design';
 import {favoriteApps, recentItems} from './data';
 import type {AppStatus} from './data';
 

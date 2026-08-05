@@ -1,5 +1,5 @@
 import {PlusOutlined} from '@ant-design/icons';
-import {Button} from 'antd';
+import {Button} from '@/design';
 
 import {HintText, StateLabel} from '../ComponentPlayground.style';
 import {RichSection, SubGroup} from './SectionShell';

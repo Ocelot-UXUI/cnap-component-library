@@ -2,7 +2,7 @@
  * 环境分组展示组件
  */
 import {Environment, EnvironmentLevel} from '@/types/environment';
-import {Collapse} from 'antd';
+import {Collapse} from '@/design';
 import {EnvironmentsTable} from './EnvironmentsTable';
 import {envSectionClass, envSectionDescClass, envSectionTitleClass, transparentBgClass} from './styles';
 

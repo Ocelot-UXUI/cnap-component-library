@@ -5,7 +5,7 @@ import {
     StarOutlined,
 } from '@ant-design/icons';
 import {css} from '@emotion/css';
-import {Card, Col, Row, Statistic, theme} from 'antd';
+import {Card, Col, Row, Statistic, theme} from '@/design';
 import {userStats} from './data';
 
 const iconWrapClass = css`

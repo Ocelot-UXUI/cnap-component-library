@@ -1,4 +1,4 @@
-import {Avatar, Tooltip} from 'antd';
+import {Avatar, Tooltip} from '@/design';
 
 const makeAvatarUrl = (username: string): string => `https://eefe.baidu-int.com/avatars/${username}`;
 

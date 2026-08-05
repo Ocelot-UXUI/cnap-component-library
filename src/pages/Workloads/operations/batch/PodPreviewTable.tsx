@@ -1,5 +1,5 @@
-import {Tag, Table} from 'antd';
-import type {TableColumnsType} from 'antd';
+import {Tag, Table} from '@/design';
+import type {TableColumnsType} from '@/design';
 
 import {ClusterNameLabel} from '@/components/ClusterNameLabel';
 import {semantic} from '@/constants/colors';

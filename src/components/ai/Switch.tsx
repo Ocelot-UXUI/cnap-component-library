@@ -2,8 +2,8 @@
  * AI 语义化 Switch 组件
  */
 import type {AISemanticProps} from '@/types/semantic';
-import {Switch as AntSwitch} from 'antd';
-import type {SwitchProps} from 'antd';
+import {Switch as AntSwitch} from '@/design';
+import type {SwitchProps} from '@/design';
 
 type AISwitchProps = SwitchProps & AISemanticProps;
 

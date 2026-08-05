@@ -1,6 +1,6 @@
-import {Alert, Empty, Table} from 'antd';
-import type {TablePaginationConfig} from 'antd';
-import type {SorterResult, TableCurrentDataSource} from 'antd/es/table/interface';
+import {Alert, Empty, Table} from '@/design';
+import type {TablePaginationConfig} from '@/design';
+import type {SorterResult, TableCurrentDataSource} from '@/design';
 
 import type {Pod, PodOperation} from '@/interface/entities/pod';
 import type {RuntimeOperation} from '@/interface/entities/runtimeOperation';

@@ -3,7 +3,7 @@
  * 创建环境 Modal
  */
 import {Form, Input, Select} from '@/components/ai';
-import {Input as AntInput, message, Modal} from 'antd';
+import {Input as AntInput, message, Modal} from '@/design';
 
 interface CreateEnvironmentModalProps {
     open: boolean;

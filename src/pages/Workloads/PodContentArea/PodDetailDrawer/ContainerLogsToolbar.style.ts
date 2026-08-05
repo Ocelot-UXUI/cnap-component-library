@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import {Segmented} from 'antd';
+import {Segmented} from '@/design';
 
 import {semantic} from '@/constants/colors';
 import {radius} from '@/constants/radius';

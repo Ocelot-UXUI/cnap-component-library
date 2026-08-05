@@ -1,5 +1,5 @@
 import {css} from '@emotion/css';
-import {Card, Descriptions, Typography} from 'antd';
+import {Card, Descriptions, Typography} from '@/design';
 
 const { Title, Paragraph } = Typography;
 

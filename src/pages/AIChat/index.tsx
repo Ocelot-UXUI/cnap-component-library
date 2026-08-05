@@ -1,7 +1,7 @@
 /**
  * AI 助手页面入口
  */
-import {theme} from 'antd';
+import {theme} from '@/design';
 
 import LightPillar from '@/components/LightPillar';
 import {AIChatProvider, useAIChat} from '@/contexts/AIChatContext';

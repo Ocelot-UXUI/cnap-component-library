@@ -53,7 +53,7 @@ ESLint 负责代码质量检查（max-lines、react-hooks、eqeqeq、complexity 
 
 - React components: functional components with explicit Props interfaces.
 - Styles: Emotion (CSS-in-JS), no inline styles unless necessary.
-- UI components: Ant Design 6.x, class override prefix `.ant-5`.
+- UI components: Ant Design 6.x（class override prefix `.ant-5`），但**只能经 `@/design` 引入**，禁止业务代码直接 import `antd`（详见 Base Component Imports）。
 - Imports order: React → third-party → `@/` aliases → relative → type imports.
 - File size: max ~150 lines per file; split when exceeding.
 - Forms: use Ant Design Form component.
@@ -71,6 +71,28 @@ ESLint 负责代码质量检查（max-lines、react-hooks、eqeqeq、complexity 
 - Layout responsibility can be nested: if a component positions, sizes, arranges, or allocates space for its children, it is a layout component even when it is inside another layout.
 - Components that own layout responsibility must use a `Layout` suffix; avoid `Shell` for layout components.
 - Business state, persistence, and interaction rules should live in containers, hooks, or pure functions instead of layout components.
+
+## Base Component Imports (@/design 强制)
+
+项目所有基础组件、antd 工具与 antd 类型统一从 `@/design` 引入，收敛在设计系统一个出口。
+
+- **禁止**在 `src/design/` 以外的任何代码里直接 `import ... from 'antd'` 或 `antd/*` 子路径（含类型）。
+- **要求**所有基础组件都在 `src/design/` 下实现或再导出：
+    - 自定义 / 增强组件放在各自目录（如 `Drawer/`、`Select/`），自带实现与私有样式。
+    - 对 antd 原组件的透传放在同名目录（如 `Button/`、`Input/`、`Table/`），仅 `export {X} from 'antd'`。
+    - 统一出口 `src/design/index.ts` 聚合全部组件、工具（`message` / `notification` / `theme`）与类型。
+- 业务代码一律 `import {Button, Table, type SelectProps} from '@/design'`。
+- 新增需要用到的 antd 组件时：先在 `src/design/<Name>/index.ts` 建透传目录并在 `src/design/index.ts` 补出口，再在业务侧引用；不要绕过设计系统直接引 antd。
+
+### 豁免范围（允许直接依赖 antd）
+
+- `src/design/**` — 设计系统实现与再导出层。
+- `src/constants/**` — 主题 token / preset 派生（`theme` 工具、`ThemeConfig`）。
+- 应用根 `ConfigProvider` / 主题装配：`src/index.tsx`、`src/routers/AppLayout/index.tsx`、`src/contexts/ThemeContext.tsx`。
+
+### 强制手段
+
+`.eslintrc.cjs` 通过 `no-restricted-imports` 对 `antd` 与 `antd/*` 报错，并对上述豁免路径 `off`。违规在 `yarn lint` 阶段拦截。
 
 ## API And Data Source Boundaries
 

@@ -1,6 +1,6 @@
 import {PageLayoutHeader} from '@/design/Layouts/PageLayout';
 import {StarOutlined} from '@ant-design/icons';
-import {Empty} from 'antd';
+import {Empty} from '@/design';
 
 export default function FavoritesPage() {
     return (

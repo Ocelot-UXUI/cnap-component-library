@@ -1,5 +1,5 @@
-import {Alert, Input, Spin, Table} from 'antd';
-import type {TableColumnsType} from 'antd';
+import {Alert, Input, Spin, Table} from '@/design';
+import type {TableColumnsType} from '@/design';
 
 import {ClusterNameLabel} from '@/components/ClusterNameLabel';
 

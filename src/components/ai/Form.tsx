@@ -2,8 +2,8 @@
  * AI 语义化 Form 组件
  */
 import type {AISemanticProps} from '@/types/semantic';
-import {Form as AntForm} from 'antd';
-import type {FormProps} from 'antd';
+import {Form as AntForm} from '@/design';
+import type {FormProps} from '@/design';
 import type {ReactNode} from 'react';
 
 type AIFormProps = FormProps & AISemanticProps & { children?: ReactNode; };

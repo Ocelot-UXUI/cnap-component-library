@@ -1,6 +1,6 @@
 import {CopyOutlined} from '@ant-design/icons';
-import {Table, Tooltip, Typography} from 'antd';
-import type {TableColumnsType} from 'antd';
+import {Table, Tooltip, Typography} from '@/design';
+import type {TableColumnsType} from '@/design';
 
 import {semantic} from '@/constants/colors';
 import type {ContainerPort, EnvVar, VolumeMount} from '@/interface/entities/pod';

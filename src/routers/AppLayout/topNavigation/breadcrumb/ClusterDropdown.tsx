@@ -1,5 +1,5 @@
 import {PlusOutlined} from '@ant-design/icons';
-import {Empty, Spin, Table} from 'antd';
+import {Empty, Spin, Table} from '@/design';
 import {useMemo, useState} from 'react';
 
 import {ClusterNameLabel} from '@/components/ClusterNameLabel';
@@ -8,7 +8,7 @@ import {ClusterRetryButton, ClusterStateBox, ClusterTableWrapper} from './Cluste
 import {DimensionFooter, DimensionSearchBox, DropdownPanel} from './dimensionDropdownParts';
 
 import type {AppEnvironmentCluster} from '@/interface/entities/applicationEnvironment';
-import type {ColumnsType} from 'antd/es/table';
+import type {ColumnsType} from '@/design';
 
 const footerActions = ['绑定新集群'];
 

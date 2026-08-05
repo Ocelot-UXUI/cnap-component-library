@@ -2,8 +2,8 @@
  * AI 语义化 Input 组件
  */
 import type {AISemanticProps} from '@/types/semantic';
-import {Input as AntInput} from 'antd';
-import type {InputProps, PasswordProps} from 'antd/es/input';
+import {Input as AntInput} from '@/design';
+import type {InputProps, PasswordProps} from '@/design';
 
 type AIInputProps = InputProps & AISemanticProps;
 type AIPasswordProps = PasswordProps & AISemanticProps;

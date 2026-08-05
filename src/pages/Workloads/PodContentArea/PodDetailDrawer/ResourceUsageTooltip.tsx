@@ -1,4 +1,4 @@
-import {Progress, Tooltip} from 'antd';
+import {Progress, Tooltip} from '@/design';
 
 import {semantic} from '@/constants/colors';
 import {spacing} from '@/constants/spacing';

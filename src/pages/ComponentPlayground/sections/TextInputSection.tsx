@@ -1,4 +1,4 @@
-import {Input} from 'antd';
+import {Input} from '@/design';
 
 import {HintText, StateLabel} from '../ComponentPlayground.style';
 import {RichSection, SubGroup} from './SectionShell';

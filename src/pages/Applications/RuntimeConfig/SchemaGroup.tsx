@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable max-lines */
 import {DownOutlined, QuestionCircleOutlined, RightOutlined} from '@ant-design/icons';
-import {Form, Tooltip} from 'antd';
-import type {FormInstance} from 'antd/es/form';
+import {Form, Tooltip} from '@/design';
+import type {FormInstance} from '@/design';
 import React, {useState} from 'react';
 import type {GroupSchema, ValidatorRegistry} from './schema/types';
 import {isFieldSchema} from './schema/types';

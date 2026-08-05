@@ -1,4 +1,4 @@
-import {Dropdown, Popover, Tooltip} from 'antd';
+import {Dropdown, Popover, Tooltip} from '@/design';
 
 import {ChevronDown} from '@/assets/icons';
 import moreDot from '@/assets/images/group-header-more-dot.png';
@@ -25,7 +25,7 @@ import {getMenuOperationIcon} from '../WorkloadsHeader/WorkloadsHeaderIcons';
 import type {RuntimeOperation} from '@/interface/entities/runtimeOperation';
 import type {PodStatistics} from '@/interface/entities/runtimeSummary';
 import type {WorkloadGroup} from '@/interface/entities/workload';
-import type {MenuProps} from 'antd';
+import type {MenuProps} from '@/design';
 
 interface GroupHeaderProps {
     group: WorkloadGroup;

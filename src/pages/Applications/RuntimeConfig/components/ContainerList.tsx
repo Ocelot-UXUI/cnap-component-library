@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 /* eslint-disable max-lines */
 import {DeleteOutlined, DownOutlined, PlusOutlined, RightOutlined} from '@ant-design/icons';
-import {Button, Form, Input, InputNumber, Modal, Space, Switch, Tabs, Typography} from 'antd';
+import {Button, Form, Input, InputNumber, Modal, Space, Switch, Tabs, Typography} from '@/design';
 import React, {useState} from 'react';
 import {baseValidatorRegistry} from '../schema/validatorRegistry';
 import {SchemaRenderer} from '../SchemaRenderer';

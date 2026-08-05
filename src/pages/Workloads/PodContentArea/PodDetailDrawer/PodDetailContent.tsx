@@ -1,4 +1,4 @@
-import {Alert, Spin} from 'antd';
+import {Alert, Spin} from '@/design';
 
 import {ClusterNameLabel} from '@/components/ClusterNameLabel';
 

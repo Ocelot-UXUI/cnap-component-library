@@ -1,6 +1,6 @@
 import {QuestionCircleOutlined} from '@ant-design/icons';
-import {Form, Tooltip} from 'antd';
-import type {FormInstance, Rule} from 'antd/es/form';
+import {Form, Tooltip} from '@/design';
+import type {FormInstance, Rule} from '@/design';
 import React, {useMemo} from 'react';
 import {componentRegistry} from './schema/componentRegistry';
 import type {FieldSchema, ValidatorRegistry} from './schema/types';

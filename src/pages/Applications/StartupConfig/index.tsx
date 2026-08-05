@@ -1,5 +1,5 @@
 /* eslint-disable max-lines */
-import {Button, Form, message, Space} from 'antd';
+import {Button, Form, message, Space} from '@/design';
 import React, {useMemo} from 'react';
 import {useParams} from 'react-router-dom';
 import {isFieldSchema, isGroupSchema} from '../RuntimeConfig/schema/types';

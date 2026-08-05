@@ -1,5 +1,5 @@
 import {EllipsisOutlined, ThunderboltOutlined} from '@ant-design/icons';
-import {Button, Dropdown, Tooltip, Typography} from 'antd';
+import {Button, Dropdown, Tooltip, Typography} from '@/design';
 
 import {ClusterNameLabel} from '@/components/ClusterNameLabel';
 import {semantic} from '@/constants/colors';

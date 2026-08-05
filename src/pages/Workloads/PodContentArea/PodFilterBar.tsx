@@ -1,4 +1,4 @@
-import {Input, Select} from 'antd';
+import {Input, Select} from '@/design';
 
 import {Search} from '@/assets/icons';
 import {FilterForm, FilterRow, SearchPrefix} from './PodContentArea.style';

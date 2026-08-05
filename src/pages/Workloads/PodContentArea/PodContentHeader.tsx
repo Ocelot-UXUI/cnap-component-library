@@ -1,4 +1,4 @@
-import {Button, Tooltip} from 'antd';
+import {Button, Tooltip} from '@/design';
 
 import {Expand, Refresh, Unexpand} from '@/assets/icons';
 import moreLines from '@/assets/icons/view-detailed.svg';

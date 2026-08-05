@@ -3,7 +3,7 @@
  */
 import {Button, Input} from '@/components/ai';
 import {DesktopOutlined, LockOutlined, SafetyOutlined} from '@ant-design/icons';
-import {Badge, Card, Divider, Form} from 'antd';
+import {Badge, Card, Divider, Form} from '@/design';
 import {
     fontWeight500Class,
     gridLayoutClass,

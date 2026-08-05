@@ -1,5 +1,5 @@
 import {SearchOutlined} from '@ant-design/icons';
-import {Empty} from 'antd';
+import {Empty} from '@/design';
 
 import {
     DropdownPanel,

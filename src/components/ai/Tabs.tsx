@@ -3,8 +3,8 @@
  * 自动为每个 tab 内容添加切换动画，无需手动包裹 MotionTab
  */
 import type {AISemanticProps} from '@/types/semantic';
-import {Tabs as AntTabs} from 'antd';
-import type {TabsProps} from 'antd';
+import {Tabs as AntTabs} from '@/design';
+import type {TabsProps} from '@/design';
 import {motion} from 'framer-motion';
 
 type AITabsProps = TabsProps & AISemanticProps;

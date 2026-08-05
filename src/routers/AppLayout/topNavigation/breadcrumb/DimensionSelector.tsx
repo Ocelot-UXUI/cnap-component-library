@@ -1,5 +1,5 @@
 import {CaretDownOutlined} from '@ant-design/icons';
-import {Dropdown} from 'antd';
+import {Dropdown} from '@/design';
 import {useState} from 'react';
 
 import {

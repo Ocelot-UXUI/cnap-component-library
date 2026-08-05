@@ -1,5 +1,5 @@
 import {APP_IS_DEV} from '@/constants/app';
-import {Input, Modal} from 'antd';
+import {Input, Modal} from '@/design';
 import {createElement} from 'react';
 import type {ChangeEvent} from 'react';
 

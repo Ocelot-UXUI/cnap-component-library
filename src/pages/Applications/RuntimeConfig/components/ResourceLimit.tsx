@@ -1,4 +1,4 @@
-import {InputNumber, Select, Space, Switch, Typography} from 'antd';
+import {InputNumber, Select, Space, Switch, Typography} from '@/design';
 import React from 'react';
 
 const { Text } = Typography;

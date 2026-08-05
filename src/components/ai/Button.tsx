@@ -2,8 +2,8 @@
  * AI 语义化 Button 组件
  */
 import type {AISemanticProps} from '@/types/semantic';
-import {Button as AntButton} from 'antd';
-import type {ButtonProps} from 'antd';
+import {Button as AntButton} from '@/design';
+import type {ButtonProps} from '@/design';
 import {motion} from 'framer-motion';
 
 type AIButtonProps = ButtonProps & AISemanticProps;

@@ -1,4 +1,4 @@
-import {Button, Divider, Form, Input, Select, Space} from 'antd';
+import {Button, Divider, Form, Input, Select, Space} from '@/design';
 import {useParams} from 'react-router-dom';
 
 export default function ApplicationSettings() {

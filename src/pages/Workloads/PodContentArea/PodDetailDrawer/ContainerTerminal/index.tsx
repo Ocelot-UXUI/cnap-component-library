@@ -1,5 +1,5 @@
 import Icon, {ClearOutlined} from '@ant-design/icons';
-import {Alert, Button, message, Select, Tooltip} from 'antd';
+import {Alert, Button, message, Select, Tooltip} from '@/design';
 import {useState} from 'react';
 
 import {Standalone, ZoomIn, ZoomOut} from '@/assets/icons';

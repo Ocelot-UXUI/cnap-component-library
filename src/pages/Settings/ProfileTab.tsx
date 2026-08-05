@@ -3,7 +3,7 @@
  */
 import {Button, Form, Input, Select, Switch} from '@/components/ai';
 import {GlobalOutlined, UserOutlined} from '@ant-design/icons';
-import {Avatar, Card, Divider} from 'antd';
+import {Avatar, Card, Divider} from '@/design';
 import {
     avatarContainerClass,
     flexEndClass,

@@ -1,7 +1,7 @@
 /* eslint-disable max-lines */
 /* eslint-disable max-len */
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
-import {Button, Form, Input, InputNumber, Select, Space, Table} from 'antd';
+import {Button, Form, Input, InputNumber, Select, Space, Table} from '@/design';
 import React from 'react';
 
 // ── 探针类型（与 CNAP1.0 一致，使用大写值）───────────────────────

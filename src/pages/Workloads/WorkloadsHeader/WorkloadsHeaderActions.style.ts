@@ -1,6 +1,6 @@
 import {css} from '@emotion/css';
 import styled from '@emotion/styled';
-import {Button} from 'antd';
+import {Button} from '@/design';
 
 import {semantic} from '@/constants/colors';
 import {radius} from '@/constants/radius';

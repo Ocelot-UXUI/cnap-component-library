@@ -1,4 +1,4 @@
-import {Tag} from 'antd';
+import {Tag} from '@/design';
 
 import {semantic} from '@/constants/colors';
 

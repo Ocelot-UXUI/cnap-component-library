@@ -1,5 +1,5 @@
 import {DeleteOutlined, PlusOutlined, QuestionCircleOutlined} from '@ant-design/icons';
-import {Button, Input, Space, Table, Tooltip} from 'antd';
+import {Button, Input, Space, Table, Tooltip} from '@/design';
 import React from 'react';
 
 export interface ConfigReference {

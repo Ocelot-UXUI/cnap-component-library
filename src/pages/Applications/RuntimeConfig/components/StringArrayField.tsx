@@ -1,5 +1,5 @@
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
-import {Button, Input, Space} from 'antd';
+import {Button, Input, Space} from '@/design';
 import React from 'react';
 
 interface StringArrayFieldProps {

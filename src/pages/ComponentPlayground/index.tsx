@@ -1,7 +1,7 @@
 import {PageLayoutHeader} from '@/design/Layouts/PageLayout';
 import {useState} from 'react';
 
-import {ConfigProvider} from 'antd';
+import {ConfigProvider} from '@/design';
 import {
     LeftPanel,
     ListItem,

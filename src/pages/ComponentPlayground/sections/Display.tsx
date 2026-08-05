@@ -1,4 +1,4 @@
-import {Breadcrumb, Empty} from 'antd';
+import {Breadcrumb, Empty} from '@/design';
 
 import {StateLabel} from '../ComponentPlayground.style';
 import {SectionShell} from './SectionShell';

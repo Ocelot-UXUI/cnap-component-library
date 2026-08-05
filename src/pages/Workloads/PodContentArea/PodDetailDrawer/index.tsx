@@ -1,5 +1,5 @@
 import Icon from '@ant-design/icons';
-import {Button} from 'antd';
+import {Button} from '@/design';
 
 import {Standalone} from '@/assets/icons';
 import {APP_BASENAME} from '@/constants/app';

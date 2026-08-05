@@ -3,8 +3,8 @@ import {type ThemeKey, themeOptions} from '@/constants/themes';
 import {useTheme} from '@/contexts/ThemeContext';
 import {BgColorsOutlined} from '@ant-design/icons';
 import {css} from '@emotion/css';
-import {Space} from 'antd';
-import type {MenuProps} from 'antd';
+import {Space} from '@/design';
+import type {MenuProps} from '@/design';
 import {useEffect, useState} from 'react';
 
 const mobileClass = css`

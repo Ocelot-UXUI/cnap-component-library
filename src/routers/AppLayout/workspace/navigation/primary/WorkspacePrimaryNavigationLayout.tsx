@@ -8,7 +8,7 @@ import {
     SettingOutlined,
 } from '@ant-design/icons';
 import {cx} from '@emotion/css';
-import {Popover, Tooltip} from 'antd';
+import {Popover, Tooltip} from '@/design';
 
 import {
     popoverClass,

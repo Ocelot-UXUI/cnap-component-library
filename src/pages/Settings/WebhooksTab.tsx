@@ -3,7 +3,7 @@
  */
 import {Webhook} from '@/types/settings';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
-import {Badge, Button, Card, Space, Tag} from 'antd';
+import {Badge, Button, Card, Space, Tag} from '@/design';
 import {
     apiKeyCardClass,
     sessionFlexClass,

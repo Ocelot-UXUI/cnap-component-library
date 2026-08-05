@@ -1,5 +1,5 @@
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
-import {Button, Input, Space, Table} from 'antd';
+import {Button, Input, Space, Table} from '@/design';
 import React from 'react';
 
 // ── 与 CNAP1.0 一致，只有 name 和 value 两个字段 ────────────────────

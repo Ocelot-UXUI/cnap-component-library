@@ -1,4 +1,4 @@
-import {Switch} from 'antd';
+import {Switch} from '@/design';
 
 import {HintText, StateLabel} from '../ComponentPlayground.style';
 import {RichSection, SubGroup} from './SectionShell';

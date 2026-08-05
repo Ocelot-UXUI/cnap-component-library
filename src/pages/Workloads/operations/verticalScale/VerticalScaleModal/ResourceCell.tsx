@@ -1,4 +1,4 @@
-import {Checkbox, Input, Select} from 'antd';
+import {Checkbox, Input, Select} from '@/design';
 
 import type {ResourceKind} from '@/domain/workload';
 import {isLimitGteRequest, parseQuantity, RESOURCE_UNITS} from '@/domain/workload';

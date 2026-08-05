@@ -2,7 +2,7 @@
  * 通知设置 Tab
  */
 import {MailOutlined, MobileOutlined} from '@ant-design/icons';
-import {Button, Card, Divider, Switch} from 'antd';
+import {Button, Card, Divider, Switch} from '@/design';
 import {
     flexEndClass,
     marginBottom24Class,
