@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import {useParams} from 'react-router-dom';
 
-import {PageLayoutHeader} from '@/design/Layouts/PageLayout';
+import {PageLayoutHeader} from '@/components/Layouts/PageLayout';
 
 import {renderOperations} from '../PodContentArea/podCells';
 import {PodDetailContent} from '../PodContentArea/PodDetailDrawer/PodDetailContent';

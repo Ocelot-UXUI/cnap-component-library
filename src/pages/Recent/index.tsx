@@ -1,4 +1,4 @@
-import {PageLayoutHeader} from '@/design/Layouts/PageLayout';
+import {PageLayoutHeader} from '@/components/Layouts/PageLayout';
 import {HistoryOutlined} from '@ant-design/icons';
 import {Empty} from '@/design';
 

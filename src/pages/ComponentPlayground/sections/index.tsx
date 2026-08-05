@@ -10,6 +10,7 @@ import {
 } from './Display';
 import {MessageSection} from './MessageSection';
 import {NumberInputSection} from './NumberInputSection';
+import {LogSearchInputSection} from './LogSearchInputSection';
 import {
     DrawerSection,
     ModalSection,
@@ -55,4 +56,5 @@ export const sections: PlaygroundSection[] = [
     { key: 'searchbox', label: 'SearchBox *', placeholder: true, Component: PlaceholderSection },
     { key: 'breadcrumb', label: 'Breadcrumb', Component: BreadcrumbSection },
     { key: 'collapse-header', label: 'Collapse Header *', placeholder: true, Component: PlaceholderSection },
+    { key: 'log-search-input', label: 'Log Search Input', Component: LogSearchInputSection },
 ];

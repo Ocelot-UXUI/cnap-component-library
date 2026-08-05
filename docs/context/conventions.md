@@ -77,10 +77,11 @@ ESLint 负责代码质量检查（max-lines、react-hooks、eqeqeq、complexity 
 项目所有基础组件、antd 工具与 antd 类型统一从 `@/design` 引入，收敛在设计系统一个出口。
 
 - **禁止**在 `src/design/` 以外的任何代码里直接 `import ... from 'antd'` 或 `antd/*` 子路径（含类型）。
-- **要求**所有基础组件都在 `src/design/` 下实现或再导出：
-    - 自定义 / 增强组件放在各自目录（如 `Drawer/`、`Select/`），自带实现与私有样式。
+- **`src/design/` 只承载 antd 组件及其增强**，不允许出现带业务含义的组件：
     - 对 antd 原组件的透传放在同名目录（如 `Button/`、`Input/`、`Table/`），仅 `export {X} from 'antd'`。
+    - 对 antd 组件的增强 / 封装放在各自目录（如 `Drawer/`、`Select/`），以某个 antd 组件为基座扩展，自带实现与私有样式。
     - 统一出口 `src/design/index.ts` 聚合全部组件、工具（`message` / `notification` / `theme`）与类型。
+- **带业务含义的基础组件**（页面布局壳、错误兜底、加载屏、业务搜索框等，非单一 antd 组件的封装）一律放 `src/components/<Name>/`，经 `@/components/<Name>` 引用；其内部可消费 `@/design` 的 antd 组件。
 - 业务代码一律 `import {Button, Table, type SelectProps} from '@/design'`。
 - 新增需要用到的 antd 组件时：先在 `src/design/<Name>/index.ts` 建透传目录并在 `src/design/index.ts` 补出口，再在业务侧引用；不要绕过设计系统直接引 antd。
 

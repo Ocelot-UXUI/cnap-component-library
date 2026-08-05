@@ -1,4 +1,4 @@
-import {PageLayoutHeader} from '@/design/Layouts/PageLayout';
+import {PageLayoutHeader} from '@/components/Layouts/PageLayout';
 import {useState} from 'react';
 
 import {ConfigProvider} from '@/design';

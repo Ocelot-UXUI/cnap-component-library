@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
-import {Button, Result, ResultProps, Space} from 'antd';
+import {Button, Result, Space} from '@/design';
+import type {ResultProps} from '@/design';
 import {ReactNode, useReducer} from 'react';
 import {ErrorStack} from './ErrorStack';
 

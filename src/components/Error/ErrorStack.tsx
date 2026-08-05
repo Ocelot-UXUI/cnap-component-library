@@ -1,5 +1,5 @@
 import {css} from '@emotion/css';
-import {Alert} from 'antd';
+import {Alert} from '@/design';
 
 const detailCss = css`
     margin-top: 10px;

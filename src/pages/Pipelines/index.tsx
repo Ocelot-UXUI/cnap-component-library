@@ -1,5 +1,5 @@
 import {Button} from '@/components/ai';
-import {PageLayoutHeader} from '@/design/Layouts/PageLayout';
+import {PageLayoutHeader} from '@/components/Layouts/PageLayout';
 import {BranchesOutlined} from '@ant-design/icons';
 import {Empty} from '@/design';
 

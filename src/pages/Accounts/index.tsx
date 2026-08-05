@@ -1,6 +1,6 @@
 import {Button} from '@/components/ai';
 import BorderGlow from '@/components/BorderGlow/BorderGlow';
-import {MotionEmpty, MotionItem, MotionList} from '@/design/Motion';
+import {MotionEmpty, MotionItem, MotionList} from '@/components/Motion';
 import {hexToHslStr} from '@/utils/color';
 import {PlusOutlined, SearchOutlined, UserOutlined} from '@ant-design/icons';
 import {css} from '@emotion/css';

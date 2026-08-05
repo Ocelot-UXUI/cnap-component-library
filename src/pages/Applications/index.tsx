@@ -3,7 +3,7 @@ import accountApi from '@/api/account';
 import {Button, Switch} from '@/components/ai';
 import {useNavigationSnapshot} from '@/contexts/NavigationContext';
 import type {Application} from '@/contexts/navigationContextData';
-import {PageLayoutHeader} from '@/design/Layouts/PageLayout';
+import {PageLayoutHeader} from '@/components/Layouts/PageLayout';
 import {applicationDeployments, applicationSettings} from '@/routes';
 import {AppstoreOutlined, PlusOutlined, UnorderedListOutlined} from '@ant-design/icons';
 import {css, cx} from '@emotion/css';

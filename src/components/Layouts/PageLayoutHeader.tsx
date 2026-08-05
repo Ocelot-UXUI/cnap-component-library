@@ -1,7 +1,7 @@
 import {LeftOutlined} from '@ant-design/icons';
 import {css} from '@emotion/css';
 import styled from '@emotion/styled';
-import {Button, Typography} from 'antd';
+import {Button, Typography} from '@/design';
 import {ReactNode, useCallback} from 'react';
 import {useNavigate} from 'react-router-dom';
 

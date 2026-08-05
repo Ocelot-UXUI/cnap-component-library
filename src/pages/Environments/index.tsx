@@ -3,7 +3,7 @@
  * 环境管理页面
  */
 import {Button, Input, Select} from '@/components/ai';
-import {MotionItem, MotionList} from '@/design/Motion';
+import {MotionItem, MotionList} from '@/components/Motion';
 import {useTranslation} from '@/utils/i18n';
 import {PlusOutlined, SearchOutlined} from '@ant-design/icons';
 import {Space} from '@/design';

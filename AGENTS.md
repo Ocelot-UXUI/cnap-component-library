@@ -162,7 +162,7 @@ CNAP 前端使用轻量级 Attractor-Guided Engineering (AGE) 工作流进行 AI
 基础组件引用统一收敛到设计系统，详见 `docs/context/conventions.md → Base Component Imports`。核心红线：
 
 - 禁止在 `src/design/` 以外的代码直接 `import ... from 'antd'`（含 `antd/*` 子路径与类型）；一律走 `@/design`。
-- 所有基础组件必须在 `src/design/` 下实现或再导出（透传组件放同名目录，仅 `export {X} from 'antd'`）。
+- `src/design/` 只承载 antd 组件及其增强（透传组件放同名目录，仅 `export {X} from 'antd'`；增强组件以 antd 组件为基座，如 Drawer/Select）；带业务含义的基础组件放 `src/components/<Name>/`，经 `@/components/<Name>` 引用。
 - 需要新 antd 组件时，先在 `src/design/<Name>/` 建目录并补 `src/design/index.ts` 出口，再在业务侧引用。
 - 豁免：`src/design/**`、`src/constants/**`、应用根 `ConfigProvider`/主题装配（`src/index.tsx`、`src/routers/AppLayout/index.tsx`、`src/contexts/ThemeContext.tsx`）。
 - 由 `.eslintrc.cjs` 的 `no-restricted-imports` 强制，`yarn lint` 拦截违规。

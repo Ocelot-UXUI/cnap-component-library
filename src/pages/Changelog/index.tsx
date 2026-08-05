@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import {PageLayoutHeader} from '@/design/Layouts/PageLayout';
+import {PageLayoutHeader} from '@/components/Layouts/PageLayout';
 import {css} from '@emotion/css';
 import {Tag, theme, Timeline} from '@/design';
 

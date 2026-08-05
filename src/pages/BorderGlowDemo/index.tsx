@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import BorderGlow from '@/components/BorderGlow/BorderGlow';
-import {PageLayoutHeader} from '@/design/Layouts/PageLayout';
+import {PageLayoutHeader} from '@/components/Layouts/PageLayout';
 import {hexToHslStr} from '@/utils/color';
 import {css} from '@emotion/css';
 import {theme} from '@/design';

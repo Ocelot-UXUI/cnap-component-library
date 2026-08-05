@@ -8,7 +8,7 @@ import {APP_BASENAME} from '@/constants/app';
 import {NavigationProvider} from '@/contexts/NavigationContext';
 import {ThemeProvider} from '@/contexts/ThemeContext';
 import {UserProvider} from '@/contexts/UserContext';
-import ErrorBoundary from '@/design/Error/ErrorBoundary';
+import ErrorBoundary from '@/components/Error/ErrorBoundary';
 import {AIExecutorProvider} from '@/executor';
 import {router} from '@/routers';
 import {exportQiankunLifeCycles, qiankunWindow} from '@tiny-codes/vite-plugin-qiankun';

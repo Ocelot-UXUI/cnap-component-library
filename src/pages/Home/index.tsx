@@ -1,4 +1,4 @@
-import {PageLayoutHeader} from '@/design/Layouts/PageLayout';
+import {PageLayoutHeader} from '@/components/Layouts/PageLayout';
 import {css} from '@emotion/css';
 import {Flex} from '@/design';
 import {AlertsSection} from './AlertsSection';

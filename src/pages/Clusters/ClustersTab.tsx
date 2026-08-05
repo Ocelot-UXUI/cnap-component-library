@@ -1,7 +1,7 @@
 /**
  * 集群列表 Tab 组件
  */
-import {MotionItem, MotionList} from '@/design/Motion';
+import {MotionItem, MotionList} from '@/components/Motion';
 import {CloudProvider, Cluster} from '@/types/cluster';
 import {CloudOutlined, SearchOutlined} from '@ant-design/icons';
 import {Badge, Col, Input, Row, Select} from '@/design';
