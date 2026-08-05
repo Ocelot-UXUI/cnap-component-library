@@ -1,14 +1,14 @@
-import {CopyOutlined} from '@ant-design/icons';
-import {Button, Tag, Tooltip} from 'antd';
+import {Tag, Tooltip, Typography} from 'antd';
 
 import {semantic} from '@/constants/colors';
 import type {Container} from '@/interface/entities/pod';
 import {formatAbsoluteTime, formatAge} from '../duration';
 import {statusLabel, statusTone} from '../podStatus';
-import {copyPortAddresses, EnvTable, MountsTable, PortsTable} from './detailTables';
+import {EnvTable, MountsTable, PortsTable} from './detailTables';
 import {LastTerminationSection} from './LastTerminationSection';
-import {InfoGrid, InfoItem, SectionBar} from './PodDetailDrawer.style';
+import {InfoGrid, InfoItem} from './PodDetailDrawer.style';
 import {ResourceUsageView} from './ResourceUsageView';
+import {SectionBar} from './SectionBar';
 
 const toneColor = {
     success: semantic.state.success.default,
@@ -26,10 +26,11 @@ interface ContainerDetailProps {
 const hasCopyablePorts = (podIp: string | undefined, container: Container): boolean =>
     Boolean(podIp && container.ports?.length);
 
+// eslint-disable-next-line complexity
 export const ContainerDetail = ({ container, creationTimestamp, podIp }: ContainerDetailProps) => {
     return (
         <div>
-            <SectionBar>基本信息</SectionBar>
+            <SectionBar title="基本信息" />
             <InfoGrid>
                 <InfoItem>
                     <label>状态</label>
@@ -66,28 +67,23 @@ export const ContainerDetail = ({ container, creationTimestamp, podIp }: Contain
                 <ResourceUsageView container={container} />
             </InfoGrid>
 
-            <SectionBar>
-                端口 <em>{container.ports?.length ?? 0}</em>
-                <Button
-                    disabled={!hasCopyablePorts(podIp, container)}
-                    icon={<CopyOutlined />}
-                    size="small"
-                    type="text"
-                    onClick={() => copyPortAddresses(podIp, container.ports ?? [])}
-                >
-                    复制全部 IP:PORT
-                </Button>
+            <SectionBar title={<>端口 <em>{container.ports?.length ?? 0}</em></>}>
+                {hasCopyablePorts(podIp, container) && (
+                    <Typography.Text
+                        copyable={{
+                            text: (container.ports ?? []).map(port => `${podIp}:${port.port}`).join('\n'),
+                        }}
+                    >
+                        复制全部 IP:PORT
+                    </Typography.Text>
+                )}
             </SectionBar>
             <PortsTable podIp={podIp} ports={container.ports ?? []} />
 
-            <SectionBar>
-                挂载 <em>{container.volumeMounts?.length ?? 0}</em>
-            </SectionBar>
+            <SectionBar title={<>挂载 <em>{container.volumeMounts?.length ?? 0}</em></>} />
             <MountsTable mounts={container.volumeMounts ?? []} />
 
-            <SectionBar>
-                环境变量 <em>{container.env?.length ?? 0}</em>
-            </SectionBar>
+            <SectionBar title={<>环境变量 <em>{container.env?.length ?? 0}</em></>} />
             <EnvTable env={container.env ?? []} />
 
             <LastTerminationSection container={container} />

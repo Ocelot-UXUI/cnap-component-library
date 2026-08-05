@@ -1,25 +1,11 @@
 import {CopyOutlined} from '@ant-design/icons';
-import {Button, message, Table, Tooltip} from 'antd';
+import {Table, Tooltip, Typography} from 'antd';
 import type {TableColumnsType} from 'antd';
 
 import {semantic} from '@/constants/colors';
 import type {ContainerPort, EnvVar, VolumeMount} from '@/interface/entities/pod';
 
 const placeholder = <span style={{ color: semantic.text.placeholder }}>-</span>;
-
-export const copyPortAddresses = async (podIp: string | undefined, ports: ContainerPort[]): Promise<void> => {
-    if (!podIp || ports.length === 0) {
-        return;
-    }
-
-    const addresses = ports.map(({ port }) => `${podIp}:${port}`).join('\n');
-    try {
-        await navigator.clipboard.writeText(addresses);
-        message.success('已复制到剪贴板');
-    } catch {
-        message.error('复制失败');
-    }
-};
 
 interface PortsTableProps {
     podIp?: string;
@@ -35,20 +21,21 @@ export const PortsTable = ({ podIp, ports }: PortsTableProps) => {
             title: '操作',
             key: 'action',
             width: 100,
-            render: (_, port) => (
-                <Tooltip title={podIp ? '复制 IP:PORT' : '暂无 Pod IP'}>
-                    <span>
-                        <Button
-                            aria-label="复制 IP:PORT"
-                            disabled={!podIp}
-                            icon={<CopyOutlined />}
-                            size="small"
-                            type="text"
-                            onClick={() => copyPortAddresses(podIp, [port])}
+            render: (_, port) =>
+                podIp
+                    ? (
+                        <Typography.Text
+                            copyable={{
+                                text: `${podIp}:${port.port}`,
+                                tooltips: ['复制 IP:PORT', '已复制'],
+                            }}
                         />
-                    </span>
-                </Tooltip>
-            ),
+                    )
+                    : (
+                        <Tooltip title="暂无 Pod IP">
+                            <CopyOutlined style={{ color: semantic.text.disabled }} />
+                        </Tooltip>
+                    ),
         },
     ];
     return (
@@ -82,7 +69,6 @@ export const EnvTable = ({ env }: { env: EnvVar[]; }) => {
     const columns: TableColumnsType<EnvVar> = [
         { title: '名称', dataIndex: 'name', key: 'name' },
         { title: '值', dataIndex: 'value', key: 'value', render: value => value || placeholder },
-        { title: '来源', key: 'source', render: () => placeholder },
     ];
     return (
         <Table<EnvVar>

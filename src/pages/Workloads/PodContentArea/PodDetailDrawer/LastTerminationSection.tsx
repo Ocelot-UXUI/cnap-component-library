@@ -1,7 +1,8 @@
 import dayjs from 'dayjs';
 
 import type {Container} from '@/interface/entities/pod';
-import {InfoGrid, InfoItem, SectionBar} from './PodDetailDrawer.style';
+import {InfoGrid, InfoItem} from './PodDetailDrawer.style';
+import {SectionBar} from './SectionBar';
 
 const hasLastTermination = (container: Container): boolean =>
     Boolean(
@@ -29,7 +30,7 @@ export const LastTerminationSection = ({ container }: LastTerminationSectionProp
     const termination = container.lastTermination;
     return (
         <>
-            <SectionBar>上一次终止</SectionBar>
+            <SectionBar title="上一次终止" />
             <InfoGrid style={{ gridTemplateColumns: 'repeat(2, 1fr)' }}>
                 <InfoItem>
                     <label>原因</label>

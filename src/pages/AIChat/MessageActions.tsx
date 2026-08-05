@@ -1,10 +1,11 @@
 /**
  * 消息气泡操作按钮（复制、重新生成、反馈）
  */
-import type {DisplayMessage} from '@/api/ai/types';
+import {copyText} from '@/utils/clipboard';
 import {CopyOutlined, DislikeOutlined, LikeOutlined, ReloadOutlined} from '@ant-design/icons';
 import {Actions} from '@ant-design/x';
 import {message} from 'antd';
+import type {DisplayMessage} from '@/api/ai/types';
 
 interface MessageActionsProps {
     msg: DisplayMessage;
@@ -12,14 +13,15 @@ interface MessageActionsProps {
 }
 
 export const MessageActions = ({ msg, onRegenerate }: MessageActionsProps) => {
-    const handleCopy = () => {
+    const handleCopy = async () => {
         if (!msg.content) {
             return;
         }
-        navigator.clipboard.writeText(msg.content).then(
-            () => message.success('已复制'),
-            () => message.error('复制失败'),
-        );
+        if (await copyText(msg.content)) {
+            message.success('已复制');
+        } else {
+            message.error('复制失败');
+        }
     };
 
     return (

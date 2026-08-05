@@ -58,6 +58,14 @@ ESLint 负责代码质量检查（max-lines、react-hooks、eqeqeq、complexity 
 - File size: max ~150 lines per file; split when exceeding.
 - Forms: use Ant Design Form component.
 
+### Clipboard / 复制到剪贴板
+
+- 所有"复制到剪贴板"能力**必须**调用 `@/utils/clipboard` 的 `copyText(text, options?)`，**禁止**在业务代码里直接使用 `navigator.clipboard.writeText` 或 `document.execCommand('copy')`。
+- 理由：借鉴 antd `Typography` 的做法，统一委托 `copy-to-clipboard`（antd 本身也依赖它）。当前安装 v4：优先走 `navigator.clipboard`，失败自动回退 `execCommand`，比裸用 `navigator.clipboard` 在 HTTP / iframe / 旧浏览器 / 内网下更稳。
+- `copyText` **返回 `Promise<boolean>`**（v4 的 `copy()` 是异步的）；调用方必须 `await` 结果再决定成功/失败反馈，不能用 `if (copyText(...))` 直接判断（Promise 恒为真值）。`copyText` 只做复制、不含 UI 副作用，反馈由调用方用 antd `message` 给出。
+- 需要复制富文本时传 `{ format: 'text/html' }`。
+
+
 ## Component Boundaries
 
 - Layout responsibility can be nested: if a component positions, sizes, arranges, or allocates space for its children, it is a layout component even when it is inside another layout.

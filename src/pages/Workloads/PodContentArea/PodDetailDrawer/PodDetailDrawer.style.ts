@@ -67,7 +67,7 @@ export const InfoItem = styled.div`
     }
 `;
 
-export const SectionBar = styled.div`
+export const SectionBarRoot = styled.div`
     display: flex;
     align-items: center;
     gap: ${spacing.s}px;
@@ -88,10 +88,10 @@ export const SectionBar = styled.div`
         color: ${semantic.text.tertiary};
         font-style: normal;
     }
+`;
 
-    & > .ant-5-btn:last-child {
-        margin-left: auto;
-    }
+export const SectionBarTitle = styled.span`
+    flex: 1;
 `;
 
 export const Toolbar = styled.div`

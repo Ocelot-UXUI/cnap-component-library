@@ -3,6 +3,7 @@
  * API 密钥管理 Tab
  */
 import {APIKey} from '@/types/settings';
+import {copyText} from '@/utils/clipboard';
 import {
     CheckOutlined,
     CopyOutlined,
@@ -49,8 +50,11 @@ export const ApiKeysTab = () => {
         setShowKeys(prev => ({ ...prev, [id]: !prev[id] }));
     };
 
-    const copyToClipboard = (text: string, id: string) => {
-        navigator.clipboard.writeText(text);
+    const copyToClipboard = async (text: string, id: string) => {
+        if (!(await copyText(text))) {
+            message.error('复制失败');
+            return;
+        }
         setCopied(id);
         message.success('已复制到剪贴板');
         setTimeout(() => setCopied(null), 2000);
