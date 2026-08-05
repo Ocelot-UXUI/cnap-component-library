@@ -1,6 +1,7 @@
 import {Checkbox, Table} from 'antd';
 import type {TableColumnsType} from 'antd';
 
+import {ClusterNameLabel} from '@/components/ClusterNameLabel';
 import type {ResourceKind} from '@/domain/workload';
 import type {FieldState, RowState} from '../rows';
 import {ResourceCell} from './ResourceCell';
@@ -35,7 +36,12 @@ export const ClusterTable = ({ rows, onToggleCluster, onToggleLimit, onEdit }: C
             width: 40,
             render: (_, row) => <Checkbox checked={row.selected} onChange={() => onToggleCluster(row.key)} />,
         },
-        { title: '集群', dataIndex: 'clusterName', key: 'clusterName', width: 168 },
+        {
+            title: '集群',
+            key: 'clusterName',
+            width: 168,
+            render: (_, row) => <ClusterNameLabel clusterName={row.clusterName} clusterId={row.key} />,
+        },
         resourceColumn('cpu', 'CPU'),
         resourceColumn('memory', '内存'),
         resourceColumn('ephemeralStorage', '存储'),

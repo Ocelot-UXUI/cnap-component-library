@@ -1,6 +1,8 @@
 import {Checkbox, Input, Table} from 'antd';
 import type {TableColumnsType} from 'antd';
 
+import {ClusterNameLabel} from '@/components/ClusterNameLabel';
+
 import {isMaxUnavailableValid} from '../rows';
 import type {RestartRow} from '../rows';
 
@@ -18,7 +20,12 @@ export const ClusterTable = ({ rows, onToggleCluster, onEditMaxUnavailable }: Cl
             width: 40,
             render: (_, row) => <Checkbox checked={row.selected} onChange={() => onToggleCluster(row.key)} />,
         },
-        { title: '集群', dataIndex: 'clusterName', key: 'clusterName', width: 240 },
+        {
+            title: '集群',
+            key: 'clusterName',
+            width: 240,
+            render: (_, row) => <ClusterNameLabel clusterName={row.clusterName} clusterId={row.clusterId} />,
+        },
         {
             title: '最大不可用',
             key: 'maxUnavailable',

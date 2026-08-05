@@ -1,7 +1,8 @@
-import {Dropdown, Popover} from 'antd';
+import {Dropdown, Popover, Tooltip} from 'antd';
 
 import {ChevronDown} from '@/assets/icons';
 import moreDot from '@/assets/images/group-header-more-dot.png';
+import {ClusterNameLabel} from '@/components/ClusterNameLabel';
 
 import {
     CountText,
@@ -75,7 +76,7 @@ export const GroupHeader = (
         <VersionList>
             {group.workloads.map(workload => (
                 <VersionRow key={workload.clusterId}>
-                    <span>{workload.clusterName ?? workload.clusterId}</span>
+                    <ClusterNameLabel clusterName={workload.clusterName ?? workload.clusterId} clusterId={workload.clusterId} />
                     <span>{workload.currentVersion}</span>
                 </VersionRow>
             ))}
@@ -93,7 +94,9 @@ export const GroupHeader = (
                 >
                     <ChevronDown />
                 </ToggleButton>
-                <GroupName type="button" onClick={onToggle}>{group.name}</GroupName>
+                <Tooltip title={group.name}>
+                    <GroupName type="button" onClick={onToggle}>{group.name}</GroupName>
+                </Tooltip>
                 <KindTag>{group.kind}</KindTag>
                 <Divider />
                 <Popover content={versionContent} title="各集群版本">

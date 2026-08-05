@@ -1,5 +1,7 @@
 import {Alert, Spin} from 'antd';
 
+import {ClusterNameLabel} from '@/components/ClusterNameLabel';
+
 import {BasicInfoCard} from './BasicInfoCard';
 import {ContainerArea} from './ContainerArea';
 import {OwnershipRow} from './PodDetailDrawer.style';
@@ -39,7 +41,7 @@ export const PodDetailContent = ({ appEnvID, clusterId, podName, detail }: PodDe
                 </span>
                 <span>
                     <b>集群:</b>
-                    {pod.clusterName ?? pod.clusterId}
+                    <ClusterNameLabel clusterName={pod.clusterName ?? pod.clusterId} clusterId={pod.clusterId} />
                 </span>
                 <span>
                     <b>工作负载:</b>

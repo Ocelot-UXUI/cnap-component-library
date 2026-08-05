@@ -1,6 +1,8 @@
 import {Checkbox, Input, Table} from 'antd';
 import type {TableColumnsType} from 'antd';
 
+import {ClusterNameLabel} from '@/components/ClusterNameLabel';
+
 import {isDesiredValid} from '../rows';
 import type {HorizontalRow} from '../rows';
 
@@ -18,7 +20,12 @@ export const ClusterTable = ({ rows, onToggleCluster, onEditDesired }: ClusterTa
             width: 40,
             render: (_, row) => <Checkbox checked={row.selected} onChange={() => onToggleCluster(row.key)} />,
         },
-        { title: '集群', dataIndex: 'clusterName', key: 'clusterName', width: 220 },
+        {
+            title: '集群',
+            key: 'clusterName',
+            width: 220,
+            render: (_, row) => <ClusterNameLabel clusterName={row.clusterName} clusterId={row.clusterId} />,
+        },
         { title: '当前副本数', dataIndex: 'replicas', key: 'replicas', width: 110 },
         {
             title: '期望副本数',

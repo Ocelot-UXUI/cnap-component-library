@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="logo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 1024 1024">
+  <!-- Generator: Adobe Illustrator 29.8.1, SVG Export Plug-In . SVG Version: 2.1.1 Build 2)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: url(#_未命名的渐变_4);
+      }
+    </style>
+    <linearGradient id="_未命名的渐变_4" data-name="未命名的渐变 4" x1="510.92" y1="865.38" x2="510.92" y2="-349.7" gradientTransform="translate(0 1024) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1da7fd"/>
+      <stop offset="1" stop-color="#08f5da"/>
+    </linearGradient>
+  </defs>
+  <path class="st0" d="M1021.83,255.67v768.33H0v-.92l271.97-204.22h544.59l.13-408.97,205.14-154.15v-.07Z"/>
+  <path d="M642.3,284.19v256.59l-262.77,197.26v-256.46l262.77-197.39Z"/>
+  <path d="M0,0v766.55l205.14-154.15V205.14h542.49L1020.78,0H0Z"/>
+</svg>

@@ -2,6 +2,8 @@ import {PlusOutlined} from '@ant-design/icons';
 import {Empty, Spin, Table} from 'antd';
 import {useMemo, useState} from 'react';
 
+import {ClusterNameLabel} from '@/components/ClusterNameLabel';
+
 import {ClusterRetryButton, ClusterStateBox, ClusterTableWrapper} from './ClusterDropdown.styles';
 import {DimensionFooter, DimensionSearchBox, DropdownPanel} from './dimensionDropdownParts';
 
@@ -11,10 +13,17 @@ import type {ColumnsType} from 'antd/es/table';
 const footerActions = ['绑定新集群'];
 
 const columns: ColumnsType<AppEnvironmentCluster> = [
-    { title: '集群名称', dataIndex: 'clusterName', key: 'clusterName' },
+    {
+        title: '集群名称',
+        dataIndex: 'clusterName',
+        key: 'clusterName',
+        render: (_value, record) => (
+            <ClusterNameLabel clusterName={record.clusterName} clusterId={record.clusterId} />
+        ),
+    },
     { title: '类型', dataIndex: 'clusterConnector', key: 'clusterConnector', width: 96 },
     {
-        title: '期望副本/可用副本',
+        title: '期望/可用副本',
         key: 'replicas',
         width: 128,
         render: (_value, record) => `${record.availableReplicas}/${record.desiredReplicas}`,

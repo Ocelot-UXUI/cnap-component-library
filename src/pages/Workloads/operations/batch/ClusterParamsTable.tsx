@@ -1,6 +1,8 @@
 import {Alert, Input, Spin, Table} from 'antd';
 import type {TableColumnsType} from 'antd';
 
+import {ClusterNameLabel} from '@/components/ClusterNameLabel';
+
 import {isMaxUnavailableValid} from '../restart/rows';
 import type {ClusterParam} from './useClusterParams';
 
@@ -30,7 +32,12 @@ export const ClusterParamsTable = ({
     }
 
     const columns: TableColumnsType<ClusterParam> = [
-        { title: '集群', dataIndex: 'clusterName', key: 'clusterName', width: 280 },
+        {
+            title: '集群',
+            key: 'clusterName',
+            width: 280,
+            render: (_, row) => <ClusterNameLabel clusterName={row.clusterName} clusterId={row.clusterId} />,
+        },
         {
             title: '最大不可用',
             key: 'maxUnavailable',

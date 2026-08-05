@@ -1,6 +1,7 @@
 import {Tag, Table} from 'antd';
 import type {TableColumnsType} from 'antd';
 
+import {ClusterNameLabel} from '@/components/ClusterNameLabel';
 import {semantic} from '@/constants/colors';
 import type {Pod} from '@/interface/entities/pod';
 import {statusLabel, statusTone} from '../../PodContentArea/podStatus';
@@ -24,7 +25,7 @@ export const PodPreviewTable = ({ pods }: PodPreviewTableProps) => {
             title: '集群',
             key: 'clusterName',
             width: 186,
-            render: (_, pod) => pod.clusterName ?? pod.clusterId,
+            render: (_, pod) => <ClusterNameLabel clusterName={pod.clusterName ?? pod.clusterId} clusterId={pod.clusterId} />,
         },
         {
             title: '状态',
