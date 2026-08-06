@@ -54,6 +54,7 @@ ESLint 负责代码质量检查（max-lines、react-hooks、eqeqeq、complexity 
 - React components: functional components with explicit Props interfaces.
 - Styles: Emotion (CSS-in-JS), no inline styles unless necessary.
 - UI components: Ant Design 6.x（class override prefix `.ant-5`），但**只能经 `@/design` 引入**，禁止业务代码直接 import `antd`（详见 Base Component Imports）。
+- Simple flex layouts: 纯 flex 对齐 / 排列直接用 antd `Flex`（经 `@/design` 引入，如 `<Flex justify="flex-end">`）。**不要仅为使用 flex 布局而在 style 文件中新建 styled 布局容器**；仅当容器承载真实业务样式（颜色、圆角、间距、字体等组合，或需要响应式断点）时才用 `@emotion/styled` 定义。
 - Imports order: React → third-party → `@/` aliases → relative → type imports.
 - File size: max ~150 lines per file; split when exceeding.
 - Forms: use Ant Design Form component.

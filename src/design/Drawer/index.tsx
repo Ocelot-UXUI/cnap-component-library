@@ -5,6 +5,7 @@ import {HeaderExtra} from './Drawer.style';
 
 import type {DrawerProps as AntdDrawerProps} from 'antd';
 import type {ReactNode} from 'react';
+import {semantic} from '@/constants/colors';
 
 export interface DrawerProps extends Omit<AntdDrawerProps, 'closable' | 'closeIcon'> {
     /** 关闭按钮左侧的额外操作区插槽 */
@@ -32,6 +33,7 @@ export const Drawer = ({ extra, showClose = true, onClose, children, ...rest }: 
                             aria-label="关闭"
                             icon={<CloseOutlined />}
                             onClick={onClose}
+                            style={{color: semantic.text.secondary}}
                         />
                     )}
                 </HeaderExtra>

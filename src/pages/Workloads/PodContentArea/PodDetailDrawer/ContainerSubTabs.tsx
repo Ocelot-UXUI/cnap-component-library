@@ -10,12 +10,18 @@ import {ContainerLogs} from './ContainerLogs';
 import {ContainerTerminal} from './ContainerTerminal';
 
 const ContainerContentTabs = styled(Tabs)`
+    &.ant-5-tabs{
+        height: 100%;
+    }
     &.ant-5-tabs-top > .ant-5-tabs-nav,
     &.ant-5-tabs-top > .ant-5-tabs-content-holder {
         padding-inline: ${spacing.l}px;
     }
     &.ant-5-tabs-top > .ant-5-tabs-body-holder {
         padding-inline: 16px;
+        flex: 1;
+        min-height: 0;
+        overflow: auto;
     }
 `;
 

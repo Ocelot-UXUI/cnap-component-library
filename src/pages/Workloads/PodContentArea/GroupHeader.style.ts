@@ -4,6 +4,7 @@ import {semantic} from '@/constants/colors';
 import {radius} from '@/constants/radius';
 import {spacing} from '@/constants/spacing';
 import {typography} from '@/constants/typography';
+import {Button} from '@/design'
 
 export const GroupHeaderBar = styled.div`
     display: flex;
@@ -25,22 +26,8 @@ export const GroupHeaderLeft = styled.div`
     white-space: nowrap;
 `;
 
-export const ToggleButton = styled.button<{ expanded: boolean; }>`
-    display: inline-flex;
-    width: 16px;
-    height: 16px;
-    flex: 0 0 auto;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    color: ${semantic.text.secondary};
-    cursor: pointer;
-
+export const ToggleButton = styled(Button)<{ expanded: boolean; }>`
     svg {
-        width: 8px;
-        height: 4px;
         transform: rotate(${({ expanded }) => expanded ? '0deg' : '-90deg'});
     }
 `;

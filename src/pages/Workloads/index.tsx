@@ -14,6 +14,9 @@ import {WorkloadsOverview} from './WorkloadsOverview';
 import type {Pod} from '@/interface/entities/pod';
 import type {ModalKey} from '@/overlay';
 import type {SelectedPods} from './PodContentArea/selection';
+import {spacing} from '@/constants/spacing';
+import {semantic} from '@/constants/colors';
+import {Sticky} from '@/components/Sticky';
 
 /** 批量操作栏 action key → 全局弹窗 key */
 const BATCH_KEY_TO_MODAL: Record<string, ModalKey> = {
@@ -56,7 +59,15 @@ const WorkloadsPage = () => {
     return (
         <WorkloadsRuntimeProvider>
             <PageContainer>
-                <WorkloadsHeader />
+                <Sticky
+                    top="0px"
+                    backgroundColor={semantic.bg.page}
+                    style={{
+                        paddingBottom: `${spacing.l}px`,
+                    }}
+                >
+                    <WorkloadsHeader />
+                </Sticky>
                 <WorkloadsOverview />
                 <PodContentArea
                     selection={selection}

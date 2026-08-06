@@ -1,4 +1,4 @@
-import {Alert, Empty, Table} from '@/design';
+import {Alert, Empty, Flex, Pagination, Table} from '@/design';
 import type {TablePaginationConfig} from '@/design';
 import type {SorterResult, TableCurrentDataSource} from '@/design';
 
@@ -11,6 +11,7 @@ import {GroupBlock} from './PodContentArea.style';
 import {podKey} from './selection';
 import type {PodFilterState, ViewMode} from './types';
 import {useGroupPods} from './useGroupPods';
+import {Sticky} from '@/components/Sticky';
 
 interface PodGroupTableProps {
     group: WorkloadGroup;
@@ -59,7 +60,7 @@ export const PodGroupTable = ({
     const columns = buildPodColumns(mode, groupHasGpu(pods), onOpenDetail, onPodYamlView, onPodOperation);
 
     const handleChange = (
-        pagination: TablePaginationConfig,
+        _pagination: TablePaginationConfig,
         _filters: unknown,
         sorter: SorterResult<Pod> | SorterResult<Pod>[],
         extra: TableCurrentDataSource<Pod>,
@@ -67,50 +68,61 @@ export const PodGroupTable = ({
         if (extra.action === 'sort') {
             const single = Array.isArray(sorter) ? sorter[0] : sorter;
             setSort(toSortParam(single?.columnKey as string | undefined, single?.order));
-            return;
         }
-        setPage(pagination.current ?? 1, pagination.pageSize ?? query.pageSize);
     };
 
     return (
         <GroupBlock>
-            <GroupHeader
-                group={group}
-                expanded={expanded}
-                summary={data?.summary}
-                operations={operations}
-                clusterSelected={!!clusterId}
-                onToggle={onToggle}
-                onYamlView={onYamlView}
-                onWorkloadOperation={operation => onWorkloadOperation(group.id, operation)}
-            />
+            <Sticky top="56px">
+                <GroupHeader
+                    group={group}
+                    expanded={expanded}
+                    summary={data?.summary}
+                    operations={operations}
+                    clusterSelected={!!clusterId}
+                    onToggle={onToggle}
+                    onYamlView={onYamlView}
+                    onWorkloadOperation={operation => onWorkloadOperation(group.id, operation)}
+                />
+            </Sticky>
+            
             {expanded && (
                 error
                     ? <Alert type="error" message="加载失败" action={<a onClick={reload}>重试</a>} />
                     : (
-                        <Table<Pod>
-                            rowKey={podKey}
-                            columns={columns}
-                            dataSource={pods}
-                            loading={loading}
-                            size="small"
-                            scroll={{ x: 'max-content' }}
-                            locale={{ emptyText: <Empty description="该组暂无 Pod" /> }}
-                            rowSelection={{
-                                selectedRowKeys: selectedKeys,
-                                preserveSelectedRowKeys: true,
-                                onChange: (keys, rows) => onSelectionChange(group.id, keys as string[], rows),
-                                selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT, Table.SELECTION_NONE],
-                            }}
-                            pagination={{
-                                current: query.page,
-                                pageSize: query.pageSize,
-                                total: data?.total ?? 0,
-                                showSizeChanger: true,
-                                pageSizeOptions: [10, 20, 50],
-                            }}
-                            onChange={handleChange}
-                        />
+                        <>
+                            <Table<Pod>
+                                rowKey={podKey}
+                                columns={columns}
+                                dataSource={pods}
+                                loading={loading}
+                                size="small"
+                                scroll={{ x: 'max-content' }}
+                                locale={{ emptyText: <Empty description="该组暂无 Pod" /> }}
+                                rowSelection={{
+                                    selectedRowKeys: selectedKeys,
+                                    preserveSelectedRowKeys: true,
+                                    onChange: (keys, rows) => onSelectionChange(group.id, keys as string[], rows),
+                                    selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT, Table.SELECTION_NONE],
+                                }}
+                                pagination={false}
+                                onChange={handleChange}
+                            />
+                            <Sticky bottom='0px'>
+                                <Flex justify="flex-end" >
+                                    <Pagination
+                                        current={query.page}
+                                        pageSize={query.pageSize}
+                                        total={data?.total ?? 0}
+                                        showSizeChanger
+                                        pageSizeOptions={[10, 20, 50]}
+                                        onChange={(page, pageSize) => setPage(page, pageSize)}
+                                        size='small'
+                                    />
+                                </Flex>
+                            </Sticky>
+                            
+                        </>
                     )
             )}
         </GroupBlock>

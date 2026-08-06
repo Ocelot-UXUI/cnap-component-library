@@ -10,7 +10,6 @@ export const AreaContainer = styled.div`
     flex-direction: column;
     gap: ${spacing.l}px;
     flex: 1;
-    overflow: auto;
     padding: ${spacing.xl2}px;
     background-color: #fff;
     border-radius: ${radius.xl}px;
@@ -81,7 +80,7 @@ export const QuickChip = styled.button<{ selected: boolean; }>`
     padding: 0 ${spacing.m}px;
     background: ${semantic.bg.default};
     border: 1px solid ${props => (props.selected ? semantic.border.cardHover : semantic.border.card)};
-    color: ${props => (props.selected ? semantic.text.secondary : semantic.text.tertiary)};
+    color: ${props => (props.selected ? semantic.text.primary : semantic.text.tertiary)};
     ${props => (props.selected ? typography.body.medium : typography.body.regular)}
     cursor: pointer;
 

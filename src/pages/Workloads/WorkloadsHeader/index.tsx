@@ -1,9 +1,8 @@
-import {Dropdown, Select} from '@/design';
+import {Button, Dropdown, Select} from '@/design';
 import type {MenuProps} from '@/design';
 
 import {useState} from 'react';
 
-import moreDot from '@/assets/images/workloads-header-actions-more-dot.png';
 import {useAppEnvID, useNavigationSnapshot} from '@/contexts/NavigationContext';
 
 import {useWorkloadsRuntime} from '../useWorkloadsRuntime';
@@ -17,10 +16,11 @@ import {
     HeaderTitle,
     WorkloadGroupSelector,
 } from './WorkloadsHeader.style';
-import {ActionButton, menuOverlayClass, MoreButton, MoreDots} from './WorkloadsHeaderActions.style';
+import {ActionButton, menuOverlayClass} from './WorkloadsHeaderActions.style';
 import {getMenuOperationIcon, getPrimaryOperationIcon} from './WorkloadsHeaderIcons';
 
 import type {OperationCapability, RuntimeOperation} from '@/interface/entities/runtimeOperation';
+import {EllipsisOutlined} from '@ant-design/icons';
 
 const dangerousCapabilities: Set<OperationCapability> = new Set([
     'ApplicationUninstall',
@@ -112,18 +112,12 @@ export const WorkloadsHeader = () => {
                     <Dropdown
                         menu={{ items: buildMoreMenuItems(moreOps, handleActionClick) }}
                         trigger={['click']}
-                        overlayClassName={menuOverlayClass}
+                        classNames={{root: menuOverlayClass}}
                     >
-                        <MoreButton
+                        <Button
                             type="text"
                             aria-label="更多操作"
-                            icon={
-                                <MoreDots>
-                                    <img src={moreDot} alt="" aria-hidden="true" />
-                                    <img src={moreDot} alt="" aria-hidden="true" />
-                                    <img src={moreDot} alt="" aria-hidden="true" />
-                                </MoreDots>
-                            }
+                            icon={<EllipsisOutlined />}
                         />
                     </Dropdown>
                 )}

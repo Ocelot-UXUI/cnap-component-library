@@ -1,5 +1,5 @@
 import Icon from '@ant-design/icons';
-import {Button} from '@/design';
+import {Button, Divider, Flex} from '@/design';
 
 import {Standalone} from '@/assets/icons';
 import {APP_BASENAME} from '@/constants/app';
@@ -7,11 +7,11 @@ import {Drawer} from '@/design/Drawer';
 
 import {renderOperations} from '../podCells';
 import {PodDetailContent} from './PodDetailContent';
-import {TitleActions} from './PodDetailDrawer.style';
 import {PodDetailTitle} from './PodDetailTitle';
 import {usePodDetail} from './usePodDetail';
 
 import type {Pod, PodOperation} from '@/interface/entities/pod';
+import {semantic} from '@/constants/colors';
 
 interface PodDetailDrawerProps {
     appEnvID: string;
@@ -40,17 +40,19 @@ export const PodDetailDrawer = (
             title={<PodDetailTitle podName={podName} pod={pod} />}
             onClose={onClose}
             extra={
-                <TitleActions>
+                <Flex gap="medium">
                     {pod && renderOperations(pod, onPodOperation)}
+                    <Divider vertical style={{alignSelf: 'center'}} />
                     <Button
                         type="text"
                         aria-label="在新页面打开"
                         icon={<Icon component={Standalone} />}
                         onClick={openStandalone}
+                        style={{color:semantic.text.secondary}}
                     />
-                </TitleActions>
+                </Flex>
             }
-            styles={{ body: { paddingTop: 12 } }}
+            styles={{ body: { paddingTop: 12, display: 'flex', flexDirection: 'column' } }}
         >
             <PodDetailContent appEnvID={appEnvID} clusterId={clusterId} podName={podName} detail={detail} />
         </Drawer>

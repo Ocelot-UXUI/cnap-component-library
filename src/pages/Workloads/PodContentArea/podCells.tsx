@@ -1,5 +1,5 @@
 import {EllipsisOutlined, ThunderboltOutlined} from '@ant-design/icons';
-import {Button, Dropdown, Tooltip, Typography} from '@/design';
+import {Button, Dropdown, Flex, Tooltip, Typography} from '@/design';
 
 import {ClusterNameLabel} from '@/components/ClusterNameLabel';
 import {semantic} from '@/constants/colors';
@@ -8,6 +8,7 @@ import {formatAbsoluteTime, formatAge} from './duration';
 import {getPodOperationIcon} from './PodOperationIcons';
 import {statusLabel, statusTone} from './podStatus';
 import {StatusTag, TruncateStart} from './podCells.style';
+import {spacing} from '@/constants/spacing';
 
 export function renderStatus(pod: Pod, detailed: boolean) {
     const tone = statusTone(pod.status);
@@ -39,7 +40,7 @@ function renderVersion(version: string) {
 
 export function renderName(pod: Pod, detailed: boolean) {
     return (
-        <div style={{maxWidth: '250px'}}>
+        <div style={{maxWidth: '220px'}}>
             <Typography.Text copyable={{ text: pod.name }}>
                 <Tooltip title={pod.name}>
                     <TruncateStart>{pod.name}</TruncateStart>
@@ -124,7 +125,7 @@ export function renderOperations(pod: Pod, onOperation: (pod: Pod, operation: Po
     const outer = ops.length > 3 ? ops.slice(0, 2) : ops.slice(0, 3);
     const rest = ops.slice(outer.length);
     return (
-        <>
+        <Flex gap={spacing.s}>
             {outer.map(op => (
                 <Tooltip key={op.name} title={op.displayName}>
                     <Button
@@ -149,6 +150,6 @@ export function renderOperations(pod: Pod, onOperation: (pod: Pod, operation: Po
                     <Button type="text" aria-label="更多操作" icon={<EllipsisOutlined />} />
                 </Dropdown>
             )}
-        </>
+        </Flex>
     );
 }

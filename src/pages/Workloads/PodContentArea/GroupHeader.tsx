@@ -1,7 +1,6 @@
-import {Dropdown, Popover, Tooltip} from '@/design';
+import {Button, Dropdown, Popover, Tooltip} from '@/design';
 
 import {ChevronDown} from '@/assets/icons';
-import moreDot from '@/assets/images/group-header-more-dot.png';
 import {ClusterNameLabel} from '@/components/ClusterNameLabel';
 
 import {
@@ -18,7 +17,7 @@ import {
     ToggleButton,
     VersionText,
 } from './GroupHeader.style';
-import {MoreDots, MoreTrigger, VersionList, VersionRow} from './GroupHeaderPopover.style';
+import {VersionList, VersionRow} from './GroupHeaderPopover.style';
 import {computeQuickCounts} from './quickFilter';
 import {getMenuOperationIcon} from '../WorkloadsHeader/WorkloadsHeaderIcons';
 
@@ -26,6 +25,7 @@ import type {RuntimeOperation} from '@/interface/entities/runtimeOperation';
 import type {PodStatistics} from '@/interface/entities/runtimeSummary';
 import type {WorkloadGroup} from '@/interface/entities/workload';
 import type {MenuProps} from '@/design';
+import Icon, {EllipsisOutlined} from '@ant-design/icons';
 
 interface GroupHeaderProps {
     group: WorkloadGroup;
@@ -87,12 +87,12 @@ export const GroupHeader = (
         <GroupHeaderBar>
             <GroupHeaderLeft>
                 <ToggleButton
-                    type="button"
+                    type="text"
                     expanded={expanded}
                     aria-label={expanded ? '收起分组' : '展开分组'}
                     onClick={onToggle}
+                    icon={<Icon component={ChevronDown}></Icon>}
                 >
-                    <ChevronDown />
                 </ToggleButton>
                 <Tooltip title={group.name}>
                     <GroupName type="button" onClick={onToggle}>{group.name}</GroupName>
@@ -128,13 +128,7 @@ export const GroupHeader = (
                     menu={{ items: buildMenu(operations, clusterSelected), onClick: handleMenuClick }}
                     trigger={['hover']}
                 >
-                    <MoreTrigger type="button" aria-label="更多操作">
-                        <MoreDots>
-                            <img src={moreDot} alt="" aria-hidden="true" />
-                            <img src={moreDot} alt="" aria-hidden="true" />
-                            <img src={moreDot} alt="" aria-hidden="true" />
-                        </MoreDots>
-                    </MoreTrigger>
+                    <Button type="text" aria-label="更多操作" icon={<EllipsisOutlined />} />
                 </Dropdown>
             </GroupHeaderRight>
         </GroupHeaderBar>

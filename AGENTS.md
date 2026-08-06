@@ -142,7 +142,7 @@ CNAP 前端使用轻量级 Attractor-Guided Engineering (AGE) 工作流进行 AI
 - 偏好现有项目模式，而不是发明抽象。
 - 实现 UI 时必须将业务组件与布局组件分离：业务组件不包含布局信息，应放置在布局组件中，并自适应布局组件提供的宽高。
 - 组件私有样式可以放在同目录 `ComponentA.style.ts` 中，但组件必须位于以组件名命名的目录下；调用方只能 import 组件公共入口，不得 import 组件内部 style 文件。
-- 实现 Layout 组件时优先使用 `@emotion/styled` 定义布局容器；仅在第三方 className 接入、状态 class 组合、已有 API 约束或很小的局部样式场景使用 `css`。
+- 实现 Layout 组件时优先使用 `@emotion/styled` 定义布局容器（仅当承载真实业务样式时）；纯 flex 对齐 / 排列直接用 `@/design` 的 `Flex`，不要仅为布局新建 styled 组件（详见 `docs/context/conventions.md`）；仅在第三方 className 接入、状态 class 组合、已有 API 约束或很小的局部样式场景使用 `css`。
 - 信息缺失时，将假设写入 requirement、discussion 或 plan，而不是静默发明。
 - 不要把代码级实现细节写进 plan，除非该细节影响范围或关闭判断。
 - 强制性规则不要藏在 `docs/references/`；默认必须应用的规则放在 `docs/context/` 或 `AGENTS.md`。

@@ -44,6 +44,10 @@ injectGlobal({
         '.ant-5-table-thead > tr > th, .ant-5-table-tbody > tr > td': {
             borderBottomColor: semantic.border.divider,
         },
+        // 表头如果给rowSelection配置了selections，会有一个向下的箭头可以触发选择菜单，这里的padding是为了给该箭头足够的空间
+        '.ant-5-table-container table>thead>tr:first-child >*:first-child': {
+            paddingRight: '12px'
+        },
     },
     '.ant-5-checkbox-checked ,.ant-5-checkbox-indeterminate': {
         backgroundColor: semantic.button.primary.bg,

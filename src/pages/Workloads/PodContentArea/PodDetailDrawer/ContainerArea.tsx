@@ -12,6 +12,9 @@ import {containerBadge, orderedContainers} from './containerOrder';
 import {ContainerSubTabs} from './ContainerSubTabs';
 
 const ContainerTabs = styled(Tabs)`
+    // 这两个属性是为了让容器区域能够占据剩余空间但同时不受子元素影响
+    flex: 1;
+    min-height: 0;
     padding: ${spacing.xs}px;
     background: ${semantic.bg.page};
     border-radius: ${radius.xl}px;
@@ -95,6 +98,7 @@ export const ContainerArea = ({ appEnvID, clusterId, podName, pod }: ContainerAr
         <ContainerTabs
             activeKey={active.name}
             onChange={setActiveName}
+            styles={{body: {height: '100%'}, content: {height: '100%'}}}
             items={containers.map(container => {
                 const badge = containerBadge(container.type);
                 return {

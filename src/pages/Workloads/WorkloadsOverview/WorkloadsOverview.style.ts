@@ -13,6 +13,7 @@ export const OverviewContainer = styled.div`
     display: flex;
     gap: ${spacing.l}px;
     margin-bottom: ${spacing.xl2}px;
+    z-index: 0;
 `;
 
 export const OverviewCard = styled.div`

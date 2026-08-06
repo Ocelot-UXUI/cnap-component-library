@@ -31,31 +31,6 @@ export const ActionButton = styled(Button)`
     }
 `;
 
-export const MoreButton = styled(Button)`
-    width: 28px;
-    min-width: 28px;
-    height: 28px;
-    padding: 0;
-    border-radius: ${radius.xl4}px;
-    background: ${semantic.button.secondary.bgHover};
-
-    &:hover,
-    &:focus-visible {
-        background: ${semantic.state.component.selectHover};
-    }
-`;
-
-export const MoreDots = styled.span`
-    display: flex;
-    align-items: center;
-    gap: ${spacing.xs / 2}px;
-
-    img {
-        width: 2px;
-        height: 2px;
-    }
-`;
-
 export const menuOverlayClass = css`
     &.ant-5-dropdown {
         min-width: 160px !important;

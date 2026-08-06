@@ -26,7 +26,8 @@ export const QuickFilters = ({ active, counts, onSelect }: QuickFiltersProps) =>
                         selected={active === item.key}
                         onClick={() => onSelect(item.key)}
                     >
-                        {item.label}（{counts[item.key]}）
+                        <span>{item.label}</span>
+                        <span style={{marginLeft: '6px'}}>{counts[item.key]}</span>
                     </QuickChip>
                 ))}
             </QuickFilterGroup>
