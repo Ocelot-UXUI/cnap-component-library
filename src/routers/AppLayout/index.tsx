@@ -74,7 +74,6 @@ function AppLayoutBody({ isLiquidGlass }: { isLiquidGlass: boolean; }) {
                     background={workspaceBackground}
                     borderColor={token.colorBorderSecondary}
                     isLiquidGlass={isLiquidGlass}
-                    pathname={navigation.pathname}
                 />
             </WorkspaceLayout>
         </AppLayoutRoot>

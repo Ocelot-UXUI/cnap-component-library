@@ -1,18 +1,17 @@
 import styled from '@emotion/styled';
 import {Layout} from '@/design';
 import {motion} from 'framer-motion';
-import {Outlet} from 'react-router-dom';
 
 import {radius} from '@/constants/radius';
 import {shadow} from '@/constants/shadow';
-import {spacing} from '@/constants/spacing';
+
+import {WorkspaceHost} from '../content/WorkspaceHost';
 
 const { Content } = Layout;
 
 interface ContentAreaProps {
     $background: string;
     $borderColor: string;
-    $isFullBleed: boolean;
     $isLiquidGlass: boolean;
 }
 
@@ -21,18 +20,16 @@ interface MainLayoutFrameProps {
     $borderColor: string;
 }
 
-const contentAreaStyleProps = new Set(['$background', '$borderColor', '$isFullBleed', '$isLiquidGlass']);
+const contentAreaStyleProps = new Set(['$background', '$borderColor', '$isLiquidGlass']);
 const mainLayoutFrameStyleProps = new Set(['$background', '$borderColor']);
 
 const ContentArea = styled(Content, {
     shouldForwardProp: prop => !contentAreaStyleProps.has(prop),
 })<ContentAreaProps>`
     box-sizing: border-box;
-    padding: ${({ $isFullBleed }: ContentAreaProps) => $isFullBleed ? 0 : `${spacing.xl2}px ${spacing.xl4}px`};
     background: ${({ $background }: ContentAreaProps) => $background};
     height: 100%;
-    overflow-x: hidden;
-    overflow-y: ${({ $isFullBleed }: ContentAreaProps) => ($isFullBleed ? 'hidden' : 'auto')};
+    overflow: hidden;
 
     ${({ $borderColor, $isLiquidGlass }: ContentAreaProps) =>
     $isLiquidGlass
@@ -46,13 +43,6 @@ const ContentArea = styled(Content, {
         }
     `
         : ''}
-`;
-
-const FULL_BLEED_PATHS = new Set(['/ai-chat']);
-
-const RoutedContent = styled(motion.div)`
-    height: 100%;
-    min-height: 100%;
 `;
 
 const MainLayoutFrame = styled(motion.div, {
@@ -73,17 +63,13 @@ interface WorkspaceContentLayoutProps {
     background: string;
     borderColor: string;
     isLiquidGlass: boolean;
-    pathname: string;
 }
 
 export function WorkspaceContentLayout({
     background,
     borderColor,
     isLiquidGlass,
-    pathname,
 }: WorkspaceContentLayoutProps) {
-    const isFullBleed = FULL_BLEED_PATHS.has(pathname);
-
     return (
         <MainLayoutFrame
             $background={background}
@@ -93,17 +79,9 @@ export function WorkspaceContentLayout({
                 id="pageContent"
                 $background={background}
                 $borderColor={borderColor}
-                $isFullBleed={isFullBleed}
                 $isLiquidGlass={isLiquidGlass}
             >
-                <RoutedContent
-                    key={pathname}
-                    initial={{ opacity: 0, y: 6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.15, ease: [0.4, 0, 0.2, 1] }}
-                >
-                    <Outlet />
-                </RoutedContent>
+                <WorkspaceHost />
             </ContentArea>
         </MainLayoutFrame>
     );

@@ -185,6 +185,15 @@ Figma 展示了以下典型布局：
 - Figma 中的页面内容占位不是实际业务空状态，不应作为业务组件设计依据。
 - 视觉数值可作为基线 token，但应结合当前项目已有 `AppLayout`、`PageLayout` 和导航系统实现逐步对齐。
 
+## Workspace Content Keep-Alive
+
+一级导航（工作台 / workspace）之间切换时，内容区遵循 keep-alive 语义：
+
+- 在任意两个一级路由之间来回切换时，已访问工作区的子路由页面保持组件状态与滚动位置，不重新挂载。
+- 内容区渲染与路由分支解耦：由 `WorkspaceHost` 为每个已访问工作区渲染一个常驻 Pane，并用 React 19.2 `<Activity>` 控制显隐；未访问工作区不渲染（懒挂载）。
+- 隐藏工作区的 effects 被暂停（Activity `hidden` 触发 cleanup，恢复时重跑）。轮询、订阅、WebSocket、定时器必须由业务组件以 `useEffect` 承载并清理，使其随工作区显隐自动暂停/恢复；数据是否在切回时重新拉取由业务组件自身 effect 决定，不在布局层处理。
+- 技术基线与边界见 `docs/architecture/workspace-keep-alive.md`。
+
 ## Resolved Decisions
 
 - 本地实现中的顶部上下文选择器需要与 Figma Header 占位视觉对齐；线上和沙盒环境仍以云上百度统一 Header 的实际接入能力为准。
