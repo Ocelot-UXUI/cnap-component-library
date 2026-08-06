@@ -7,6 +7,7 @@ import {palette, semantic, sidebar} from '../colors';
 import {radius} from '../radius';
 import {shadow} from '../shadow';
 import {typography} from '../typography';
+import {spacing} from '../spacing';
 
 // Focus 环 / 遮罩层的 alpha 派生值，只在本 preset 使用，就地组合以避免污染 palette / semantic
 const FOCUS_OUTLINE = 'rgba(24, 24, 24, 0.06)';
@@ -114,8 +115,11 @@ export const themePresets: Record<ThemeKey, ThemeConfig> = {
                 defaultHoverBorderColor: palette.gray[6],
                 defaultActiveBg: palette.gray[2],
                 defaultActiveBorderColor: palette.gray[7],
-                borderRadius: radius.lg,
-                onlyIconSize: '16px'
+                borderRadius: radius.xl4,
+                onlyIconSize: spacing.l,
+                paddingInlineSM: spacing.m,
+                paddingContentHorizontalSM: 2,
+                borderRadiusSM: radius.xl4,
             },
             Input: {
                 colorBorder: semantic.state.component.borderDefault,

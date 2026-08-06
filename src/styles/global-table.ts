@@ -86,5 +86,10 @@ injectGlobal({
     },
     '.ant-5-tooltip': {
         '--ant-5-tooltip-arrow-background-color': semantic.bg.default,
+    },
+    '.ant-5-btn-sm': {
+        paddingTop: '2px',
+        paddingBottom: '2px',
+        fontSize: '12px',
     }
 });
