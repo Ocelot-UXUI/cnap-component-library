@@ -1,9 +1,10 @@
-import {Checkbox, Table} from '@/design';
+import {Table} from '@/design';
 import type {TableColumnsType} from '@/design';
 
 import {ClusterNameLabel} from '@/components/ClusterNameLabel';
 import type {ResourceKind} from '@/domain/workload';
 import type {FieldState, RowState} from '../rows';
+import {toggledKeys} from '../../shared/selection';
 import {ResourceCell} from './ResourceCell';
 
 interface ClusterTableProps {
@@ -31,16 +32,11 @@ export const ClusterTable = ({ rows, onToggleCluster, onToggleLimit, onEdit }: C
 
     const columns: TableColumnsType<RowState> = [
         {
-            title: '',
-            key: 'select',
-            width: 40,
-            render: (_, row) => <Checkbox checked={row.selected} onChange={() => onToggleCluster(row.key)} />,
-        },
-        {
             title: '集群',
             key: 'clusterName',
             width: 168,
             render: (_, row) => <ClusterNameLabel clusterName={row.clusterName} clusterId={row.key} />,
+            fixed: 'left',
         },
         resourceColumn('cpu', 'CPU'),
         resourceColumn('memory', '内存'),
@@ -62,6 +58,14 @@ export const ClusterTable = ({ rows, onToggleCluster, onToggleLimit, onEdit }: C
             dataSource={rows}
             pagination={false}
             scroll={{ y: 320 }}
+            rowSelection={{
+                selectedRowKeys: rows.filter(row => row.selected).map(row => row.key),
+                columnWidth: 40,
+                selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT, Table.SELECTION_NONE],
+                onChange: keys => {
+                    toggledKeys(rows, keys).forEach(onToggleCluster);
+                },
+            }}
         />
     );
 };

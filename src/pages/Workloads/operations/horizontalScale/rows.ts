@@ -43,14 +43,21 @@ function mapRow(rows: HorizontalRow[], key: string, fn: (row: HorizontalRow) => 
     return rows.map(row => (row.key === key ? fn(row) : row));
 }
 
-/** 选中/取消选中集群 */
+/** 选中/取消选中集群；取消选中时期望副本数回滚为最初值（当前副本数） */
 export function toggleCluster(rows: HorizontalRow[], key: string): HorizontalRow[] {
-    return mapRow(rows, key, row => ({ ...row, selected: !row.selected }));
+    return mapRow(rows, key, row => {
+        const selected = !row.selected;
+        return {
+            ...row,
+            selected,
+            desired: selected ? row.desired : String(row.replicas),
+        };
+    });
 }
 
-/** 编辑期望副本数 */
+/** 编辑期望副本数；修改未选中集群时自动选中该集群 */
 export function editDesired(rows: HorizontalRow[], key: string, desired: string): HorizontalRow[] {
-    return mapRow(rows, key, row => ({ ...row, desired }));
+    return mapRow(rows, key, row => ({ ...row, desired, selected: true }));
 }
 
 /** 期望副本数校验：正整数（≥1），无上限 */

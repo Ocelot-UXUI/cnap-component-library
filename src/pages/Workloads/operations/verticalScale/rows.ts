@@ -78,14 +78,20 @@ function mapRow(rows: RowState[], key: string, fn: (row: RowState) => RowState):
     return rows.map(row => (row.key === key ? fn(row) : row));
 }
 
-/** 选中/取消选中集群：选中→启用资源项且 Lim 自动勾选取 Req 值；取消→Lim 同步 Req 并取消勾选 */
+/** 选中/取消选中集群：选中→已配置资源项启用 Lim 且自动勾选取 Req 值；取消→Lim 同步 Req 并取消勾选 */
 export function toggleCluster(rows: RowState[], key: string): RowState[] {
     return mapRow(rows, key, row => {
         const selected = !row.selected;
-        const apply = (pair: PairState): PairState => ({
-            req: pair.req,
-            lim: { ...pair.req, enabled: selected },
-        });
+        const apply = (pair: PairState): PairState => {
+            // 未配置的资源项（接口未返回对应值）不参与 Lim 联动
+            if (pair.req.value === '') {
+                return pair;
+            }
+            return {
+                req: pair.req,
+                lim: { ...pair.req, enabled: selected },
+            };
+        };
         return {
             ...row,
             selected,
@@ -130,20 +136,32 @@ export function editField(
     });
 }
 
-function isPairValid(kind: ResourceKind, pair: PairState): boolean {
-    // 该资源项未配置（接口未返回对应值）时跳过校验，不参与提交
+export type PairError = { side: 'req' | 'lim'; message: string; } | null;
+
+/** 校验一对 Req/Lim 值，返回首个错误及所属侧；Req 空且 Lim 未勾选视为未配置，跳过校验 */
+export function validatePair(kind: ResourceKind, pair: PairState): PairError {
     if (pair.req.value === '') {
-        return true;
+        return pair.lim.enabled ? { side: 'req', message: '勾选limit前请先填写request值' } : null;
     }
     const req = parseQuantity(`${pair.req.value}${pair.req.unit}`);
     if (!isPositive(req)) {
-        return false;
+        return { side: 'req', message: 'limit不能为0' };
     }
     if (!pair.lim.enabled) {
-        return true;
+        return null;
     }
     const lim = parseQuantity(`${pair.lim.value}${pair.lim.unit}`);
-    return isPositive(lim) && isLimitGteRequest(kind, req, lim);
+    if (!isPositive(lim)) {
+        return { side: 'lim', message: 'request不能为0' };
+    }
+    if (!isLimitGteRequest(kind, req, lim)) {
+        return { side: 'lim', message: 'request不能大于limit' };
+    }
+    return null;
+}
+
+function isPairValid(kind: ResourceKind, pair: PairState): boolean {
+    return validatePair(kind, pair) === null;
 }
 
 export function isRowValid(row: RowState): boolean {

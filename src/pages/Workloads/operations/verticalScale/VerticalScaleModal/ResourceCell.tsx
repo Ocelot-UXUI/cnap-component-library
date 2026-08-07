@@ -1,9 +1,10 @@
-import {Checkbox, Input, Select} from '@/design';
+import {Checkbox, InputNumber, Select} from '@/design';
 
 import type {ResourceKind} from '@/domain/workload';
-import {isLimitGteRequest, parseQuantity, RESOURCE_UNITS} from '@/domain/workload';
+import {RESOURCE_UNITS} from '@/domain/workload';
 import type {FieldState, PairState} from '../rows';
-import {CellLabel, CellRow} from './VerticalScaleModal.style';
+import {validatePair} from '../rows';
+import {CellLabel, CellRow, FieldError} from './VerticalScaleModal.style';
 
 interface ResourceCellProps {
     kind: ResourceKind;
@@ -24,55 +25,63 @@ function unitOptions(kind: ResourceKind, unit: string) {
     return units.map(value => ({ value, label: value }));
 }
 
+function errorStatus(error: string | null): 'error' | undefined {
+    return error ? 'error' : undefined;
+}
+
 export const ResourceCell = ({ kind, pair, selected, onEdit, onToggleLimit }: ResourceCellProps) => {
-    const limInvalid = selected && pair.lim.enabled && pair.req.value !== '' && pair.lim.value !== ''
-        && !isLimitGteRequest(
-            kind,
-            parseQuantity(`${pair.req.value}${pair.req.unit}`),
-            parseQuantity(`${pair.lim.value}${pair.lim.unit}`),
-        );
+    const error = selected ? validatePair(kind, pair) : null;
+    const reqError = error?.side === 'req' ? error.message : null;
+    const limError = error?.side === 'lim' ? error.message : null;
+    const limDisabled = !selected || !pair.lim.enabled;
 
     return (
         <div>
             <CellRow style={{ paddingLeft: '24px' }}>
                 <CellLabel>Req</CellLabel>
-                <Input
+                <InputNumber
                     size="small"
                     style={NUM_WIDTH}
                     value={pair.req.value}
+                    status={errorStatus(reqError)}
                     disabled={!selected}
-                    onChange={event => onEdit('req', { value: event.target.value })}
+                    onChange={value => onEdit('req', { value: value ?? '' })}
+                    min='0'
                 />
                 <Select
                     size="small"
                     style={UNIT_WIDTH}
                     value={pair.req.unit}
+                    status={errorStatus(reqError)}
                     disabled={!selected}
                     options={unitOptions(kind, pair.req.unit)}
                     onChange={value => onEdit('req', { unit: value })}
                 />
             </CellRow>
+            {reqError && <FieldError>{reqError}</FieldError>}
             <CellRow>
                 <Checkbox checked={pair.lim.enabled} disabled={!selected} onChange={onToggleLimit} />
                 <CellLabel>Lim</CellLabel>
-                <Input
+                <InputNumber
                     size="small"
-                    status={limInvalid ? 'error' : undefined}
+                    status={errorStatus(limError)}
                     style={NUM_WIDTH}
                     value={pair.lim.value}
-                    disabled={!selected || !pair.lim.enabled}
-                    onChange={event => onEdit('lim', { value: event.target.value })}
+                    disabled={limDisabled}
+                    onChange={value => onEdit('lim', { value: value ?? '' })}
+                    min='0'
                 />
                 <Select
                     size="small"
-                    status={limInvalid ? 'error' : undefined}
+                    status={errorStatus(limError)}
                     style={UNIT_WIDTH}
                     value={pair.lim.unit}
-                    disabled={!selected || !pair.lim.enabled}
+                    disabled={limDisabled}
                     options={unitOptions(kind, pair.lim.unit)}
                     onChange={value => onEdit('lim', { unit: value })}
                 />
             </CellRow>
+            {limError && <FieldError>{limError}</FieldError>}
         </div>
     );
 };

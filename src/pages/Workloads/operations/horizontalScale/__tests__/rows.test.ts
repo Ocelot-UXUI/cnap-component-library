@@ -74,3 +74,37 @@ describe('validation and submit mapping', () => {
         ]);
     });
 });
+
+describe('editDesired', () => {
+    it('auto-selects an unselected row when edited', () => {
+        let rows = buildRows(workloads);
+        rows = editDesired(rows, 'cluster-a', '5');
+        expect(rows[0].selected).toBe(true);
+        expect(rows[0].desired).toBe('5');
+        expect(rows[1].selected).toBe(false);
+    });
+});
+
+describe('toggleCluster', () => {
+    it('selects a row without resetting untouched desired', () => {
+        let rows = buildRows(workloads);
+        rows = toggleCluster(rows, 'cluster-a');
+        expect(rows[0].selected).toBe(true);
+        expect(rows[0].desired).toBe('3');
+    });
+
+    it('resets desired to current replicas on deselect', () => {
+        let rows = editDesired(buildRows(workloads), 'cluster-a', '8');
+        rows = toggleCluster(rows, 'cluster-a');
+        expect(rows[0].selected).toBe(false);
+        expect(rows[0].desired).toBe('3');
+    });
+
+    it('keeps rolled-back desired when reselecting', () => {
+        let rows = editDesired(buildRows(workloads), 'cluster-a', '8');
+        rows = toggleCluster(rows, 'cluster-a');
+        rows = toggleCluster(rows, 'cluster-a');
+        expect(rows[0].selected).toBe(true);
+        expect(rows[0].desired).toBe('3');
+    });
+});

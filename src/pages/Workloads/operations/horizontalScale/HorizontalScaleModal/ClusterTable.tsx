@@ -1,10 +1,11 @@
-import {Checkbox, Input, Table} from '@/design';
+import {InputNumber, Table} from '@/design';
 import type {TableColumnsType} from '@/design';
 
 import {ClusterNameLabel} from '@/components/ClusterNameLabel';
 
 import {isDesiredValid} from '../rows';
 import type {HorizontalRow} from '../rows';
+import {toggledKeys} from '../../shared/selection';
 
 interface ClusterTableProps {
     rows: HorizontalRow[];
@@ -15,12 +16,6 @@ interface ClusterTableProps {
 export const ClusterTable = ({ rows, onToggleCluster, onEditDesired }: ClusterTableProps) => {
     const columns: TableColumnsType<HorizontalRow> = [
         {
-            title: '',
-            key: 'select',
-            width: 40,
-            render: (_, row) => <Checkbox checked={row.selected} onChange={() => onToggleCluster(row.key)} />,
-        },
-        {
             title: '集群',
             key: 'clusterName',
             width: 220,
@@ -30,13 +25,13 @@ export const ClusterTable = ({ rows, onToggleCluster, onEditDesired }: ClusterTa
         {
             title: '期望副本数',
             key: 'desired',
-            width: 140,
             render: (_, row) => (
-                <Input
+                <InputNumber
                     style={{ width: 80 }}
                     value={row.desired}
                     status={isDesiredValid(row.desired) ? undefined : 'error'}
-                    onChange={event => onEditDesired(row.key, event.target.value)}
+                    onChange={value => onEditDesired(row.key, value ?? '')}
+                    min='1'
                 />
             ),
         },
@@ -57,6 +52,14 @@ export const ClusterTable = ({ rows, onToggleCluster, onEditDesired }: ClusterTa
             pagination={false}
             scroll={{ y: 320 }}
             locale={{ emptyText: '该工作负载下暂无集群' }}
+            rowSelection={{
+                selectedRowKeys: rows.filter(row => row.selected).map(row => row.key),
+                columnWidth: 40,
+                selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT, Table.SELECTION_NONE],
+                onChange: keys => {
+                    toggledKeys(rows, keys).forEach(onToggleCluster);
+                },
+            }}
         />
     );
 };

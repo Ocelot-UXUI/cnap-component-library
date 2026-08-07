@@ -21,7 +21,9 @@ interface VerticalScaleModalProps {
     onSuccess?: () => void;
 }
 
-const SUBTITLE = '纵向扩缩是在保持当前集群Pod数量的前提下，调整Pod的资源规格，Pod规格可按集群调整。';
+const SUBTITLE1 = `纵向扩缩是在保持当前集群Pod数量的前提下，调整Pod的资源规格，Pod规格可按集群调整。\n
+Request为Pod调度时保障的最小资源量，Limit为Pod运行时允许使用的资源上限。Limit不填写时，默认与Request一致。
+`;
 
 export const VerticalScaleModal = ({
     appEnvID,
@@ -79,7 +81,7 @@ export const VerticalScaleModal = ({
             footer={footer}
             destroyOnHidden
         >
-            <SubTitle>{SUBTITLE}</SubTitle>
+            <SubTitle>{SUBTITLE1}</SubTitle>
             <WorkloadContainerSelector
                 groups={context.groups}
                 groupId={context.groupId}

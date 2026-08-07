@@ -44,3 +44,10 @@ export const CellLabel = styled.span`
     color: ${semantic.text.secondary};
     width: 30px;
 `;
+
+export const FieldError = styled.p`
+    ${typography.caption.regular}
+    color: ${semantic.state.error.default};
+    margin: ${spacing.xs2}px 0 0;
+    padding-left: 24px;
+`;

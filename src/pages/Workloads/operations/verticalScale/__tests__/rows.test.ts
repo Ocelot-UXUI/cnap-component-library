@@ -1,7 +1,8 @@
 import {describe, expect, it} from 'vitest';
 
 import type {RuntimeWorkload} from '@/interface/entities/workload';
-import {buildRows, canSubmit, editField, isRowValid, toggleCluster, toggleLimit, toVerticalScaleRows} from '../rows';
+import {buildRows, canSubmit, editField, isRowValid, toggleCluster, toggleLimit, toVerticalScaleRows, validatePair} from '../rows';
+import type {PairState} from '../rows';
 
 function workload(clusterId: string, containers: string[]): RuntimeWorkload {
     return {
@@ -102,5 +103,51 @@ describe('validation and submit mapping', () => {
         expect(result).toHaveLength(1);
         expect(result[0].ref.clusterId).toBe('cluster-a');
         expect(result[0].container).toBe('api');
+    });
+});
+
+describe('validatePair', () => {
+    function pair(overrides: Partial<PairState> = {}): PairState {
+        return {
+            req: { value: '1', unit: 'Gi' },
+            lim: { value: '1', unit: 'Gi', enabled: false },
+            ...overrides,
+        };
+    }
+
+    it('passes when req is filled and lim is disabled', () => {
+        expect(validatePair('memory', pair())).toBeNull();
+    });
+
+    it('treats empty req with lim disabled as unconfigured and passes', () => {
+        expect(validatePair('memory', pair({ req: { value: '', unit: 'Gi' } }))).toBeNull();
+    });
+
+    it('errors on req side when lim is enabled but req is empty', () => {
+        expect(validatePair('memory', pair({
+            req: { value: '', unit: 'Gi' },
+            lim: { value: '', unit: 'Gi', enabled: true },
+        }))).toEqual({ side: 'req', message: '勾选限制前请先填写请求值' });
+    });
+
+    it('errors on req side when req is not positive', () => {
+        expect(validatePair('memory', pair({ req: { value: '0', unit: 'Gi' } })))
+            .toEqual({ side: 'req', message: '请求值需为大于 0 的数值' });
+    });
+
+    it('errors on lim side when lim is empty or not positive', () => {
+        expect(validatePair('memory', pair({ lim: { value: '', unit: 'Gi', enabled: true } })))
+            .toEqual({ side: 'lim', message: '限制值需为大于 0 的数值' });
+    });
+
+    it('errors on lim side when lim is less than req', () => {
+        expect(validatePair('memory', pair({
+            req: { value: '2', unit: 'Gi' },
+            lim: { value: '1', unit: 'Gi', enabled: true },
+        }))).toEqual({ side: 'lim', message: '限制值不能小于请求值' });
+    });
+
+    it('passes when lim equals req', () => {
+        expect(validatePair('memory', pair({ lim: { value: '1', unit: 'Gi', enabled: true } }))).toBeNull();
     });
 });
