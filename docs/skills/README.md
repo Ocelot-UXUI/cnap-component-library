@@ -48,6 +48,14 @@ Do not add broad business-scenario skills as a replacement for project-specific 
 | `code-refactor-prompt.md`                 | behavior-preserving structural refactor work is the task                            | the task changes supported behavior           | target area, invariants, verification commands                                        | safe refactor execution and proof                          |
 | `api-sync-from-ku-prompt.md`              | a ku knowledge base API doc has been updated and frontend implementation needs sync | the change is design/UI only, not API-driven  | ku doc URL, local `docs/input/source-api-*.md`, `src/api/`, `src/interface/entities/` | type/param/mock updates + lint-type pass                   |
 
+## Comate 层 Skills（`.comate/skills/`）
+
+除上表的 `docs/skills/*.md` 审查/审计 prompt 外，本仓库还提供 Comate 平台 skill（目录 `.comate/skills/`，由 Comate 在改动时自动路由触发），二者是不同机制：
+
+| Comate Skill            | Use when                                         | 关系与边界                                                                 |
+| ----------------------- | ------------------------------------------------ | -------------------------------------------------------------------------- |
+| `frontend-change-guard` | 任何触及 `src/` 或前端产物/渲染的**实现级**改动  | 前端改动执行清单（组件/样式/token/状态/接口/资源/AI 语义）。**服从 AGE**：命中保护区→ask-first/plan-first、命中 planning trigger→先写 plan；收尾更新 `docs/logs`。不替代 requirement/owner doc。 |
+
 ## Starter Skills
 
 - `age-practice-gap-audit-prompt.md`

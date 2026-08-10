@@ -30,5 +30,6 @@ yarn-error.log*
 .baidu-cc
 .comate/specs
 .comate/memory.json
+.comate/skill
 .cache
 build

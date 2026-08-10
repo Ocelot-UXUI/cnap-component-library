@@ -96,6 +96,25 @@ ESLint 负责代码质量检查（max-lines、react-hooks、eqeqeq、complexity 
 
 `.eslintrc.cjs` 通过 `no-restricted-imports` 对 `antd` 与 `antd/*` 报错，并对上述豁免路径 `off`。违规在 `yarn lint` 阶段拦截。
 
+## 增强组件契约（Drawer / Select）
+
+`src/design/` 下少数组件不是透传，而是对 antd 的增强封装。它们与 antd 同名但行为有约定，使用时按下面契约走，不要绕开去直接拼 antd 原组件。
+
+### Drawer（`@/design` 的 `Drawer`）
+
+- 标准头部布局固定为：**标题居左、关闭按钮居右、关闭按钮左侧是 `extra` 额外操作插槽**。
+- 已屏蔽 antd 原生关闭按钮（类型上 `Omit` 掉了 `closable` / `closeIcon`），**不要再自己塞关闭按钮或传 `closeIcon`**；关闭态统一由 header 右侧承载。
+- 关闭回调走 `onClose`；关闭按钮的显隐由 `showClose` 控制（默认 `true`），无需关闭按钮时传 `showClose={false}`。
+- 头部额外操作（如「保存」「更多」）放 `extra`，会渲染在关闭按钮左侧。
+
+### Select（`@/design` 的 `Select`）
+
+- 是 antd Select 的 drop-in 替代，类型完全对齐（保留泛型签名与 `Option` / `OptGroup` 静态成员），单选场景（不传 `mode`，或 `mode` 非 `multiple` / `tags`）行为与 antd 原生**完全一致**。
+- **多选统一用 `mode="multiple"`（或 `tags`）驱动**：此时下拉项自动前置 Checkbox 呈现多选态，并移除 antd 默认右侧对勾。**不要再造独立的 MultiSelect 组件**（旧 MultiSelect 已收敛进本组件）。
+- 主题色 / token 由 `ConfigProvider` 统一注入，组件内不做二次覆盖——不要为选中态/边框单独传色值（遵循 `docs/design/design-tokens.md` 的污染防护约束）。
+
+新增其它增强组件（对 antd 组件做行为封装）时，沿用同样模式：与 antd 同名、drop-in、契约写进本节，出口补到 `src/design/index.ts`。
+
 ## API And Data Source Boundaries
 
 - If data should be obtained through an API, consumers must call the corresponding API function instead of importing local data or deriving data-source behavior locally.

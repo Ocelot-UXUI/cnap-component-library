@@ -1,0 +1,3 @@
+- [Project identity — frontend-v2 is CNAP2.0](project_identity.md) — 本仓库是 CNAP2.0 项目前端；兄弟仓库 team-agents 是 Tiki
+- [审查/补充规范的仓库边界](feedback_review_scope_repo_boundary.md) — "审查+补规范"默认改当前仓库自身，跨仓库搬运需先确认
+- [用户在多仓库维护前端治理](user_frontend_governance_multi_repo.md) — 用户跨 CNAP2.0(docs) 与 Tiki(guard skill) 维护前端规范，参考 frontend-change-guard
