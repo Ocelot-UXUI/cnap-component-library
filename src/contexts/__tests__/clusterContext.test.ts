@@ -20,7 +20,7 @@ describe('normalizeNavigationContext clusterId', () => {
             { accountId: '1', applicationId: '11', environmentId: '101', clusterId: 'cluster-a' },
             candidates,
         )).toEqual({
-            accountId: 1,
+            accountId: '1',
             applicationId: '11',
             environmentId: '101',
             clusterId: 'cluster-a',
@@ -32,7 +32,7 @@ describe('normalizeNavigationContext clusterId', () => {
             { accountId: '1', applicationId: '11', environmentId: '999', clusterId: 'cluster-a' },
             candidates,
         )).toEqual({
-            accountId: 1,
+            accountId: '1',
             applicationId: '11',
             environmentId: undefined,
             clusterId: undefined,
@@ -44,7 +44,7 @@ describe('normalizeNavigationContext clusterId', () => {
             { accountId: '1', applicationId: '11', clusterId: 'cluster-a' },
             candidates,
         )).toEqual({
-            accountId: 1,
+            accountId: '1',
             applicationId: '11',
             environmentId: undefined,
             clusterId: undefined,

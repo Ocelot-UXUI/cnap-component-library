@@ -58,7 +58,7 @@ describe('executeNavigate', () => {
             phase: 'validate_context',
             data: {
                 requiredContext: { accountId: true, applicationId: true, environmentId: true },
-                currentContext: { accountId: 1 },
+                currentContext: { accountId: '1' },
                 missingContext: ['applicationId', 'environmentId'],
                 invalidContext: [],
             },

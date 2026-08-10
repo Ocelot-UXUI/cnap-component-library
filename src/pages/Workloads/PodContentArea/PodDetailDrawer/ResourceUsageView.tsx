@@ -83,7 +83,7 @@ const Metric = ({ icon, label, usage, request, limit, usageNumeric, limitNumeric
 };
 
 export const ResourceUsageView = ({ container }: ResourceUsageProps) => {
-    const gpus = container.resourceLimits?.gpus ?? [];
+    const gpus = container.resourceRequests?.gpus ?? [];
     return (
         <UsageRoot>
             <UsageTitle>资源用量</UsageTitle>

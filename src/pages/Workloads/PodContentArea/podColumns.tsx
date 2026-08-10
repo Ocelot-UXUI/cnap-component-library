@@ -19,28 +19,15 @@ import {renderCpu, renderMemory} from './podUsageCells';
 import type {ViewMode} from './types';
 import Icon from '@ant-design/icons';
 
-/** 该组是否存在 GPU 资源（无则整列隐藏） */
+/** 该组是否存在 GPU 资源（无则整列隐藏）；GPU 统一从 resourceRequests 读取（与 gpuText 一致） */
 export function groupHasGpu(pods: Pod[]): boolean {
     return pods.some(pod => Boolean(pod.resourceRequests?.gpus?.length));
 }
 
-/** GPU 列：复用 ResourceUsageView 的 GpuUsageCard 渲染结构化 GPU；无结构化数据时回退文本。 */
-export function gpuText(pod: Pod): string {
-    const gpus = pod.resourceLimits?.gpus ?? [];
-    if (gpus.length) {
-        return gpus
-            .map(gpu => `${[gpu.vendor, gpu.model, gpu.profile].filter(Boolean).join(' ')}:${gpu.count}`)
-            .join(', ');
-    }
-    const entries = Object.entries(pod.resourceLimits?.others ?? {})
-        .filter(([key]) => key.toLowerCase().includes('gpu'));
-    return entries.length ? entries.map(([name, value]) => `${name}:${value}`).join(', ') : '-';
-}
-
 function renderGpu(pod: Pod) {
-    const gpus = pod.resourceLimits?.gpus ?? [];
+    const gpus = pod.resourceRequests?.gpus ?? [];
     if (gpus.length === 0) {
-        return gpuText(pod);
+        return '-';
     }
     return (
         <GpuCellList>

@@ -1,18 +1,27 @@
-import {beforeAll, describe, expect, it} from 'vitest';
+import {describe, expect, it} from 'vitest';
 import {createActor} from 'xstate';
 
-import {loadNavigationContextCandidates} from '../navigationContextCandidates';
 import {createNavigationContextActor} from '../navigationContextMachine';
 import {optionGroupMachine} from '../navigationOptionGroupMachine';
 
 import type {NavigationContextCandidates} from '../navigationContextMachine';
 
-let candidates: NavigationContextCandidates;
+const candidates: NavigationContextCandidates = {
+    accounts: [
+        { id: '1', name: 'acc', displayName: 'Acc' },
+        { id: '2', name: 'acc2', displayName: 'Acc 2' },
+    ],
+    applications: [
+        { id: '11', accountId: '1', name: 'app' },
+        { id: '12', accountId: '1', name: 'app2' },
+    ],
+    environments: [
+        { id: '101', applicationId: '11', environmentId: '1', environmentName: '开发环境' },
+        { id: '102', applicationId: '11', environmentId: '2', environmentName: '生产环境' },
+    ],
+};
 
 describe('navigationContextMachine clusterId cascade', () => {
-    beforeAll(async () => {
-        candidates = await loadNavigationContextCandidates();
-    });
 
     it('updates clusterId when a cluster is selected', () => {
         const actor = createNavigationContextActor(

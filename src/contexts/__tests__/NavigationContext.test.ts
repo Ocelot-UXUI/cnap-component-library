@@ -1,5 +1,4 @@
-import {beforeAll, beforeEach, describe, expect, it} from 'vitest';
-import {loadNavigationContextCandidates} from '../navigationContextCandidates';
+import {beforeEach, describe, expect, it} from 'vitest';
 import {
     getWorkspaceStoredContext,
     normalizeNavigationContext,
@@ -8,13 +7,22 @@ import {
 } from '../navigationContextData';
 import type {NavigationContextCandidates} from '../navigationContextMachine';
 
-let candidates: NavigationContextCandidates;
+const candidates: NavigationContextCandidates = {
+    accounts: [
+        { id: '1', name: 'acc', displayName: 'Acc' },
+        { id: '2', name: 'acc2', displayName: 'Acc 2' },
+    ],
+    applications: [
+        { id: '11', accountId: '1', name: 'app' },
+        { id: '12', accountId: '1', name: 'app2' },
+    ],
+    environments: [
+        { id: '101', applicationId: '11', environmentId: '1', environmentName: '开发环境' },
+        { id: '102', applicationId: '11', environmentId: '2', environmentName: '生产环境' },
+    ],
+};
 
 describe('normalizeNavigationContext', () => {
-    beforeAll(async () => {
-        candidates = await loadNavigationContextCandidates();
-    });
-
     beforeEach(() => {
         localStorage.clear();
     });
@@ -80,7 +88,7 @@ describe('normalizeNavigationContext', () => {
             },
         });
         expect(getWorkspaceStoredContext('changes')).toEqual({
-            accountId: 1,
+            accountId: '1',
             applicationId: '11',
             environmentId: '102',
         });

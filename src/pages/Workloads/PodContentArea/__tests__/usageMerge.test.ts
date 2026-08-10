@@ -1,7 +1,7 @@
 import {describe, expect, it} from 'vitest';
 
 import type {Pod, PodDetailUsage, PodList} from '@/interface/entities/pod';
-import {gpuText, groupHasGpu} from '../podColumns';
+import {groupHasGpu} from '../podColumns';
 import {mergePodDetailUsage} from '../PodDetailDrawer/usePodDetail';
 import {mergePodUsages} from '../useGroupPods';
 
@@ -77,13 +77,12 @@ describe('Usage merging', () => {
     it('supports structured GPUs with legacy others fallback', () => {
         const structured = {
             ...pod('a'),
-            resourceLimits: {
+            resourceRequests: {
                 gpus: [{ vendor: 'NVIDIA', model: 'T4', profile: '16GB', count: 2 }],
             },
         };
         expect(groupHasGpu([structured])).toBe(true);
-        expect(gpuText(structured)).toBe('NVIDIA T4 16GB:2');
-        expect(groupHasGpu([{ ...pod('b'), resourceLimits: { others: { foo: '1' } } }])).toBe(false);
+        expect(groupHasGpu([{ ...pod('b'), resourceRequests: { others: { foo: '1' } } }])).toBe(false);
     });
 
     it('clears embedded legacy usage when dedicated usage is unavailable', () => {

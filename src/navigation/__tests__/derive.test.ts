@@ -47,6 +47,7 @@ describe('navigation derive helpers', () => {
 
     it('generates internal menu paths without basename', () => {
         expect(getWorkspaceMenuGroup().items[0].url).not.toContain('/devops/cnap');
-        expect(getSidebarGroups('applications')[0].items[0].url).toBe('/applications');
+        // applications.list（应用列表）未开发且不进侧边栏，applications 工作区侧边栏首项为工作负载
+        expect(getSidebarGroups('applications')[0].items[0].url).toBe('/workloads');
     });
 });
