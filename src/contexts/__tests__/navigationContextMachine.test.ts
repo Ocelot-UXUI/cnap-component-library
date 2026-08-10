@@ -30,7 +30,7 @@ vi.mock('@/api/account', () => ({
     default: {
         getMany: vi.fn(async () => accounts),
         getApplicationsByAccount: vi.fn(
-            async ({accountID}: {accountID: string; keyword: string;}) => applicationsByAccount[accountID] ?? [],
+            async ({accountId}: {accountId: string; keyword: string;}) => applicationsByAccount[accountId] ?? [],
         ),
     },
 }));

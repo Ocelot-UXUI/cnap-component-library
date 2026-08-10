@@ -62,7 +62,7 @@ export default function ApplicationsPage() {
         }
         setLoading(true);
         setLoadError(null);
-        accountApi.getApplicationsByAccount({ accountID: accountId, keyword: '' }).then(response => {
+        accountApi.getApplicationsByAccount({ accountId, keyword: '' }).then(response => {
             if (!canceled) {
                 setApplications(response);
                 setLoading(false);

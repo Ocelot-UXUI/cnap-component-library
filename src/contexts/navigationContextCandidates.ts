@@ -16,7 +16,7 @@ export async function loadNavigationContextCandidates(
 ): Promise<NavigationContextCandidates> {
     const accounts = await accountApi.getMany({ keyword: '' });
     const applicationResponses = await Promise.all(
-        accounts.map(account => accountApi.getApplicationsByAccount({ accountID: account.id, keyword: '' })),
+        accounts.map(account => accountApi.getApplicationsByAccount({ accountId: account.id, keyword: '' })),
     );
     const applications = applicationResponses.flat();
     const environmentResponses = await Promise.all(

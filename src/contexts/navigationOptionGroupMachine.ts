@@ -24,7 +24,7 @@ export const optionGroupMachine = setup({
         }),
         loadApplication: fromPromise(async ({ input }: { input: { accountId?: string; }; }) => {
             if (!input.accountId) return buildApplicationSelectorOptionGroups([]);
-            const applications = await accountApi.getApplicationsByAccount({ accountID: input.accountId, keyword: '' });
+            const applications = await accountApi.getApplicationsByAccount({ accountId: input.accountId, keyword: '' });
             return buildApplicationSelectorOptionGroups(applications);
         }),
         loadEnvironment: fromPromise(async ({ input }: { input: { applicationId?: string; }; }) => {
