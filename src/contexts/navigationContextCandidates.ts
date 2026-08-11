@@ -1,4 +1,5 @@
 import accountApi from '@/api/account';
+import applicationApi from '@/api/application';
 import applicationEnvironmentApi from '@/api/applicationEnvironment';
 
 import type {NavigationContextCandidates} from './navigationContextMachine';
@@ -16,9 +17,9 @@ export async function loadNavigationContextCandidates(
 ): Promise<NavigationContextCandidates> {
     const accounts = await accountApi.getMany({ keyword: '' });
     const applicationResponses = await Promise.all(
-        accounts.map(account => accountApi.getApplicationsByAccount({ accountId: account.id, keyword: '' })),
+        accounts.map(account => applicationApi.getApplicationsByAccount({ accountId: account.id })),
     );
-    const applications = applicationResponses.flat();
+    const applications = applicationResponses.flatMap(response => response.items);
     const environmentResponses = await Promise.all(
         applications.map(application => applicationEnvironmentApi.getEnvironments({ applicationID: application.id })),
     );

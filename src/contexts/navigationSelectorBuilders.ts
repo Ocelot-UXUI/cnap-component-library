@@ -1,4 +1,5 @@
-import type {Account, Application} from '@/interface/entities/account';
+import type {Account} from '@/interface/entities/account';
+import type {Application} from '@/interface/entities/application';
 import type {AppEnvironment} from '@/interface/entities/applicationEnvironment';
 
 export type NavigationSelectorTabKey = 'all' | 'favorites' | 'recent' | 'production' | 'test';

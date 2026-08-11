@@ -29,8 +29,18 @@ const {accounts, applicationsByAccount, environmentsByApplication} = vi.hoisted(
 vi.mock('@/api/account', () => ({
     default: {
         getMany: vi.fn(async () => accounts),
+    },
+}));
+
+vi.mock('@/api/application', () => ({
+    default: {
         getApplicationsByAccount: vi.fn(
-            async ({accountId}: {accountId: string; keyword: string;}) => applicationsByAccount[accountId] ?? [],
+            async ({accountId}: {accountId: string;}) => ({
+                total: (applicationsByAccount[accountId] ?? []).length,
+                page: 1,
+                pageSize: 20,
+                items: applicationsByAccount[accountId] ?? [],
+            }),
         ),
     },
 }));

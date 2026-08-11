@@ -1,6 +1,7 @@
 import {assign, fromPromise, setup} from 'xstate';
 
 import accountApi from '@/api/account';
+import applicationApi from '@/api/application';
 import applicationEnvironmentApi from '@/api/applicationEnvironment';
 import {
     buildAccountSelectorOptionGroups,
@@ -24,8 +25,8 @@ export const optionGroupMachine = setup({
         }),
         loadApplication: fromPromise(async ({ input }: { input: { accountId?: string; }; }) => {
             if (!input.accountId) return buildApplicationSelectorOptionGroups([]);
-            const applications = await accountApi.getApplicationsByAccount({ accountId: input.accountId, keyword: '' });
-            return buildApplicationSelectorOptionGroups(applications);
+            const applications = await applicationApi.getApplicationsByAccount({ accountId: input.accountId });
+            return buildApplicationSelectorOptionGroups(applications.items);
         }),
         loadEnvironment: fromPromise(async ({ input }: { input: { applicationId?: string; }; }) => {
             if (!input.applicationId) return buildEnvironmentSelectorOptionGroups([]);

@@ -24,6 +24,10 @@
 - `route-context-for-llm.md` - REQ-AI-14 路由上下文传递至 LLM（已完成）
 - `remove-navigation-fallback.md` - 移除导航 fallback key / fallback node 自动回退能力
 
+### 应用列表（Applications）
+
+- `cnap2-application-list-page.md` — 应用列表页面（应用卡片展示信息与卡片操作，当前切片）
+
 ### 导航 & 布局
 
 - `cnap2-application-layout-navigation.md` - CNAP 2.0 应用外壳和导航交互实现需求

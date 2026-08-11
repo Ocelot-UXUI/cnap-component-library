@@ -1,5 +1,5 @@
 /* eslint-disable max-lines */
-import accountApi from '@/api/account';
+import applicationApi from '@/api/application';
 import {Button, Switch} from '@/components/ai';
 import {useNavigationSnapshot} from '@/contexts/NavigationContext';
 import type {Application} from '@/contexts/navigationContextData';
@@ -62,9 +62,9 @@ export default function ApplicationsPage() {
         }
         setLoading(true);
         setLoadError(null);
-        accountApi.getApplicationsByAccount({ accountId, keyword: '' }).then(response => {
+        applicationApi.getApplicationsByAccount({ accountId }).then(response => {
             if (!canceled) {
-                setApplications(response);
+                setApplications(response.items);
                 setLoading(false);
             }
         }).catch(err => {

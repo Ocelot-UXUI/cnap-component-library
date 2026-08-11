@@ -1,21 +1,9 @@
-import type {
-    Account,
-    AccountDetail,
-    Application,
-    ResourceAccountNode,
-} from '@/interface/entities/account';
+import type {Account, AccountDetail, ResourceAccountNode} from '@/interface/entities/account';
 import {createInterface} from './services/primary';
 
 interface ParamsGetAccounts {
     /** 搜索关键词，支持账户中文名称、账户英文名称、资源账户名称及资源账户完整路径；为空返回全部账户 */
     keyword?: string;
-}
-
-interface ParamsGetApplicationsByAccount {
-    /** 账号 ID */
-    accountId: string;
-    /** 查询关键字 */
-    keyword: string;
 }
 
 interface ParamsAccountID {
@@ -44,16 +32,6 @@ const getResourceAccounts = createInterface<void, ResourceAccountNode[]>(
 const getMany = createInterface<ParamsGetAccounts, Account[]>(
     'GET',
     '/accounts',
-);
-
-/**
- * 查询账号下应用列表
- *
- * GET /rest/v1/accounts/:accountId/applications
- */
-const getApplicationsByAccount = createInterface<ParamsGetApplicationsByAccount, Application[]>(
-    'GET',
-    '/accounts/{accountId}/applications',
 );
 
 /**
@@ -152,7 +130,6 @@ export const updateAccount = (input: UpdateAccountInput) =>
 export default {
     getResourceAccounts,
     getMany,
-    getApplicationsByAccount,
     getDetail,
     createAccount,
     updateAccount,

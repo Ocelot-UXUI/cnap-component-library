@@ -16,7 +16,12 @@ class ResizeObserverStub {
 vi.mock('@/api/account', () => ({
     default: {
         getMany: vi.fn(async () => []),
-        getApplicationsByAccount: vi.fn(async () => []),
+    },
+}));
+
+vi.mock('@/api/application', () => ({
+    default: {
+        getApplicationsByAccount: vi.fn(async () => ({ total: 0, page: 1, pageSize: 20, items: [] })),
     },
 }));
 
