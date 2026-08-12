@@ -115,6 +115,13 @@ export const themePresets: Record<ThemeKey, ThemeConfig> = {
                 defaultHoverBorderColor: palette.gray[6],
                 defaultActiveBg: palette.gray[2],
                 defaultActiveBorderColor: palette.gray[7],
+                // 视觉规范：按钮不带投影，antd 默认的 primaryShadow / defaultShadow 需显式清空
+                primaryShadow: 'none',
+                defaultShadow: 'none',
+                dangerShadow: 'none',
+                // defaultBgDisabled: palette.navigation[9],
+                defaultBgDisabled: semantic.bg.default,
+                borderColorDisabled: semantic.border.divider,
                 borderRadius: radius.xl4,
                 onlyIconSize: spacing.l,
                 paddingInlineSM: spacing.m,
@@ -128,7 +135,13 @@ export const themePresets: Record<ThemeKey, ThemeConfig> = {
                 activeShadow: `0 0 0 2px ${FOCUS_OUTLINE}`,
                 errorActiveShadow: `0 0 0 2px ${ERROR_FOCUS_OUTLINE}`,
                 colorTextPlaceholder: semantic.text.placeholder,
-                borderRadius: radius.md,
+                // 视觉规范：Input 所有规格圆角统一 8px（不外扩到 InputNumber / Select / DatePicker）
+                borderRadius: radius.lg,
+                borderRadiusSM: radius.lg,
+                borderRadiusLG: radius.lg,
+                fontSize: typography.body.regular.fontSize,
+                fontSizeSM: typography.body.small.fontSize,
+                inputFontSizeSM: typography.body.small.fontSize,
             },
             InputNumber: {
                 colorBorder: semantic.state.component.borderDefault,
@@ -136,6 +149,9 @@ export const themePresets: Record<ThemeKey, ThemeConfig> = {
                 activeBorderColor: semantic.state.component.borderFocus,
                 activeShadow: `0 0 0 2px ${FOCUS_OUTLINE}`,
                 borderRadius: radius.md,
+                fontSizeSM: typography.body.small.fontSize,
+                inputFontSizeSM: typography.body.small.fontSize,
+                handleHoverColor: semantic.state.component.borderHover,
             },
             Select: {
                 colorBorder: semantic.state.component.borderDefault,
@@ -146,8 +162,10 @@ export const themePresets: Record<ThemeKey, ThemeConfig> = {
                 optionSelectedBg: semantic.state.component.selectActive,
                 optionSelectedColor: semantic.text.primary,
                 optionActiveBg: semantic.state.component.selectHover,
-                borderRadius: radius.md,
                 multipleItemBg: semantic.state.component.selectActive,
+                fontSizeSM: typography.body.small.fontSize,
+                borderRadius: radius.lg,
+                optionSelectedFontWeight: typography.body.regular.fontWeight
             },
             TreeSelect: {
                 nodeSelectedBg: semantic.state.component.selectActive,
@@ -178,9 +196,9 @@ export const themePresets: Record<ThemeKey, ThemeConfig> = {
                 activeBorderColor: semantic.state.component.borderFocus,
             },
             Checkbox: {
-                colorPrimary: palette.brand[6],
-                colorPrimaryHover: palette.brand[5],
-                colorPrimaryBorder: palette.brand[6],
+                colorPrimary: palette.primary[10],
+                colorPrimaryHover: palette.primary[10],
+                colorPrimaryBorder: palette.primary[10],
                 colorWhite: semantic.icon.brand,
             },
             Radio: {
@@ -197,6 +215,14 @@ export const themePresets: Record<ThemeKey, ThemeConfig> = {
                 colorPrimary: palette.brand[6],
                 colorPrimaryHover: palette.brand[5],
                 colorTextQuaternary: palette.gray[4],
+                // 视觉规范：默认档轨道宽 32 / 滑块 16；轨道高度由滑块与内边距决定，不显式钉死
+                trackMinWidth: 32,
+                trackMinWidthSM: 24,
+                handleSize: 16,
+                trackHeightSM: 14,
+                trackHeight: 20,
+                innerMinMargin: 8,
+                handleSizeSM: 10,
             },
             Slider: {
                 colorPrimary: palette.brand[6],
@@ -258,16 +284,17 @@ export const themePresets: Record<ThemeKey, ThemeConfig> = {
             Table: {
                 headerBg: semantic.bg.page,
                 headerColor: semantic.text.primary,
-                rowHoverBg: palette.warning[1],
-                rowSelectedBg: palette.brand[1],
-                rowSelectedHoverBg: palette.brand[2],
+                rowHoverBg: semantic.state.component.selectHover,
+                rowSelectedBg: palette.warning[1],
+                rowSelectedHoverBg: semantic.state.component.selectHover,
                 borderColor: semantic.border.divider,
                 borderRadius: radius.lg,
             },
             Pagination: {
                 colorPrimary: semantic.text.primary,
                 colorPrimaryHover: semantic.text.secondary,
-                itemActiveBg: semantic.state.component.selectHover,
+                // 视觉规范：激活项不加灰底，仅靠黑色文字区分
+                itemActiveBg: semantic.bg.default,
             },
             Modal: {
                 borderRadiusLG: radius.xl,
@@ -280,14 +307,20 @@ export const themePresets: Record<ThemeKey, ThemeConfig> = {
                 borderRadiusSM: radius.sm,
                 defaultBg: semantic.state.component.selectHover,
                 defaultColor: semantic.text.primary,
+                // 视觉规范：标签不带描边
+                colorBorder: 'transparent',
             },
             Tooltip: {
                 colorBgSpotlight: palette.navigation[9],
                 colorTextLightSolid: semantic.text.inverse,
                 borderRadius: radius.md,
+                // 视觉规范：文字提示投影不宜过深
+                boxShadow: shadow.m,
+                boxShadowSecondary: shadow.m,
             },
             Message: {
                 borderRadiusLG: radius.lg,
+                boxShadow: shadow.m,
             },
             Notification: {
                 borderRadiusLG: radius.xl,

@@ -53,32 +53,23 @@ body {
 }
 
 /* ============================================================
-   Message 消息提示 - 从右侧滑入
+   Message 消息提示 - 页面顶部居中淡入（视觉规范）
    ============================================================ */
 
-.ant-5-message {
-    top: 20px !important;
-    left: auto !important;
-    right: 24px !important;
-    transform: none !important;
-    width: auto !important;
-    max-width: 380px;
-}
-
-@keyframes messageSlideFromRight {
+@keyframes messageFadeInDown {
     from {
         opacity: 0;
-        transform: translateX(32px);
+        transform: translateY(-8px);
     }
 
     to {
         opacity: 1;
-        transform: translateX(0);
+        transform: translateY(0);
     }
 }
 
 .ant-5-message-notice-wrapper {
-    animation: messageSlideFromRight 0.22s cubic-bezier(0.4, 0, 0.2, 1) both !important;
+    animation: messageFadeInDown 0.22s cubic-bezier(0.4, 0, 0.2, 1) both !important;
 }
 
 /* ============================================================

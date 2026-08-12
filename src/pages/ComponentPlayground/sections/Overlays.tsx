@@ -3,26 +3,28 @@ import {Key, useState} from 'react';
 
 import {Drawer} from '@/design/Drawer';
 
+import type {DrawerSize, ModalSize} from '@/design';
+
 import {StateLabel} from '../ComponentPlayground.style';
 import {SectionShell} from './SectionShell';
 
 function DrawerSection() {
+    const [size, setSize] = useState<DrawerSize>('m');
     const [open, setOpen] = useState(false);
     return (
         <SectionShell title="Drawer 抽屉">
-            <StateLabel>触发</StateLabel>
-            <Button type="primary" onClick={() => setOpen(true)}>打开抽屉</Button>
+            <StateLabel>尺寸档：S 600 / M 800 / L 980</StateLabel>
+            <Space>
+                <Button type="primary" onClick={() => { setSize('s'); setOpen(true); }}>打开 S</Button>
+                <Button type="primary" onClick={() => { setSize('m'); setOpen(true); }}>打开 M</Button>
+                <Button type="primary" onClick={() => { setSize('l'); setOpen(true); }}>打开 L</Button>
+            </Space>
             <Drawer
-                title="示例抽屉"
+                mask={false}
+                title={`示例抽屉（${size.toUpperCase()}）`}
                 open={open}
                 onClose={() => setOpen(false)}
-                width={480}
-                extra={
-                    <Space>
-                        <Button size="small">刷新</Button>
-                        <Button size="small" type="primary">保存</Button>
-                    </Space>
-                }
+                size={size}
             >
                 <p>标题居左，关闭按钮居右，关闭按钮左侧为额外操作插槽。</p>
             </Drawer>
@@ -31,12 +33,17 @@ function DrawerSection() {
 }
 
 function ModalSection() {
+    const [size, setSize] = useState<ModalSize>('m');
     const [open, setOpen] = useState(false);
     return (
         <SectionShell title="Modal 弹窗">
-            <StateLabel>触发</StateLabel>
-            <Button type="primary" onClick={() => setOpen(true)}>打开弹窗</Button>
-            <Modal title="示例弹窗" open={open} onOk={() => setOpen(false)} onCancel={() => setOpen(false)}>
+            <StateLabel>尺寸档：S 600 / M 800 / L 1024</StateLabel>
+            <Space>
+                <Button type="primary" onClick={() => { setSize('s'); setOpen(true); }}>打开 S</Button>
+                <Button type="primary" onClick={() => { setSize('m'); setOpen(true); }}>打开 M</Button>
+                <Button type="primary" onClick={() => { setSize('l'); setOpen(true); }}>打开 L</Button>
+            </Space>
+            <Modal title={`示例弹窗（${size.toUpperCase()}）`} open={open} onOk={() => setOpen(false)} onCancel={() => setOpen(false)} size={size}>
                 <p>弹窗内容：核验圆角 + 弹入动画 + 遮罩。</p>
             </Modal>
         </SectionShell>

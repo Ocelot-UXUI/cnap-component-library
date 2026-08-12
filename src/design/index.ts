@@ -11,7 +11,9 @@
 
 // 自定义 / 增强组件
 export {Drawer} from './Drawer';
-export type {DrawerProps} from './Drawer';
+export type {DrawerProps, DrawerSize} from './Drawer';
+export {Modal} from './Modal';
+export type {ModalProps, ModalSize} from './Modal';
 export {Select} from './Select';
 
 // 透传组件（各自子目录）
@@ -37,7 +39,6 @@ export {InputNumber} from './InputNumber';
 export {Layout} from './Layout';
 export {List} from './List';
 export {Menu} from './Menu';
-export {Modal} from './Modal';
 export {Pagination} from './Pagination';
 export {Popover} from './Popover';
 export {Progress} from './Progress';

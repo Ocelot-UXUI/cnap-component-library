@@ -1,12 +1,6 @@
 import {useEffect, useState} from 'react';
-import {
-    CloseOutlined,
-    DownOutlined,
-    EyeInvisibleOutlined,
-    EyeOutlined,
-    SearchOutlined,
-    UpOutlined,
-} from '@ant-design/icons';
+import {CloseOutlined, EyeInvisibleOutlined, EyeOutlined} from '@ant-design/icons';
+import {ArrowDown, ArrowUp, Search} from '@/assets/icons';
 import {CountText, Divider, IconButton, MatchCount, StyledInput, SuffixWrapper} from './LogSearchInput.styles';
 import type {ChangeEvent, MouseEvent} from 'react';
 import type {LogSearchInputProps} from './types';
@@ -93,7 +87,7 @@ export function LogSearchInput({
                         onMouseDown={keepFocus}
                         onClick={() => handleCurrentChange(currentMatch - 1)}
                     >
-                        <UpOutlined />
+                        <ArrowUp />
                     </IconButton>
                     <IconButton
                         type="button"
@@ -102,7 +96,7 @@ export function LogSearchInput({
                         onMouseDown={keepFocus}
                         onClick={() => handleCurrentChange(currentMatch + 1)}
                     >
-                        <DownOutlined />
+                        <ArrowDown />
                     </IconButton>
                 </MatchCount>
                 <Divider />
@@ -129,7 +123,7 @@ export function LogSearchInput({
             value={text}
             placeholder={placeholder}
             onChange={handleChange}
-            prefix={<SearchOutlined />}
+            prefix={<Search />}
             suffix={suffix}
         />
     );

@@ -22,7 +22,7 @@ function render(container?: Element) {
     root = createRoot(mountNode);
     root.render(
         <ErrorBoundary>
-            <ConfigProvider locale={zhCN}>
+            <ConfigProvider locale={zhCN} button={{autoInsertSpace: false}}>
                 <XProvider>
                     <ThemeProvider>
                         <UserProvider>

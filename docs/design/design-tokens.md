@@ -94,10 +94,13 @@ const Title = styled.h2`
 | `colorPrimary`（全局强调色）    | `#41D08D` 品牌 06       | 承载 Switch/Radio/Checkbox/Slider/Progress 等强调组件 |
 | 主要按钮背景                    | `#1C202B` navigation 09 | 品牌深色主按钮；文字用 `#A7F3CF`                      |
 | 下拉选中项背景                  | `#E6FAF1` 品牌 01       | 视觉规范 select-active，浅到不刺眼                    |
+| Checkbox 选中 / 半选            | `#41D08D` 品牌 06       | 强调控件，禁用档降到品牌 03                            |
 | Table 行多选态                  | `#E6FAF1` 品牌 01       | 批量选中给一抹绿，才有品牌感                          |
+| Table 行 hover                  | `#F2F2F2` gray 02       | **非橙**；橙色 (`warning 01`) 保留给业务侧「核验态」行 |
 | Input focus 边框                | `#181818` gray 10       | **非绿**，视觉规范 state-focus                        |
 | Input hover 边框                | `#BFBFBF` gray 06       | **非绿**，视觉规范 state-hover                        |
 | Menu / Tabs / Pagination 选中态 | gray 系                 | **非绿**，遵循侧边导航二级规范                        |
+| Pagination 激活项背景           | `#FFFFFF`               | 视觉规范不加灰底，仅黑色文字区分，字重不加粗           |
 
 ### 4.2 组件对应关系
 
@@ -182,7 +185,17 @@ const Title = styled.h2`
 | `radius.xl`  | 12 | 大卡片、Modal       |
 | `radius.xl2` | 16 | 少用                |
 | `radius.xl3` | 20 | 圆形按钮            |
-| `radius.xl4` | 24 | 头像框              |
+| `radius.xl4` | 24 | 头像框 |
+
+### 组件尺寸档（设计规范直接给定，不属 token 语义）
+
+| 组件 | 档位 |
+| ---- | ---- |
+| Switch | 默认 轨道宽 32 / 滑块 16；small 轨道宽 24 / 滑块 10（高度由滑块决定，不钉 trackHeight） |
+| Input 圆角 | 所有规格统一 8px（**仅 Input**，不外扩到 InputNumber / Select / DatePicker） |
+| Input 字号 | small 12 / middle 14；InputNumber small 同为 12 |
+| Drawer | S 600 / M 800 / L 980，默认 M |
+| Modal | S 600（内容 300~600）/ M 800（480~600）/ L 1024（560~800），默认 M |
 
 ### spacing（间距）
 

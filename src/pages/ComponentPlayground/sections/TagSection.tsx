@@ -11,10 +11,10 @@ import {RichSection, SubGroup} from './SectionShell';
 const keepTag = (e: MouseEvent<HTMLElement>) => e.preventDefault();
 
 const brandTag: Record<string, CSSProperties> = {
-    green: { background: semantic.state.brand.light, color: palette.brand[8], borderColor: palette.brand[3] },
-    grayBlue: { background: palette.navigation[2], color: palette.navigation[7], borderColor: palette.navigation[3] },
-    neutral: { background: palette.gray[2], color: semantic.text.secondary, borderColor: palette.gray[4] },
-    disabled: { background: palette.gray[1], color: semantic.text.disabled, borderColor: palette.gray[3] },
+    green: { background: semantic.state.brand.light, color: palette.brand[8] },
+    grayBlue: { background: palette.navigation[2], color: palette.navigation[7] },
+    neutral: { background: palette.gray[2], color: semantic.text.secondary},
+    disabled: { background: palette.gray[1], color: semantic.text.disabled },
 };
 
 const rounded: CSSProperties = { borderRadius: radius.xl };
