@@ -49,8 +49,8 @@ export interface Application {
     accountId: string;
     /** 应用名 */
     name: string;
-    /** 应用类型，如 MICRO_SERVICE */
-    type?: string;
+    /** 应用分类，如 microservice */
+    category?: string;
     /** 应用展示名 */
     displayName?: string;
     /** 应用描述 */
@@ -92,11 +92,11 @@ export interface ApplicationFilterEnvironment {
 /**
  * 应用列表筛选项（GET /rest/v1/accounts/:accountID/applications/filter-options）
  *
- * 用于初始化应用列表页的应用类型、环境和用户标签筛选器；没有数据时对应字段返回空数组。
+ * 用于初始化应用列表页的应用分类、环境和用户标签筛选器；没有数据时对应字段返回空数组。
  */
 export interface ApplicationFilterOptions {
-    /** 当前账号应用实际使用的应用类型（取 application_type.category，去重后按名称升序） */
-    applicationTypes: string[];
+    /** 当前账号应用实际使用的应用分类（取 application_type.category，去重后按名称升序） */
+    applicationCategories: string[];
     /** 当前账号下未删除的公共环境（按 ID 升序） */
     environments: ApplicationFilterEnvironment[];
     /** 当前账号下未删除的用户标签（按 ID 升序） */

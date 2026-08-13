@@ -10,15 +10,15 @@ interface ParamsGetApplicationsByAccount {
     accountId: string;
     /** 按应用名称、展示名称模糊搜索 */
     keyword?: string;
-    /** 筛选应用类型 */
-    type?: string;
+    /** 按应用分类筛选，例如 microservice */
+    category?: string;
     /** 按公共环境 ID 筛选 */
     environmentId?: number;
     /** 用户标签 ID，多个 ID 使用英文逗号分隔，例如 "7,8" */
     labelIds?: string;
     /** 页码，从 1 开始 */
     page?: number;
-    /** 每页数量，范围为 1～100 */
+    /** 每页数量，必须大于 0；不传时默认 20 */
     pageSize?: number;
 }
 
@@ -43,7 +43,7 @@ const getApplicationsByAccount = createInterface<ParamsGetApplicationsByAccount,
 );
 
 /**
- * 获取应用列表筛选项（初始化应用类型、环境和用户标签筛选器）
+ * 获取应用列表筛选项（初始化应用分类、环境和用户标签筛选器）
  *
  * GET /rest/v1/accounts/{accountID}/applications/filter-options
  */
