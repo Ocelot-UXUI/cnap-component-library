@@ -8,8 +8,9 @@ processed: pending
 > - 源文档：<https://ku.baidu-int.com/knowledge/HFVrC7hq1Q/_SKPgSwp2G/7MvddZrBEx/wDHcvK7WzdAhj5>
 > - docGuid：`wDHcvK7WzdAhj5`
 > - 作者：龙秋云 (longqiuyun@baidu.com)
-> - 抓取时间：2026-08-10
+> - 抓取时间：2026-08-13
 > - 抓取方式：`ku query-content --protocol markdown --show-doc-info`
+> - 更新内容：账户列表拆分为导航栏接口 `/accounts`（精简字段）与统计接口 `/account-summaries`（含统计信息）；角色拆分为独立接口 `/user-account-roles`；账户 ID 类型由 number 改为 string；路径参数 `:accountID` 改为 `:accountId`；获取账户基本信息响应改为 `account` 嵌套结构；创建账户路径 3.4 节正文 `POST /rest/v1/accounts` 按接口总览修正为 `POST /rest/v1/account`（上游 3.4 正文疑为笔误，前端实现已同步采用 `/account`）
 > - 备注：账户模块子模块"账户-基本能力"接口文档；以在线文档为准。
 
 ---
@@ -20,10 +21,14 @@ processed: pending
 |描述|方法|路径|
 |-|-|-|
 |获取用户有权限的资源账户列表|GET|`/rest/v1/resource-accounts`|
-|获取有权限的账户列表|GET|`/rest/v1/accounts`|
-|创建账户|POST|`/rest/v1/accounts`|
-|获取账户基本信息|GET|`/rest/v1/accounts/:accountID`|
-|更新账户|PUT|`/rest/v1/accounts/:accountID`|
+|获取账户基本信息列表（导航栏接口）|GET|`/rest/v1/accounts`|
+|获取账户列表及统计信息|GET|`/rest/v1/account-summaries`|
+|获取用户账户角色|GET|`/rest/v1/user-account-roles`|
+|创建账户|POST|`/rest/v1/account`|
+|获取账户基本信息|GET|`/rest/v1/accounts/:accountId`|
+|更新账户|PUT|`/rest/v1/accounts/:accountId`|
+
+
 
 ## 2. 资源账户接口
 ### 2.1. 查询用户资源账户树
@@ -83,12 +88,56 @@ GET /rest/v1/resource-accounts
 3. 创建账户时把节点的 `accountUuid` 作为 `externalId` 提交。
 4. `linkedAccounts` 用于展示该资源账户已经关联的 CNAP 账户。
 
+
+
 ## 3. 账户接口
-### 3.1. 查询账户列表
+### 3.1. 获取账户基本信息列表（导航栏接口）
 请求：
 
 ```
 GET /rest/v1/accounts?keyword=测试
+```
+Query 参数：
+
+|参数|类型|必填|说明|
+|-|-|-|-|
+|`keyword`|string|否|搜索关键词，支持账户中文名称、账户英文名称|
+
+响应：
+
+```json
+[
+  {
+    "id": "42",
+    "name": "appspace-test",
+    "displayName": "一站式测试账户",
+    "icon": "https://bj.bcebos.com/cnap-test/account-icons/550e8400-e29b-41d4-a716-446655440000",
+    "externalId": "559a4a8d48fd4269beef4d9fccdaf098"
+  }
+]
+```
+字段说明：
+
+|字段|类型|说明|
+|-|-|-|
+|`id`|string|CNAP 账户 ID，即后续 `accountID`|
+|`name`|string|账户英文名称|
+|`displayName`|string|账户中文名称|
+|`icon`|string|账户图标的 BOS 公网地址|
+|`externalId`|string|关联的 BCOP 资源账户 UUID|
+
+搜索规则：
+
+1. 账户中文名称和英文名称使用包含匹配。
+2. `keyword` 为空时返回全部账户。
+
+
+
+### 3.2. 查询账户列表及统计信息
+请求：
+
+```
+GET  /rest/v1/account-summaries?keyword=测试
 ```
 Query 参数：
 
@@ -101,23 +150,19 @@ Query 参数：
 ```json
 [
   {
-    "id": 42,
-    "name": "appspace-test",
-    "displayName": "一站式测试账户",
-    "icon": "https://bj.bcebos.com/cnap-test/account-icons/550e8400-e29b-41d4-a716-446655440000",
-    "externalId": "559a4a8d48fd4269beef4d9fccdaf098",
-    "resourceAccount": {
-      "name": "安全与企业效率平台/DevOps/一站式云原生应用平台（CNAP）/appspace-test"
+    "account": {
+      "id": "42",
+      "name": "appspace-test",
+      "displayName": "一站式测试账户",
+      "icon": "https://bj.bcebos.com/cnap-test/account-icons/550e8400-e29b-41d4-a716-446655440000",
+      "externalId": "559a4a8d48fd4269beef4d9fccdaf098"
     },
-    "roles": [
-      {
-        "code": "ACCOUNT_ADMIN",
-        "name": "账户负责人"
-      }
-    ],
-    "applicationCount": 18,
-    "environmentCount": 4,
-    "clusterCount": 8
+    "resourceAccount": {
+      "name": "技术中台测试 / 测试环境 / appspace-test"
+    },
+    "applicationCount": "18",
+    "environmentCount": "4",
+    "clusterCount": "8"
   }
 ]
 ```
@@ -125,31 +170,64 @@ Query 参数：
 
 |字段|类型|说明|
 |-|-|-|
-|`id`|number|CNAP 账户 ID，即后续 `accountID`|
-|`name`|string|账户英文名称|
-|`displayName`|string|账户中文名称|
-|`icon`|string|账户图标的 BOS 公网地址|
-|`externalId`|string|关联的 BCOP 资源账户 UUID|
+|`account`|object|账户基本信息，字段说明与“查询账户基本信息列表”一致|
 |`resourceAccount`|object|关联的资源账户；无法匹配时不返回该字段|
 |`resourceAccount.name`|string|包含父节点的资源账户完整路径|
-|`roles`|array|当前用户在账户中的角色；当前为 mock 数据|
-|`roles[].code`|string|角色编码|
-|`roles[].name`|string|角色中文名称|
-|`applicationCount`|number|账户应用数|
-|`environmentCount`|number|账户环境数|
-|`clusterCount`|number|账户环境关联的集群记录数|
+|`applicationCount`|string|账户应用数|
+|`environmentCount`|string|账户环境数|
+|`clusterCount`|string|账户环境关联的集群记录数|
 
 搜索规则：
 
 1. 账户中文名称和英文名称使用包含匹配。
 2. 资源账户搜索同时匹配节点名称和包含父节点的完整路径。
-3. `keyword` 为空时返回全部账户。
+3. keyword 为空时返回全部账户。
 
-### 3.2. 创建账户
+
+
+### 3.3. 查询用户账户角色
 请求：
 
 ```
-POST /rest/v1/accounts
+GET  /rest/v1/user-account-roles
+```
+响应：
+
+```json
+[
+  {
+    "accountId": "42",
+    "roles": [
+      {
+        "code": "ACCOUNT_ADMIN",
+        "name": "账户负责人"
+      }
+    ]
+  }
+]
+```
+字段说明：
+
+|字段|类型|说明|
+|-|-|-|
+|`accountId`|string|CNAP 账户 ID|
+|`roles`|array|用户在该账户下拥有的角色列表|
+|`roles[].code`|string|角色编码|
+|`roles[].name`|string|角色中文名称|
+
+使用说明：
+
+1. 账户统计信息通过/account-summaries 获取。
+2. 用户在账户下的角色通过本接口单独获取，不放在账户列表项中。
+3. 当前角色数据为 mock 数据，代码中保留 TODO，后续接入 CNAP 授权服务。
+
+
+
+### 3.4. 创建账户
+请求：
+
+```
+POST /rest/v1/account
 Content-Type: multipart/form-data
 ```
 Form Data 参数：
@@ -166,7 +244,7 @@ Form Data 参数：
 
 ```json
 {
-  "id": 42,
+  "id": "42",
   "name": "appspace-test",
   "displayName": "一站式测试账户",
   "externalId": "559a4a8d48fd4269beef4d9fccdaf098",
@@ -196,64 +274,73 @@ Form Data 参数：
 1. 服务端验证文件大小、文件签名和图片格式。
 2. 图标先上传到 BOS，再创建账户记录。
 
-### 3.3. 获取账户基本信息
+
+
+### 3.5. 获取账户基本信息
 请求：
 
 ```
-GET /rest/v1/accounts/:accountID
+GET /rest/v1/accounts/:accountId
 ```
 Path 参数：
 
 |参数|类型|必填|说明|
 |-|-|-|-|
-|`accountID`|number|是|CNAP 账户 ID|
+|`accountId`|number|是|CNAP 账户 ID|
 
 响应：
 
 ```json
 {
-  "id": 42,
-  "name": "appspace-test",
-  "displayName": "一站式资源账号",
-  "icon": "https://bj.bcebos.com/cnap-test/account-icons/550e8400-e29b-41d4-a716-446655440000",
-  "externalId": "559a4a8d48fd4269beef4d9fccdaf098",
-  "description": "xxxxxx",
-  "createdBy": "longqiuyun",
-  "createdAt": "2026-07-28T10:00:00Z",
-  "updatedAt": "2026-07-28T10:00:00Z",
+  "account": {
+    "id": "42",
+    "name": "appspace-test",
+    "displayName": "一站式资源账号",
+    "icon": "https://bj.bcebos.com/cnap-test/account-icons/550e8400-e29b-41d4-a716-446655440000",
+    "externalId": "559a4a8d48fd4269beef4d9fccdaf098",
+    "description": "xxxxxx",
+    "createdBy": "longqiuyun",
+    "createdAt": "2026-07-28T10:00:00Z",
+    "updatedAt": "2026-07-28T10:00:00Z"
+  },
   "resourceAccount": {
-    "name": "安全与企业效率平台/DevOps/一站式云原生应用平台（CNAP）/appspace-test"
+    "name": "技术中台测试 / 测试环境 / appspace-test"
   }
 }
 ```
+
+
 字段说明：
 
 |字段|类型|说明|
 |-|-|-|
-|`id`|number|CNAP 账户 ID|
-|`name`|string|账户英文名称，不可编辑|
-|`displayName`|string|账户中文名称|
-|`icon`|string|账户图标的 BOS 公网地址|
-|`externalId`|string|关联的 BCOP 资源账户 UUID|
-|`description`|string|账户描述|
-|`createdBy`|string|创建人|
-|`createdAt`|string|创建时间，RFC 3339 格式|
-|`updatedAt`|string|更新时间，RFC 3339 格式|
+|`account`|object|账户对象|
+|`account.id`|string|CNAP 账户 ID|
+|`account.name`|string|账户英文名称，不可编辑|
+|`account.displayName`|string|账户中文名称|
+|`account.icon`|string|账户图标的 BOS 公网地址|
+|`account.externalId`|string|关联的 BCOP 资源账户 UUID|
+|`account.description`|string|账户描述|
+|`account.createdBy`|string|创建人|
+|`account.createdAt`|string|创建时间，RFC 3339 格式|
+|`account.updatedAt`|string|更新时间，RFC 3339 格式|
 |`resourceAccount`|object|关联的资源账户；无法匹配时不返回该字段|
 |`resourceAccount.name`|string|包含父节点的资源账户完整路径|
+
+
 
 ### 3.4. 编辑账户
 请求：
 
 ```
-PUT /rest/v1/accounts/:accountID
+PUT /rest/v1/accounts/:accountId
 Content-Type: multipart/form-data
 ```
 Path 参数：
 
 |参数|类型|必填|说明|
 |-|-|-|-|
-|`accountID`|number|是|CNAP 账户 ID|
+|`accountId`|number|是|CNAP 账户 ID|
 
 Form Data 参数：
 
@@ -267,7 +354,7 @@ Form Data 参数：
 
 ```json
 {
-  "id": 42,
+  "id": "42",
   "name": "appspace-test",
   "displayName": "新的账户中文名称",
   "externalId": "559a4a8d48fd4269beef4d9fccdaf098",
@@ -278,7 +365,7 @@ Form Data 参数：
   "updatedAt": "2026-07-28T11:00:00Z"
 }
 ```
-字段说明与"获取账户基本信息"中的账户字段一致
+字段说明与“获取账户基本信息”中的账户字段一致
 
 更新规则：
 

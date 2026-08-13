@@ -19,9 +19,9 @@ export interface AccountResourceAccount {
     name: string;
 }
 
-/** 账号信息（列表项，GET /rest/v1/accounts） */
+/** 账号信息（导航栏列表项，GET /rest/v1/accounts） */
 export interface Account {
-    /** 账号 ID（接口文档为 number，项目约定按 string 使用，见 src/api/account.ts） */
+    /** 账号 ID */
     id: string;
     /** 账号名（技术标识，英文） */
     name: string;
@@ -31,19 +31,9 @@ export interface Account {
     icon?: string;
     /** 关联的 BCOP 资源账户 UUID */
     externalId?: string;
-    /** 关联的资源账户；无法匹配时不返回 */
-    resourceAccount?: AccountResourceAccount;
-    /** 当前用户在账户中的角色 */
-    roles?: AccountRole[];
-    /** 账户应用数 */
-    applicationCount?: number;
-    /** 账户环境数 */
-    environmentCount?: number;
-    /** 账户环境关联的集群记录数 */
-    clusterCount?: number;
 }
 
-/** 账户详情（GET /rest/v1/accounts/:accountId 及创建/更新响应） */
+/** 账户详情字段（创建/更新响应，及详情响应的 account 内嵌对象） */
 export interface AccountDetail extends Account {
     /** 账户描述 */
     description?: string;
@@ -53,6 +43,36 @@ export interface AccountDetail extends Account {
     createdAt?: string;
     /** 更新时间，RFC 3339 格式 */
     updatedAt?: string;
+}
+
+/** 账户详情响应（GET /rest/v1/accounts/:accountId，account 嵌套结构） */
+export interface AccountDetailResponse {
+    /** 账户对象 */
+    account: AccountDetail;
+    /** 关联的资源账户；无法匹配时不返回该字段 */
+    resourceAccount?: AccountResourceAccount;
+}
+
+/** 账户列表及统计信息（GET /rest/v1/account-summaries 列表项） */
+export interface AccountSummary {
+    /** 账户基本信息，字段说明与"查询账户基本信息列表"一致 */
+    account: Account;
+    /** 关联的资源账户；无法匹配时不返回该字段 */
+    resourceAccount?: AccountResourceAccount;
+    /** 账户应用数 */
+    applicationCount: string;
+    /** 账户环境数 */
+    environmentCount: string;
+    /** 账户环境关联的集群记录数 */
+    clusterCount: string;
+}
+
+/** 用户账户角色（GET /rest/v1/user-account-roles 列表项） */
+export interface UserAccountRoles {
+    /** CNAP 账户 ID */
+    accountId: string;
+    /** 用户在该账户下拥有的角色列表 */
+    roles: AccountRole[];
 }
 
 /** 关联的 CNAP 账户（资源账户叶子节点的 linkedAccounts 项） */

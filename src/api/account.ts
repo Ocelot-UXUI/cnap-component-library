@@ -1,8 +1,15 @@
-import type {Account, AccountDetail, ResourceAccountNode} from '@/interface/entities/account';
+import type {
+    Account,
+    AccountDetail,
+    AccountDetailResponse,
+    AccountSummary,
+    ResourceAccountNode,
+    UserAccountRoles,
+} from '@/interface/entities/account';
 import {createInterface} from './services/primary';
 
 interface ParamsGetAccounts {
-    /** 搜索关键词，支持账户中文名称、账户英文名称、资源账户名称及资源账户完整路径；为空返回全部账户 */
+    /** 搜索关键词，支持账户中文名称、账户英文名称；为空返回全部账户（资源账户名称及完整路径搜索见 /account-summaries） */
     keyword?: string;
 }
 
@@ -25,7 +32,7 @@ const getResourceAccounts = createInterface<void, ResourceAccountNode[]>(
 );
 
 /**
- * 查询账户列表
+ * 查询账户列表（导航栏接口，精简字段）
  *
  * GET /rest/v1/accounts
  */
@@ -35,19 +42,39 @@ const getMany = createInterface<ParamsGetAccounts, Account[]>(
 );
 
 /**
+ * 查询账户列表及统计信息
+ *
+ * GET /rest/v1/account-summaries
+ */
+const getSummaries = createInterface<ParamsGetAccounts, AccountSummary[]>(
+    'GET',
+    '/account-summaries',
+);
+
+/**
+ * 查询用户账户角色
+ *
+ * GET /rest/v1/user-account-roles
+ */
+const getUserAccountRoles = createInterface<void, UserAccountRoles[]>(
+    'GET',
+    '/user-account-roles',
+);
+
+/**
  * 获取账户基本信息
  *
  * GET /rest/v1/accounts/:accountId
  */
-const getDetail = createInterface<ParamsAccountID, AccountDetail>(
+const getDetail = createInterface<ParamsAccountID, AccountDetailResponse>(
     'GET',
     '/accounts/{accountId}',
 );
 
 // ── 创建 / 更新（multipart/form-data）──────────────────────
 
-/** 创建账户的低层接口，请求体为 FormData（POST /rest/v1/accounts） */
-const create = createInterface<FormData, AccountDetail>('POST', '/accounts');
+/** 创建账户的低层接口，请求体为 FormData（POST /rest/v1/account） */
+const create = createInterface<FormData, AccountDetail>('POST', '/account');
 
 /** 更新账户的低层接口，FormData 通过 callOptions.data 传入（PUT /rest/v1/accounts/:accountId） */
 const update = createInterface<ParamsAccountID, AccountDetail>(
@@ -111,7 +138,7 @@ const buildAccountFormData = (fields: {
 /**
  * 创建账户
  *
- * POST /rest/v1/accounts（multipart/form-data）
+ * POST /rest/v1/account（multipart/form-data）
  */
 export const createAccount = (input: CreateAccountInput) =>
     create(buildAccountFormData(input));
@@ -130,6 +157,8 @@ export const updateAccount = (input: UpdateAccountInput) =>
 export default {
     getResourceAccounts,
     getMany,
+    getSummaries,
+    getUserAccountRoles,
     getDetail,
     createAccount,
     updateAccount,
