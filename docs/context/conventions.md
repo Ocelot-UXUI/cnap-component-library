@@ -66,7 +66,6 @@ ESLint 负责代码质量检查（max-lines、react-hooks、eqeqeq、complexity 
 - `copyText` **返回 `Promise<boolean>`**（v4 的 `copy()` 是异步的）；调用方必须 `await` 结果再决定成功/失败反馈，不能用 `if (copyText(...))` 直接判断（Promise 恒为真值）。`copyText` 只做复制、不含 UI 副作用，反馈由调用方用 antd `message` 给出。
 - 需要复制富文本时传 `{ format: 'text/html' }`。
 
-
 ## Component Boundaries
 
 - Layout responsibility can be nested: if a component positions, sizes, arranges, or allocates space for its children, it is a layout component even when it is inside another layout.
@@ -79,9 +78,9 @@ ESLint 负责代码质量检查（max-lines、react-hooks、eqeqeq、complexity 
 
 - **禁止**在 `src/design/` 以外的任何代码里直接 `import ... from 'antd'` 或 `antd/*` 子路径（含类型）。
 - **`src/design/` 只承载 antd 组件及其增强**，不允许出现带业务含义的组件：
-    - 对 antd 原组件的透传放在同名目录（如 `Button/`、`Input/`、`Table/`），仅 `export {X} from 'antd'`。
-    - 对 antd 组件的增强 / 封装放在各自目录（如 `Drawer/`、`Select/`），以某个 antd 组件为基座扩展，自带实现与私有样式。
-    - 统一出口 `src/design/index.ts` 聚合全部组件、工具（`message` / `notification` / `theme`）与类型。
+  - 对 antd 原组件的透传放在同名目录（如 `Button/`、`Input/`、`Table/`），仅 `export {X} from 'antd'`。
+  - 对 antd 组件的增强 / 封装放在各自目录（如 `Drawer/`、`Select/`），以某个 antd 组件为基座扩展，自带实现与私有样式。
+  - 统一出口 `src/design/index.ts` 聚合全部组件、工具（`message` / `notification` / `theme`）与类型。
 - **带业务含义的基础组件**（页面布局壳、错误兜底、加载屏、业务搜索框等，非单一 antd 组件的封装）一律放 `src/components/<Name>/`，经 `@/components/<Name>` 引用；其内部可消费 `@/design` 的 antd 组件。
 - 业务代码一律 `import {Button, Table, type SelectProps} from '@/design'`。
 - 新增需要用到的 antd 组件时：先在 `src/design/<Name>/index.ts` 建透传目录并在 `src/design/index.ts` 补出口，再在业务侧引用；不要绕过设计系统直接引 antd。
@@ -112,6 +111,14 @@ ESLint 负责代码质量检查（max-lines、react-hooks、eqeqeq、complexity 
 - 是 antd Select 的 drop-in 替代，类型完全对齐（保留泛型签名与 `Option` / `OptGroup` 静态成员），单选场景（不传 `mode`，或 `mode` 非 `multiple` / `tags`）行为与 antd 原生**完全一致**。
 - **多选统一用 `mode="multiple"`（或 `tags`）驱动**：此时下拉项自动前置 Checkbox 呈现多选态，并移除 antd 默认右侧对勾。**不要再造独立的 MultiSelect 组件**（旧 MultiSelect 已收敛进本组件）。
 - 主题色 / token 由 `ConfigProvider` 统一注入，组件内不做二次覆盖——不要为选中态/边框单独传色值（遵循 `docs/design/design-tokens.md` 的污染防护约束）。
+
+### Empty（`@/design` 的 `Empty`）
+
+- `Empty` 是 antd Empty 的 drop-in 增强组件，保留 `PRESENTED_IMAGE_DEFAULT` / `PRESENTED_IMAGE_SIMPLE` 静态成员；除 `classNames`（见下）外的原生参数全部透传，`imageType` / `size` 不会传给 antd 或根 DOM。
+- `imageType` 可选值为 `empty-table`、`empty`、`no-auth`、`no-data`、`no-target`，分别使用 `src/assets/images/` 下的同名 PNG 插图。
+- `size` 可选值为 `s` / `m` / `l`，默认 `m`，对应插图尺寸 125×110 / 175×154 / 248×218；只有传入有效 `imageType` 时生效。
+- 命中 `imageType` 时：插图尺寸由 `size` 固定，`imageStyle` / `styles.image` 的尺寸类覆盖不生效（其余样式照常透传）；root 应用纵向居中 flex 布局，图-文间距 S 4px / M·L 12px；`classNames` 仅 `root` 生效，`image` / `description` / `footer` 不生效。
+- 未传或运行时传入无效 `imageType` 时，`Empty` 完整回退 antd 原生 `image` 行为，`size` 不生效；该分支下 `classNames` 不传给 antd。
 
 新增其它增强组件（对 antd 组件做行为封装）时，沿用同样模式：与 antd 同名、drop-in、契约写进本节，出口补到 `src/design/index.ts`。
 

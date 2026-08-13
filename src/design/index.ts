@@ -32,6 +32,7 @@ export {Descriptions} from './Descriptions';
 export {Divider} from './Divider';
 export {Dropdown} from './Dropdown';
 export {Empty} from './Empty';
+export type {EmptyImageType, EmptyProps, EmptySize} from './Empty';
 export {Flex} from './Flex';
 export {Form} from './Form';
 export {Input} from './Input';
@@ -78,7 +79,7 @@ export type {
     ThemeConfig,
     TooltipProps,
 } from 'antd';
-export type {ColumnsType} from 'antd/es/table';
-export type {SorterResult, TableCurrentDataSource} from 'antd/es/table/interface';
 export type {FormInstance, Rule} from 'antd/es/form';
 export type {InputProps, PasswordProps} from 'antd/es/input';
+export type {ColumnsType} from 'antd/es/table';
+export type {SorterResult, TableCurrentDataSource} from 'antd/es/table/interface';
