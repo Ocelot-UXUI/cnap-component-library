@@ -5,6 +5,7 @@ import {assign, fromPromise, setup} from 'xstate';
 import runtimeOperationApi from '@/api/runtimeOperation';
 import type {HorizontalScaleInput} from '@/api/runtimeOperation';
 import type {RuntimeWorkload, WorkloadGroup} from '@/interface/entities/workload';
+import {logMachineError} from '@/logging/machineLogger';
 import {loadGroups, loadWorkloads} from '../shared/loader';
 import type {WorkloadsBundle} from '../shared/loader';
 import {buildRows, editDesired, toggleCluster} from './rows';
@@ -88,7 +89,13 @@ export const horizontalScaleMachine = setup({
                     },
                     { target: 'ready', actions: assign({ groups: ({ event }) => event.output }) },
                 ],
-                onError: { target: 'ready', actions: assign({ loadError: () => '工作负载分组加载失败' }) },
+                onError: {
+                    target: 'ready',
+                    actions: [
+                        ({ event }) => logMachineError('horizontalScaleMachine', 'loadGroups', event.error),
+                        assign({ loadError: () => '工作负载分组加载失败' }),
+                    ],
+                },
             },
         },
         loadingWorkloads: {
@@ -106,7 +113,13 @@ export const horizontalScaleMachine = setup({
                         };
                     }),
                 },
-                onError: { target: 'ready', actions: assign({ loadError: () => '工作负载列表加载失败' }) },
+                onError: {
+                    target: 'ready',
+                    actions: [
+                        ({ event }) => logMachineError('horizontalScaleMachine', 'loadWorkloads', event.error),
+                        assign({ loadError: () => '工作负载列表加载失败' }),
+                    ],
+                },
             },
         },
         ready: {
@@ -131,7 +144,13 @@ export const horizontalScaleMachine = setup({
                 src: 'submit',
                 input: ({ context }) => toHorizontalScaleInput(context.appEnvID, context.rows, context.operationName),
                 onDone: { target: 'succeeded' },
-                onError: { target: 'ready', actions: assign({ submitError: () => '提交失败，请重试' }) },
+                onError: {
+                    target: 'ready',
+                    actions: [
+                        ({ event }) => logMachineError('horizontalScaleMachine', 'submit', event.error),
+                        assign({ submitError: () => '提交失败，请重试' }),
+                    ],
+                },
             },
         },
         succeeded: { type: 'final' },

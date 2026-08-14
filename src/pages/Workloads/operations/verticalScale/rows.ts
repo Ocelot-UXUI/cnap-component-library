@@ -8,6 +8,7 @@
 import type {ResourceKind, ResourceRef, ResourceSpec, VerticalScaleRow} from '@/domain/workload';
 import {isLimitGteRequest, isPositive, parseQuantity, toContainerResourceSpecs, toResourceRef} from '@/domain/workload';
 import type {RuntimeWorkload} from '@/interface/entities/workload';
+import {logMachineDataIssue} from '@/logging/machineLogger';
 
 const RESOURCE_KINDS: ResourceKind[] = ['cpu', 'memory', 'ephemeralStorage'];
 const DEFAULT_UNITS: Record<ResourceKind, string> = { cpu: 'c', memory: 'Gi', ephemeralStorage: 'Gi' };
@@ -38,6 +39,14 @@ export interface RowState {
 function toField(spec: ResourceSpec, kind: ResourceKind): FieldState {
     const quantity = spec[kind];
     if (!quantity || Number.isNaN(quantity.value)) {
+        if (quantity) {
+            logMachineDataIssue('verticalScaleMachine', 'normalizeResourceField', {
+                kind,
+                raw: quantity.raw,
+                value: quantity.value,
+                unit: quantity.unit,
+            });
+        }
         return { value: '', unit: DEFAULT_UNITS[kind] };
     }
     return { value: String(quantity.value), unit: quantity.unit || DEFAULT_UNITS[kind] };
@@ -56,6 +65,13 @@ export function buildRows(workloads: RuntimeWorkload[], container?: string): Row
         .filter(w => !container || w.podContainers.some(c => c.name === container))
         .map(w => {
             const target = w.podContainers.find(c => c.name === container) ?? w.podContainers[0];
+            if (!target && w.podContainers.length === 0) {
+                logMachineDataIssue('verticalScaleMachine', 'buildRows', {
+                    workload: w.name,
+                    clusterId: w.clusterId,
+                    reason: 'workloadHasNoContainers',
+                });
+            }
             const { requests, limits } = toContainerResourceSpecs(
                 target ?? { name: '', resourceLimits: {}, resourceRequests: {} },
             );

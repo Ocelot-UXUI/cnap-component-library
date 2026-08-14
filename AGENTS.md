@@ -53,6 +53,7 @@ CNAP 前端使用轻量级 Attractor-Guided Engineering (AGE) 工作流进行 AI
 - `docs/context/project-context.md`
 - `docs/context/ai-autonomy-policy.md`
 - `docs/context/codebase-map.md`
+- `docs/context/conventions.md` — **machine 错误与异常数据必须可观测**
 - `docs/design/design-tokens.md` — **UI 代码强制规范**，写任何前端样式前必读
 - project context 中列出的 active requirement
 - project context 中列出的 active owner doc

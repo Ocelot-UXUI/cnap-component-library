@@ -1,5 +1,7 @@
 import {normalizeNavigationContext, readStoredContext} from './navigationContextData';
 
+import {logMachineDataIssue} from '@/logging/machineLogger';
+
 import type {ActorRefFrom} from 'xstate';
 import type {
     Account,
@@ -65,10 +67,18 @@ export function createMachineContext(
     storedContext: StoredNavigationContext,
 ): NavigationMachineContext {
     const normalized = normalizeNavigationContext(current, candidates);
+    const invalidContext = getInvalidContext(current, normalized);
+    if (invalidContext.length > 0) {
+        logMachineDataIssue('navigationMachine', 'normalizeContext', {
+            requested: current,
+            normalized,
+            invalidContext,
+        });
+    }
     return {
         current: normalized,
         requested: current,
-        invalidContext: getInvalidContext(current, normalized),
+        invalidContext,
         candidates,
         storedContext,
     };

@@ -1,6 +1,7 @@
 import type {Account} from '@/interface/entities/account';
 import type {Application} from '@/interface/entities/application';
 import type {AppEnvironment} from '@/interface/entities/applicationEnvironment';
+import {logMachineDataIssue, logMachineError} from '@/logging/machineLogger';
 
 export type {Account, AppEnvironment, Application};
 
@@ -80,11 +81,15 @@ export function readStoredContext(): StoredNavigationContext {
         }
         const parsed = JSON.parse(raw) as unknown;
         if (!isValidStoredContext(parsed)) {
+            logMachineDataIssue('navigationContext', 'readStoredContext', {
+                reason: 'invalidStoredContext',
+            });
             localStorage.removeItem(STORAGE_KEY);
             return { current: {}, byWorkspace: {} };
         }
         return normalizeStoredShape(parsed as Partial<StoredNavigationContext>);
-    } catch {
+    } catch (error) {
+        logMachineError('navigationContext', 'readStoredContext', error);
         return { current: {}, byWorkspace: {} };
     }
 }

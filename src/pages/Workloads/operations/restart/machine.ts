@@ -5,6 +5,7 @@ import {assign, fromPromise, setup} from 'xstate';
 import runtimeOperationApi from '@/api/runtimeOperation';
 import type {RestartInput} from '@/api/runtimeOperation';
 import type {RuntimeWorkload, WorkloadGroup} from '@/interface/entities/workload';
+import {logMachineError} from '@/logging/machineLogger';
 import {loadGroups, loadWorkloads} from '../shared/loader';
 import type {ContainerOption, WorkloadsBundle} from '../shared/loader';
 import {buildRows, editMaxUnavailable, toggleCluster} from './rows';
@@ -96,7 +97,13 @@ export const restartMachine = setup({
                     },
                     { target: 'ready', actions: assign({ groups: ({ event }) => event.output }) },
                 ],
-                onError: { target: 'ready', actions: assign({ loadError: () => '工作负载分组加载失败' }) },
+                onError: {
+                    target: 'ready',
+                    actions: [
+                        ({ event }) => logMachineError('restartMachine', 'loadGroups', event.error),
+                        assign({ loadError: () => '工作负载分组加载失败' }),
+                    ],
+                },
             },
         },
         loadingWorkloads: {
@@ -107,7 +114,8 @@ export const restartMachine = setup({
                     target: 'ready',
                     actions: assign(({ event }) => {
                         const bundle = event.output as WorkloadsBundle;
-                        const mainContainer = bundle.containerNames.find(item => item.type === 'MAIN') ?? bundle.containerNames[0];
+                        const mainContainer = bundle.containerNames.find(item => item.type === 'MAIN')
+                            ?? bundle.containerNames[0];
                         const container = mainContainer?.name;
                         return {
                             workloads: bundle.workloads,
@@ -118,7 +126,13 @@ export const restartMachine = setup({
                         };
                     }),
                 },
-                onError: { target: 'ready', actions: assign({ loadError: () => '工作负载列表加载失败' }) },
+                onError: {
+                    target: 'ready',
+                    actions: [
+                        ({ event }) => logMachineError('restartMachine', 'loadWorkloads', event.error),
+                        assign({ loadError: () => '工作负载列表加载失败' }),
+                    ],
+                },
             },
         },
         ready: {
@@ -151,9 +165,21 @@ export const restartMachine = setup({
             invoke: {
                 src: 'submit',
                 input: ({ context }) =>
-                    toRestartInput(context.appEnvID, context.rows, context.container, Number(context.exitTimeout), context.operationName),
+                    toRestartInput(
+                        context.appEnvID,
+                        context.rows,
+                        context.container,
+                        Number(context.exitTimeout),
+                        context.operationName,
+                    ),
                 onDone: { target: 'succeeded' },
-                onError: { target: 'ready', actions: assign({ submitError: () => '提交失败，请重试' }) },
+                onError: {
+                    target: 'ready',
+                    actions: [
+                        ({ event }) => logMachineError('restartMachine', 'submit', event.error),
+                        assign({ submitError: () => '提交失败，请重试' }),
+                    ],
+                },
             },
         },
         succeeded: { type: 'final' },

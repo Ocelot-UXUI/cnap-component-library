@@ -3,6 +3,7 @@ import {assign, fromPromise, setup} from 'xstate';
 import accountApi from '@/api/account';
 import applicationApi from '@/api/application';
 import applicationEnvironmentApi from '@/api/applicationEnvironment';
+import {logMachineError} from '@/logging/machineLogger';
 import {
     buildAccountSelectorOptionGroups,
     buildApplicationSelectorOptionGroups,
@@ -64,7 +65,10 @@ export const optionGroupMachine = setup({
                         },
                         onError: {
                             target: 'error',
-                            actions: assign({ account: () => ({ status: 'error' as const, data: {} }) }),
+                            actions: [
+                                ({ event }) => logMachineError('optionGroupMachine', 'loadAccount', event.error),
+                                assign({ account: () => ({ status: 'error' as const, data: {} }) }),
+                            ],
                         },
                     },
                 },
@@ -86,7 +90,10 @@ export const optionGroupMachine = setup({
                         },
                         onError: {
                             target: 'error',
-                            actions: assign({ application: () => ({ status: 'error' as const, data: {} }) }),
+                            actions: [
+                                ({ event }) => logMachineError('optionGroupMachine', 'loadApplication', event.error),
+                                assign({ application: () => ({ status: 'error' as const, data: {} }) }),
+                            ],
                         },
                     },
                 },
@@ -127,7 +134,10 @@ export const optionGroupMachine = setup({
                         },
                         onError: {
                             target: 'error',
-                            actions: assign({ environment: () => ({ status: 'error' as const, data: {} }) }),
+                            actions: [
+                                ({ event }) => logMachineError('optionGroupMachine', 'loadEnvironment', event.error),
+                                assign({ environment: () => ({ status: 'error' as const, data: {} }) }),
+                            ],
                         },
                     },
                 },
@@ -175,7 +185,10 @@ export const optionGroupMachine = setup({
                         },
                         onError: {
                             target: 'error',
-                            actions: assign({ cluster: () => ({ status: 'error' as const, data: [] }) }),
+                            actions: [
+                                ({ event }) => logMachineError('optionGroupMachine', 'loadCluster', event.error),
+                                assign({ cluster: () => ({ status: 'error' as const, data: [] }) }),
+                            ],
                         },
                     },
                 },

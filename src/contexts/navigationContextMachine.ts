@@ -1,5 +1,6 @@
 import {assign, createActor, fromPromise, setup} from 'xstate';
 
+import {logMachineError} from '@/logging/machineLogger';
 import {loadNavigationContextCandidates} from './navigationContextCandidates';
 import {applyNavigationSelection} from './navigationContextReducer';
 import {createMachineContext, deriveRouteContext, getSnapshot} from './navigationContextSnapshot';
@@ -20,6 +21,10 @@ interface NotifyParams {
     accountChanged?: boolean;
     applicationChanged?: boolean;
     environmentChanged?: boolean;
+}
+
+export function handleNavigationCandidatesLoadError(error: unknown): void {
+    logMachineError('navigationMachine', 'loadCandidates', error);
 }
 
 export const navigationMachine = setup({
@@ -147,6 +152,7 @@ export const navigationMachine = setup({
                 },
                 onError: {
                     target: 'ready',
+                    actions: ({ event }) => handleNavigationCandidatesLoadError(event.error),
                 },
             },
         },

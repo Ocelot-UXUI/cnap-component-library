@@ -55,9 +55,9 @@ function getEnvironmentType(environment: AppEnvironment): string {
 
 export function buildAccountSelectorOptionGroups(accounts: Account[]): NavigationSelectorOptionGroups {
     const all = accounts.map((account, index) => ({
-        id: String(account.id),
+        id: account.id,
         name: account.name,
-        identifier: String(account.id),
+        identifier: account.id,
         favorite: index < 2,
         avatarText: getAvatarText(account.name),
         type: getAvatarColor(index),

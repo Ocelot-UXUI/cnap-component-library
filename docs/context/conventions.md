@@ -140,6 +140,19 @@ Two state tools coexist, split by whether the state must be observable/controlla
 - For this class of state, all data lifecycle (initialization, async loading, cascade, persistence) lives inside the machine. React components are thin consumers: read via `useSelector`, dispatch via `actorRef.send`; they must not fetch, manage loading, or write localStorage directly.
 - When an actor needs to be accessible outside the React tree, create it at module level via `createActor().start()` and pass the ref through React Context.
 
+### Machine error and abnormal-data observability
+
+所有 machine 都必须遵守“失败可观测、异常数据可定位”原则：
+
+- 每个 `invoke` / `fromPromise` 都必须定义 `onError`。进入 `onError` 时，必须保留原始 `event.error` 并通过 `@/logging/machineLogger` 的 `logMachineError(machineName, operation, error)` 打印；即使状态仍然转移到 `ready`，也不能静默吞掉异常。
+- `onError` 除了日志外，应继续更新 machine 的错误状态（如 `status: 'error'`、`loadError` 或 `submitError`），使调用方能够区分“请求失败”和“合法空数据”。
+- 数据归一化、解析、映射或兜底过程中，如果发现异常数据并将其清理、丢弃或替换，必须在处理前通过 `logMachineDataIssue(machineName, operation, details)` 打印。`details` 至少包含 `reason`，并在安全的前提下包含相关 ID、字段名、原始值与归一化结果。
+- 正常业务语义产生的空数据不打印异常日志，例如未选择上级节点导致下级选项为空、用户筛选导致的列表为空、未配置可选资源。
+- 日志不得包含 token、密码、完整响应体等敏感信息；优先记录 machine 名、操作名、错误对象和可定位该条数据的非敏感标识。
+- 新增 machine 或修改已有 machine 时，必须检查所有异步分支和异常数据丢弃分支，并为新增的可观测行为补充或更新测试。
+
+统一日志入口：`src/logging/machineLogger.ts`。
+
 ### constate — view-local shared state
 
 - constate is for shared state that is only consumed **inside** React (never read or driven from outside the React tree). Co-locating ephemeral data fetching and loading state inside a constate hook is allowed for this class of state.
