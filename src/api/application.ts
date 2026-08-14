@@ -13,13 +13,14 @@ interface ParamsGetApplicationsByAccount {
     /** 按应用分类筛选，例如 microservice */
     category?: string;
     /** 按公共环境 ID 筛选 */
-    environmentId?: number;
+    environmentId?: string;
     /** 用户标签 ID，多个 ID 使用英文逗号分隔，例如 "7,8" */
     labelIds?: string;
     /** 页码，从 1 开始 */
     page?: number;
     /** 每页数量，必须大于 0；不传时默认 20 */
     pageSize?: number;
+    curApplicationId?: string;
 }
 
 interface ParamsAccountID {
