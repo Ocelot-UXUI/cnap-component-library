@@ -4,6 +4,7 @@
 > 来源：Figma 设计稿 + 用户指令 + 产品设计文档 + 需求评审会议记录
 > 父需求：docs/requirements/workloads-page.md（子需求 2+3）
 > 范围变更（2026-07-25，用户指示）：**本切片直接对接真实 API（`runtimeResourceApi.getPods/getWorkloadGroups/getRuntimeSummary`、`runtimeOperationApi.getOperations`），不使用 mock 数据。**
+> 滚动模型变更（2026-08-15，plan `docs/plans/2026-08-15-workloads-sticky-scroll-plan.md`）：**采用「假滚动」模型。** 页面只有单一外部滚动条（工作区 `PaneScroll`）。核心目标：页面滚动到位后，**PodContentArea 容器本身固定于 WorkloadsHeader 下方**，形成一个定高可视窗口（`overflow:hidden`、无内部滚动条）。外部动态占位区延长滚动行程；窗口内内容由外部 `scrollTop` 计算进度、以 `transform: translateY` 搬运。据此：各组**不再各自独立滚动**；内容头/筛选条先随进度滚走；每个组的 GroupHeader + 表头按序「单个」由 JS 驱动吸顶（原生 `position:sticky` 与 antd Table `sticky` 在定高窗口内均失效）；分页器与批量操作栏行为见下文对应小节。
 
 ## Goal
 
@@ -276,12 +277,12 @@ Pod 名称列表头左侧有一个小箭头图标。hover 时箭头旋转至**�
 - 每个 group 表格独立分页，翻页不影响其他 group
 - GPU 列：如果整个工作负载组没有 GPU 资源，则隐藏该列
 - 详细模式下扩展行为空的列（☑ / 重启 / 存活 / 操作），单行内容垂直居中
-- 列顺序：Pod 名称列固定在左侧；滚动时表头字段随滚动吸顶
+- 列顺序：Pod 名称列固定在左侧；**滚动时 GroupHeader + 表头随滚动吸顶**（假滚动模型下由 JS 按进度驱动，非原生 sticky）。同一时刻仅一个组的 GroupHeader + 表头处于吸顶态，滚到下一组时交接；无法到达吸顶线的短/末尾分组不强制吸顶
 - 支持列排序：重启次数、存活、状态（共 3 列，其他列暂不支持）
 
 ### 4. 批量操作栏（BatchActionBar）
 
-保留现有 `BatchActionBar` 壳子和显隐机制不变。PodContentArea 选中 Pod 后通过 `createPortal` 将批量操作内容渲染到页面级 portal 目标容器。选中数量**跨 group 累计**（如 group A 选中 2 个 + group B 选中 1 个 = 显示"已选择 3 个实例"）。
+保留现有 `BatchActionBar` 壳子和显隐机制不变。批量操作栏固定于**屏幕底部、PodContentArea 定高窗口下方**（任何满足此视觉的实现均可；定高窗口须为批量栏让出高度，见滚动模型）。选中数量**跨 group 累计**（如 group A 选中 2 个 + group B 选中 1 个 = 显示"已选择 3 个实例"）。
 
 ### 5. 状态处理
 
@@ -423,7 +424,7 @@ Pod 名称列表头左侧有一个小箭头图标。hover 时箭头旋转至**�
 | 筛选后某 group 为空     | 该 group 区域正常显示组标题 + Empty               |
 | 搜索无匹配              | 所有 group 显示 Empty（"未找到符合条件的 Pod"）   |
 | 数据加载失败            | 显示错误提示 + 重试按钮                           |
-| 多个 group 同时存在     | 按 group 顺序垂直排列，各 group 独立滚动其表格    |
+| 多个 group 同时存在     | 按 group 顺序垂直排列，共用单一外部滚动条；滚入定高窗口后逐组吸顶交接（假滚动） |
 | 分页切换时收起/展开状态 | 分页不影响展开/收起状态                           |
 | 快捷筛选与 Select 同步  | 快捷筛选是 Select 的快捷入口，两者值同步即可      |
 

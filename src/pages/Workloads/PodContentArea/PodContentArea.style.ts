@@ -10,9 +10,10 @@ export const AreaContainer = styled.div`
     flex-direction: column;
     gap: ${spacing.l}px;
     flex: 1;
-    padding: ${spacing.xl2}px;
+    // padding: ${spacing.xl2}px;
     background-color: #fff;
     border-radius: ${radius.xl}px;
+    max-height: calc(100% - 52px);
 `;
 
 export const HeaderRow = styled.div`
@@ -111,8 +112,31 @@ export const GroupSection = styled.div`
 `;
 
 export const GroupBlock = styled.div`
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: ${spacing.s}px;
     margin-bottom: ${spacing.xl2}px;
+
+    /* 假滚动下 thead 由 JS 反向 translate 吸顶，需盖住其下 body 行 */
+    & thead {
+        position: relative;
+        // 设置为16是因为需要盖住fixed的表格首位两列的表头渲染
+        z-index: 16;
+        will-change: transform;
+    }
+`;
+
+/** GroupHeader 吸顶承载层：data-group-header 供进度控制器实测/施加 transform */
+export const GroupHeaderPin = styled.div`
+    position: relative;
+    will-change: transform;
+    background: ${semantic.bg.default};
+`;
+
+/** 组内分页行：固定 min-height 保证分页固定/回流切换时组高不跳变 */
+export const PagerRow = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    min-height: 32px;
 `;

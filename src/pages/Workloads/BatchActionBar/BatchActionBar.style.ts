@@ -7,7 +7,7 @@ import {typography} from '@/constants/typography';
 
 export const BatchBarWrapper = styled.div`
     display: flex;
-    width: 100%;
+    width: 900px;
     height: 48px;
     align-items: center;
     justify-content: space-between;

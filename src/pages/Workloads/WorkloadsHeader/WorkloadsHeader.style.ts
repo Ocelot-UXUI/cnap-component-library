@@ -9,6 +9,7 @@ export const HeaderContainer = styled.div`
     align-items: center;
     justify-content: space-between;
     height: 36px;
+    padding: ${spacing.xl4}px 0;
 `;
 
 export const HeaderLeft = styled.div`

@@ -1,11 +1,16 @@
 import styled from '@emotion/styled';
 import {AnimatePresence, motion} from 'framer-motion';
-import {useState} from 'react';
+import {useRef, useState} from 'react';
 
+import {Sticky} from '@/components/Sticky';
+import {semantic} from '@/constants/colors';
+import {spacing} from '@/constants/spacing';
 import {useAppEnvID, useNavigationSnapshot} from '@/contexts/NavigationContext';
+
 import {BatchActionBar} from './BatchActionBar';
 import {PodContentArea} from './PodContentArea';
 import {reconcileGroup, selectedList} from './PodContentArea/selection';
+import {StickyScrollStage} from './StickyScrollStage';
 import {usePodOperationModal} from './usePodOperationModal';
 import {WorkloadsRuntimeProvider} from './useWorkloadsRuntime';
 import {WorkloadsHeader} from './WorkloadsHeader';
@@ -14,9 +19,6 @@ import {WorkloadsOverview} from './WorkloadsOverview';
 import type {Pod} from '@/interface/entities/pod';
 import type {ModalKey} from '@/overlay';
 import type {SelectedPods} from './PodContentArea/selection';
-import {spacing} from '@/constants/spacing';
-import {semantic} from '@/constants/colors';
-import {Sticky} from '@/components/Sticky';
 
 /** 批量操作栏 action key → 全局弹窗 key */
 const BATCH_KEY_TO_MODAL: Record<string, ModalKey> = {
@@ -29,12 +31,23 @@ const PageContainer = styled.div`
     display: flex;
     flex-direction: column;
     height: 100%;
+    padding: 0 ${spacing.xl4}px 0 ${spacing.xl4}px;
 `;
 
-const BatchBarSlot = styled(motion.div)`
-    overflow: hidden;
-    width: 900px;
-    align-self: center;
+/** 批量操作栏固定屏幕底部、PodContentArea 定高窗口下方 */
+const BatchBarDock = styled(motion.div)`
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: ${spacing.xl2}px;
+    display: flex;
+    justify-content: center;
+    z-index: 1000;
+    pointer-events: none;
+
+    & > * {
+        pointer-events: auto;
+    }
 `;
 
 const WorkloadsPage = () => {
@@ -44,10 +57,12 @@ const WorkloadsPage = () => {
 
     const [selection, setSelection] = useState<SelectedPods>({});
     const selectedPods = selectedList(selection);
+    const headerRef = useRef<HTMLDivElement>(null);
+    const batchBarRef = useRef<HTMLDivElement>(null);
 
     const clearSelection = () => setSelection({});
 
-    const { openForPods, handlePodOperation } = usePodOperationModal({
+    const {openForPods, handlePodOperation} = usePodOperationModal({
         appEnvID,
         environmentName,
         onSuccess: clearSelection,
@@ -60,27 +75,33 @@ const WorkloadsPage = () => {
         <WorkloadsRuntimeProvider>
             <PageContainer>
                 <Sticky
+                    ref={headerRef}
                     top="0px"
                     backgroundColor={semantic.bg.page}
-                    style={{
-                        paddingBottom: `${spacing.l}px`,
-                    }}
+                    style={{paddingBottom: `${spacing.l}px`}}
                 >
                     <WorkloadsHeader />
                 </Sticky>
                 <WorkloadsOverview />
-                <PodContentArea
-                    selection={selection}
-                    onGroupSelectionChange={handleGroupSelection}
-                    onPodOperation={handlePodOperation}
-                />
+                <StickyScrollStage
+                    headerRef={headerRef}
+                    batchBarRef={batchBarRef}
+                    batchBarVisible={selectedPods.length > 0}
+                >
+                    <PodContentArea
+                        selection={selection}
+                        onGroupSelectionChange={handleGroupSelection}
+                        onPodOperation={handlePodOperation}
+                    />
+                </StickyScrollStage>
                 <AnimatePresence>
                     {selectedPods.length > 0 && (
-                        <BatchBarSlot
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: 'auto', opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.2, ease: 'easeInOut' }}
+                        <BatchBarDock
+                            ref={batchBarRef}
+                            initial={{opacity: 0, y: 20}}
+                            animate={{opacity: 1, y: 0}}
+                            exit={{opacity: 0, y: 20}}
+                            transition={{duration: 0.2, ease: 'easeInOut'}}
                         >
                             <BatchActionBar
                                 pods={selectedPods}
@@ -92,7 +113,7 @@ const WorkloadsPage = () => {
                                 }}
                                 onClose={clearSelection}
                             />
-                        </BatchBarSlot>
+                        </BatchBarDock>
                     )}
                 </AnimatePresence>
             </PageContainer>

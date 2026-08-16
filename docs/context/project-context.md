@@ -16,9 +16,9 @@ Update it in place. Do not create dated copies.
 
 ## Active Work
 
-- Active requirement: docs/requirements/mvp.md, docs/requirements/vertical-scale-dialog.md, docs/requirements/horizontal-scale-dialog.md
+- Active requirement: docs/requirements/mvp.md, docs/requirements/vertical-scale-dialog.md, docs/requirements/horizontal-scale-dialog.md, docs/requirements/pod-list-content-area.md（假滚动/多级吸顶滚动，2026-08-15 更新）
 - Active owner doc: docs/design/app-overview.md
-- Active plan: none active（req2 计划已关闭）; 已完成: docs/plans/2026-08-03-pod-detail-drawer-ops-standalone-page-plan.md (req2 Drawer 操作列表 + 独立页面, independent closure audit PASS), docs/plans/2026-08-03-global-modal-drawer-registry-plan.md (independent closure audit PASS), docs/plans/2026-08-03-workloads-detail-optimizations-plan.md (req1/3/4, closure audit 通过)
+- Active plan: docs/plans/2026-08-15-workloads-sticky-scroll-plan.md (Workloads 多级吸顶滚动/假滚动, in progress); 已完成: docs/plans/2026-08-03-pod-detail-drawer-ops-standalone-page-plan.md (req2 Drawer 操作列表 + 独立页面, independent closure audit PASS), docs/plans/2026-08-03-global-modal-drawer-registry-plan.md (independent closure audit PASS), docs/plans/2026-08-03-workloads-detail-optimizations-plan.md (req1/3/4, closure audit 通过)
 - Active backlog item: docs/backlog/README.md#age-setup
 - AI autonomy: implement
 - Current blocker: none

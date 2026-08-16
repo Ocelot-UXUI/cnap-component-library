@@ -1,17 +1,19 @@
-import {Alert, Empty, Flex, Pagination, Table} from '@/design';
+import {Alert, Empty, Pagination, Table} from '@/design';
 import type {TablePaginationConfig} from '@/design';
 import type {SorterResult, TableCurrentDataSource} from '@/design';
+import {useEffect, useRef} from 'react';
+import {createPortal} from 'react-dom';
 
 import type {Pod, PodOperation} from '@/interface/entities/pod';
 import type {RuntimeOperation} from '@/interface/entities/runtimeOperation';
 import type {WorkloadGroup} from '@/interface/entities/workload';
+import {useStickyScrollContext} from '../StickyScrollStage';
 import {GroupHeader} from './GroupHeader';
 import {buildPodColumns, groupHasGpu, toSortParam} from './podColumns';
-import {GroupBlock} from './PodContentArea.style';
+import {GroupBlock, GroupHeaderPin, PagerRow} from './PodContentArea.style';
 import {podKey} from './selection';
 import type {PodFilterState, ViewMode} from './types';
 import {useGroupPods} from './useGroupPods';
-import {Sticky} from '@/components/Sticky';
 
 interface PodGroupTableProps {
     group: WorkloadGroup;
@@ -48,7 +50,10 @@ export const PodGroupTable = ({
     onPodOperation,
     onWorkloadOperation,
 }: PodGroupTableProps) => {
-    const { data, loading, error, query, setPage, setSort, reload } = useGroupPods(
+    const {registerGroup, paginationPinnedId, paginationSlot, remeasure} = useStickyScrollContext();
+    const blockRef = useRef<HTMLDivElement>(null);
+
+    const {data, loading, error, query, setPage, setSort, reload} = useGroupPods(
         appEnvID,
         clusterId,
         group.id,
@@ -58,6 +63,16 @@ export const PodGroupTable = ({
 
     const pods = data?.items ?? [];
     const columns = buildPodColumns(mode, groupHasGpu(pods), onOpenDetail, onPodYamlView, onPodOperation);
+
+    useEffect(() => {
+        registerGroup(group.id, blockRef.current);
+        return () => registerGroup(group.id, null);
+    }, [group.id, registerGroup]);
+
+    // 折叠 / 数据到达 / 换页 / 视图切换后重算几何与占位
+    useEffect(() => {
+        remeasure();
+    }, [expanded, mode, pods.length, data?.total, query.page, query.pageSize, loading, remeasure]);
 
     const handleChange = (
         _pagination: TablePaginationConfig,
@@ -71,9 +86,22 @@ export const PodGroupTable = ({
         }
     };
 
+    const pager = (
+        <Pagination
+            current={query.page}
+            pageSize={query.pageSize}
+            total={data?.total ?? 0}
+            showSizeChanger
+            pageSizeOptions={[10, 20, 50]}
+            onChange={(page, pageSize) => setPage(page, pageSize)}
+            size="small"
+        />
+    );
+    const pinPager = paginationPinnedId === group.id && paginationSlot !== null;
+
     return (
-        <GroupBlock>
-            <Sticky top="56px">
+        <GroupBlock ref={blockRef} data-group-block data-group-id={group.id}>
+            <GroupHeaderPin data-group-header>
                 <GroupHeader
                     group={group}
                     expanded={expanded}
@@ -84,8 +112,7 @@ export const PodGroupTable = ({
                     onYamlView={onYamlView}
                     onWorkloadOperation={operation => onWorkloadOperation(group.id, operation)}
                 />
-            </Sticky>
-            
+            </GroupHeaderPin>
             {expanded && (
                 error
                     ? <Alert type="error" message="加载失败" action={<a onClick={reload}>重试</a>} />
@@ -97,8 +124,8 @@ export const PodGroupTable = ({
                                 dataSource={pods}
                                 loading={loading}
                                 size="small"
-                                scroll={{ x: 'max-content' }}
-                                locale={{ emptyText: <Empty description="该组暂无 Pod" /> }}
+                                scroll={{x: 'max-content'}}
+                                locale={{emptyText: <Empty description="该组暂无 Pod" />}}
                                 rowSelection={{
                                     selectedRowKeys: selectedKeys,
                                     preserveSelectedRowKeys: true,
@@ -108,20 +135,8 @@ export const PodGroupTable = ({
                                 pagination={false}
                                 onChange={handleChange}
                             />
-                            <Sticky bottom='0px'>
-                                <Flex justify="flex-end" >
-                                    <Pagination
-                                        current={query.page}
-                                        pageSize={query.pageSize}
-                                        total={data?.total ?? 0}
-                                        showSizeChanger
-                                        pageSizeOptions={[10, 20, 50]}
-                                        onChange={(page, pageSize) => setPage(page, pageSize)}
-                                        size='small'
-                                    />
-                                </Flex>
-                            </Sticky>
-                            
+                            <PagerRow>{pinPager ? null : pager}</PagerRow>
+                            {pinPager && paginationSlot ? createPortal(pager, paginationSlot) : null}
                         </>
                     )
             )}

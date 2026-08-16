@@ -44,6 +44,7 @@ Keep-alive 下，页面从「挂载一次」变为「激活时挂载、隐藏时
 
 - 工作区内的轮询、订阅、WebSocket、定时器等副作用，**必须在组件内以 `useEffect` 承载并返回清理函数**，使其在工作区隐藏（Activity `hidden`）时自动取消、恢复时自动重建。即使底层通道位于 xstate actor / constate region，其订阅的建立与解除也必须在业务组件中有对应的 effect 生命周期体现。
 - 数据是否在切回时重新拉取，由业务组件自身的 effect 决定，**不在架构层统一处理**：数据若在 effect 内获取，则恢复时自然重新获取一次；组件的 UI 状态不受影响。
+- **滚动/几何控制器同理**：如 Workloads「假滚动」进度控制器（`src/pages/Workloads/StickyScrollStage/useStickyScroll.ts`，见 requirement `docs/requirements/pod-list-content-area.md` 假滚动模型）绑定的 `scroll` / `requestAnimationFrame` / `ResizeObserver` 均在 `useEffect` 内建立并返回清理函数，故工作区隐藏（Activity `hidden`）时自动解绑、恢复时重新量测并按保留的 `scrollTop` 重算 transform。任何依赖 DOM 量测的常驻控制器都必须遵循该契约，不得在 effect 外建立监听。
 
 ## Boundaries
 
