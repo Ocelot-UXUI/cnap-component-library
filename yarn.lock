@@ -4827,8 +4827,8 @@ __metadata:
 
 "eslint-plugin-route-links@file:./eslint-plugin-route-links::locator=%40baidu%2Fcomate-stack%40workspace%3A.":
   version: 1.0.0
-  resolution: "eslint-plugin-route-links@file:./eslint-plugin-route-links#./eslint-plugin-route-links::hash=8cc01b&locator=%40baidu%2Fcomate-stack%40workspace%3A."
-  checksum: 10c0/d04acab39e7824484809e724155659641a0ce619f4863f4112d7b7230ae05371e121af58db427ddd541a00a6c5405289d738f7b83dd5b7c4ee3f28bebe3ef2b1
+  resolution: "eslint-plugin-route-links@file:./eslint-plugin-route-links#./eslint-plugin-route-links::hash=b08455&locator=%40baidu%2Fcomate-stack%40workspace%3A."
+  checksum: 10c0/eacec91b22d8945e9aa85da66b5daa8dbf2638a8360cec934e86621c51a7487d2204c5acb498e934ca501a734a125a2759c120f298b3ff47ff0d4010c2be89ee
   languageName: node
   linkType: hard
 
