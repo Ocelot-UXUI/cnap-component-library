@@ -28,17 +28,18 @@ const BATCH_KEY_TO_MODAL: Record<string, ModalKey> = {
 };
 
 const PageContainer = styled.div`
+    position: relative;
     display: flex;
     flex-direction: column;
-    height: 100%;
+    /* min-height 而非 height：盒子须随 Stage+Spacer 增长——否则 WorkloadsHeader 的 sticky 约束矩形只到一屏，长内容深滚时 header 会被顶走 */
+    min-height: 100%;
     padding: 0 ${spacing.xl4}px 0 ${spacing.xl4}px;
 `;
 
 /** 批量操作栏固定屏幕底部、PodContentArea 定高窗口下方 */
 const BatchBarDock = styled(motion.div)`
     position: fixed;
-    left: 0;
-    right: 0;
+    align-self: center;
     bottom: ${spacing.xl2}px;
     display: flex;
     justify-content: center;
@@ -78,7 +79,7 @@ const WorkloadsPage = () => {
                     ref={headerRef}
                     top="0px"
                     backgroundColor={semantic.bg.page}
-                    style={{paddingBottom: `${spacing.l}px`}}
+                    style={{paddingBottom: `${spacing.l}px`, zIndex: 20}}
                 >
                     <WorkloadsHeader />
                 </Sticky>

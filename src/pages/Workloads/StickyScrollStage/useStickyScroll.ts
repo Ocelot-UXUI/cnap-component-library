@@ -1,26 +1,28 @@
-import {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState} from 'react';
+import {useCallback, useEffect, useLayoutEffect, useMemo, useRef} from 'react';
+
+import {spacing} from '@/constants/spacing';
 
 import {
-    activeGroupIndex,
-    computeProgress,
     computePinStart,
+    computeProgress,
     computeScrubRange,
     computeWindowHeight,
     DEFAULT_HEADER_HEIGHT,
-    paginationPinned,
 } from '../PodContentArea/stickyScroll';
-import {
-    applyGroupTransforms,
-    attachStickyListeners,
-    EMPTY_METRICS,
-    measureGroups,
-    resetTransforms,
-    resolveScrollParent,
-} from './stickyScrollDom';
-import type {Metrics} from './stickyScrollDom';
+import {attachStickyListeners, resolveScrollParent} from './stickyScrollDom';
 
 import type {StickyScrollApi, UseStickyScrollOptions, UseStickyScrollResult} from './context';
 
+/** 双向同步写前差值阈值：差值小于该值不写，配合映射一致性防回环 */
+const SCROLL_SYNC_EPSILON = 1;
+
+/** 白卡底边与批量栏顶边之间的灰底呼吸间距 */
+const BATCH_BAR_GAP = spacing.xs * 2;
+
+/**
+ * linked-scroll 同步控制器（spike 版）：内部窗口为真实滚动容器（滚动条隐藏），
+ * 外层滚动经 pinStart 映射为内部 scrollTop；滚轮悬停窗口时内部原生滚动并回写外层。
+ */
 export function useStickyScroll(options: UseStickyScrollOptions): UseStickyScrollResult {
     const {headerRef, batchBarRef, batchBarVisible} = options;
 
@@ -28,134 +30,124 @@ export function useStickyScroll(options: UseStickyScrollOptions): UseStickyScrol
     const windowRef = useRef<HTMLDivElement | null>(null);
     const trackRef = useRef<HTMLDivElement | null>(null);
     const spacerRef = useRef<HTMLDivElement | null>(null);
-    const groupEls = useRef(new Map<string, HTMLElement>());
-
-    const metricsRef = useRef<Metrics>(EMPTY_METRICS);
-    const pinnedRef = useRef(false);
-    const activeIdRef = useRef<string | null>(null);
-    const pagerIdRef = useRef<string | null>(null);
-    const windowHeightRef = useRef(0);
+    const metricsRef = useRef({pinStart: 0});
     const rafRef = useRef(0);
 
-    const [pinned, setPinned] = useState(false);
-    const [windowHeight, setWindowHeight] = useState(0);
-    const [activeGroupId, setActiveGroupId] = useState<string | null>(null);
-    const [paginationPinnedId, setPaginationPinnedId] = useState<string | null>(null);
-    const [paginationSlot, setPaginationSlot] = useState<HTMLElement | null>(null);
-
-    const registerGroup = useCallback((id: string, el: HTMLElement | null) => {
-        if (el) {
-            groupEls.current.set(id, el);
-        } else {
-            groupEls.current.delete(id);
+    const syncInnerFromOuter = useCallback(() => {
+        const win = windowRef.current;
+        const scrollEl = resolveScrollParent(stageRef.current);
+        if (!win || !scrollEl) {
+            return;
+        }
+        const maxScroll = win.scrollHeight - win.clientHeight;
+        const target = computeProgress(scrollEl.scrollTop, metricsRef.current.pinStart, maxScroll);
+        if (Math.abs(win.scrollTop - target) >= SCROLL_SYNC_EPSILON) {
+            win.scrollTop = target;
         }
     }, []);
 
-    const applyTransforms = useCallback(() => {
-        const track = trackRef.current;
+    const syncOuterFromInner = useCallback(() => {
+        const win = windowRef.current;
         const scrollEl = resolveScrollParent(stageRef.current);
-        if (!track || !scrollEl) {
+        if (!win || !scrollEl) {
             return;
         }
-        const {pinStart, scrubRange, windowHeight: wh, geometries} = metricsRef.current;
-        const progress = computeProgress(scrollEl.scrollTop, pinStart, scrubRange);
-        track.style.transform = `translateY(${-progress}px)`;
-        applyGroupTransforms(geometries, groupEls.current, progress);
-
-        const nextPinned = progress > 0;
-        if (nextPinned !== pinnedRef.current) {
-            pinnedRef.current = nextPinned;
-            setPinned(nextPinned);
-        }
-        const idx = activeGroupIndex(geometries, progress);
-        const activeGeo = idx >= 0 ? geometries[idx] : undefined;
-        const nextActive = activeGeo?.id ?? null;
-        if (nextActive !== activeIdRef.current) {
-            activeIdRef.current = nextActive;
-            setActiveGroupId(nextActive);
-        }
-        const nextPager = activeGeo && paginationPinned(activeGeo, progress, wh) ? activeGeo.id : null;
-        if (nextPager !== pagerIdRef.current) {
-            pagerIdRef.current = nextPager;
-            setPaginationPinnedId(nextPager);
+        const target = metricsRef.current.pinStart + win.scrollTop;
+        if (Math.abs(scrollEl.scrollTop - target) >= SCROLL_SYNC_EPSILON) {
+            scrollEl.scrollTop = target;
         }
     }, []);
 
     const measure = useCallback(() => {
         const stage = stageRef.current;
-        const track = trackRef.current;
         const win = windowRef.current;
+        const track = trackRef.current;
         const spacer = spacerRef.current;
         const scrollEl = resolveScrollParent(stage);
-        if (!stage || !track || !win || !spacer || !scrollEl) {
+        if (!stage || !win || !track || !spacer || !scrollEl) {
             return;
         }
         const headerHeight = headerRef.current?.offsetHeight ?? DEFAULT_HEADER_HEIGHT;
-        const batchBarHeight = batchBarRef.current?.offsetHeight ?? 0;
-        const wh = computeWindowHeight(scrollEl.clientHeight, headerHeight, batchBarHeight, batchBarVisible);
+        // 批量栏占位足迹 = 栏高 + Dock 悬浮 bottom 偏移；读 computedStyle 避免 token 双写，且不受 framer 入场动画 transform 影响
+        const batchBarFootprint = batchBarVisible && batchBarRef.current
+            ? batchBarRef.current.offsetHeight + (Number.parseFloat(getComputedStyle(batchBarRef.current).bottom) || 0)
+            : 0;
+        const windowHeight = computeWindowHeight(
+            scrollEl.clientHeight,
+            headerHeight,
+            batchBarFootprint + BATCH_BAR_GAP,
+            batchBarVisible,
+        );
+        const contentHeight = win.scrollHeight;
         win.style.top = `${headerHeight}px`;
-
-        resetTransforms(track, groupEls.current.values());
-        const contentHeight = track.scrollHeight;
-        const geometries = measureGroups(track);
+        win.style.height = `${Math.min(windowHeight, contentHeight)}px`;
 
         const stageRect = stage.getBoundingClientRect();
         const scrollRect = scrollEl.getBoundingClientRect();
-        const pinStart = computePinStart(stageRect.top, scrollRect.top, scrollEl.scrollTop, headerHeight);
-        const scrubRange = computeScrubRange(contentHeight, wh);
-        spacer.style.height = `${scrubRange}px`;
-
-        metricsRef.current = {headerHeight, windowHeight: wh, pinStart, scrubRange, geometries};
-        if (wh !== windowHeightRef.current) {
-            windowHeightRef.current = wh;
-            setWindowHeight(wh);
-        }
-        applyTransforms();
-    }, [batchBarVisible, applyTransforms, headerRef, batchBarRef]);
+        metricsRef.current = {
+            pinStart: computePinStart(stageRect.top, scrollRect.top, scrollEl.scrollTop, headerHeight),
+        };
+        spacer.style.height = `${computeScrubRange(contentHeight, windowHeight)}px`;
+        syncInnerFromOuter();
+    }, [batchBarVisible, headerRef, batchBarRef, syncInnerFromOuter]);
 
     const remeasure = useCallback(() => {
-        requestAnimationFrame(() => measure());
+        if (rafRef.current) {
+            return;
+        }
+        rafRef.current = requestAnimationFrame(() => {
+            rafRef.current = 0;
+            measure();
+        });
     }, [measure]);
 
     useLayoutEffect(() => {
         measure();
-    }, [measure]);
+        // framer-motion 的转发 ref 在其内部 layout effect 才赋值（晚于本组件的兄弟顺序），首次 measure 可能拿不到 dock；下一帧补测
+        if (batchBarVisible && !batchBarRef.current) {
+            requestAnimationFrame(measure);
+        }
+    }, [measure, batchBarVisible, batchBarRef]);
 
     useEffect(() => {
-        const scrollEl = resolveScrollParent(stageRef.current);
+        const win = windowRef.current;
         const track = trackRef.current;
-        if (!scrollEl || !track) {
+        const scrollEl = resolveScrollParent(stageRef.current);
+        if (!win || !track || !scrollEl) {
             return;
         }
-        const onScroll = () => {
+        const onOuterScroll = () => {
             cancelAnimationFrame(rafRef.current);
-            rafRef.current = requestAnimationFrame(applyTransforms);
+            rafRef.current = requestAnimationFrame(syncInnerFromOuter);
         };
         const detach = attachStickyListeners(
             scrollEl,
             [track, scrollEl, headerRef.current, batchBarRef.current],
-            onScroll,
-            measure,
+            onOuterScroll,
+            remeasure,
         );
+        win.addEventListener('scroll', syncOuterFromInner, {passive: true});
         return () => {
             detach();
+            win.removeEventListener('scroll', syncOuterFromInner);
             cancelAnimationFrame(rafRef.current);
+            rafRef.current = 0;
         };
-    }, [applyTransforms, measure, headerRef, batchBarRef]);
+    }, [syncInnerFromOuter, syncOuterFromInner, remeasure, headerRef, batchBarRef]);
 
     const api = useMemo<StickyScrollApi>(
         () => ({
-            pinned,
-            windowHeight,
-            activeGroupId,
-            paginationPinnedId,
-            paginationSlot,
-            registerGroup,
+            pinned: false,
+            windowHeight: 0,
+            activeGroupId: null,
+            paginationPinnedId: null,
+            paginationSlot: null,
+            registerGroup: () => {},
             remeasure,
+            getStickyContainer: () => windowRef.current,
         }),
-        [pinned, windowHeight, activeGroupId, paginationPinnedId, paginationSlot, registerGroup, remeasure],
+        [remeasure],
     );
 
-    return {stageRef, windowRef, trackRef, spacerRef, setPaginationSlot, api};
+    return {stageRef, windowRef, trackRef, spacerRef, setPaginationSlot: () => {}, api};
 }
-

@@ -4,7 +4,7 @@
 > 来源：Figma 设计稿 + 用户指令 + 产品设计文档 + 需求评审会议记录
 > 父需求：docs/requirements/workloads-page.md（子需求 2+3）
 > 范围变更（2026-07-25，用户指示）：**本切片直接对接真实 API（`runtimeResourceApi.getPods/getWorkloadGroups/getRuntimeSummary`、`runtimeOperationApi.getOperations`），不使用 mock 数据。**
-> 滚动模型变更（2026-08-15，plan `docs/plans/2026-08-15-workloads-sticky-scroll-plan.md`）：**采用「假滚动」模型。** 页面只有单一外部滚动条（工作区 `PaneScroll`）。核心目标：页面滚动到位后，**PodContentArea 容器本身固定于 WorkloadsHeader 下方**，形成一个定高可视窗口（`overflow:hidden`、无内部滚动条）。外部动态占位区延长滚动行程；窗口内内容由外部 `scrollTop` 计算进度、以 `transform: translateY` 搬运。据此：各组**不再各自独立滚动**；内容头/筛选条先随进度滚走；每个组的 GroupHeader + 表头按序「单个」由 JS 驱动吸顶（原生 `position:sticky` 与 antd Table `sticky` 在定高窗口内均失效）；分页器与批量操作栏行为见下文对应小节。
+> 滚动模型变更（2026-08-16，plan `docs/plans/2026-08-16-workloads-linked-scroll-plan.md`，取代 2026-08-15 的「假滚动 / transform 搬运」机制）：**采用「隐藏内部滚动 + 外部同步」模型。** 页面只有**单一可见滚动条**（工作区 `PaneScroll`）。核心目标不变：页面滚动到位后，**PodContentArea 容器本身固定于 WorkloadsHeader 下方**，形成定高可视窗口。窗口内部是**真实滚动容器**（`overflow-y: scroll` 且滚动条隐藏——无可见内部滚动条）；外部动态占位区延长外部滚动行程；外部滚动将进度同步为内部 `scrollTop`，双向同步（滚轮悬停窗口时原生滚动内部并回写外部滚动条位置）。据此：GroupHeader + 表头 + 分页器在内部滚动容器内使用**原生 sticky**（表头经 antd Table `sticky`，停在 GroupHeader 下方；分页器 sticky 于窗口底）；内容头/筛选条先滚走；各组不拥有可见滚动条；原生滚动语义（Ctrl+F 定位、focus 滚入视口、窗口内键盘翻页、文本选中自动滚动）恢复。
 
 ## Goal
 
@@ -277,7 +277,7 @@ Pod 名称列表头左侧有一个小箭头图标。hover 时箭头旋转至**�
 - 每个 group 表格独立分页，翻页不影响其他 group
 - GPU 列：如果整个工作负载组没有 GPU 资源，则隐藏该列
 - 详细模式下扩展行为空的列（☑ / 重启 / 存活 / 操作），单行内容垂直居中
-- 列顺序：Pod 名称列固定在左侧；**滚动时 GroupHeader + 表头随滚动吸顶**（假滚动模型下由 JS 按进度驱动，非原生 sticky）。同一时刻仅一个组的 GroupHeader + 表头处于吸顶态，滚到下一组时交接；无法到达吸顶线的短/末尾分组不强制吸顶
+- 列顺序：Pod 名称列固定在左侧；**滚动时 GroupHeader + 表头随滚动吸顶**（隐藏内部滚动容器内为原生 sticky，表头停在 GroupHeader 下方）。同一时刻仅一个组的 GroupHeader + 表头处于吸顶态，滚到下一组时交接；无法到达吸顶线的短/末尾分组不强制吸顶
 - 支持列排序：重启次数、存活、状态（共 3 列，其他列暂不支持）
 
 ### 4. 批量操作栏（BatchActionBar）
@@ -424,7 +424,7 @@ Pod 名称列表头左侧有一个小箭头图标。hover 时箭头旋转至**�
 | 筛选后某 group 为空     | 该 group 区域正常显示组标题 + Empty               |
 | 搜索无匹配              | 所有 group 显示 Empty（"未找到符合条件的 Pod"）   |
 | 数据加载失败            | 显示错误提示 + 重试按钮                           |
-| 多个 group 同时存在     | 按 group 顺序垂直排列，共用单一外部滚动条；滚入定高窗口后逐组吸顶交接（假滚动） |
+| 多个 group 同时存在     | 按 group 顺序垂直排列，共用单一可见滚动条；滚入定高窗口后逐组吸顶交接（隐藏内部滚动 + 外部同步） |
 | 分页切换时收起/展开状态 | 分页不影响展开/收起状态                           |
 | 快捷筛选与 Select 同步  | 快捷筛选是 Select 的快捷入口，两者值同步即可      |
 

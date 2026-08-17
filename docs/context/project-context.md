@@ -16,9 +16,9 @@ Update it in place. Do not create dated copies.
 
 ## Active Work
 
-- Active requirement: docs/requirements/mvp.md, docs/requirements/vertical-scale-dialog.md, docs/requirements/horizontal-scale-dialog.md, docs/requirements/pod-list-content-area.md（假滚动/多级吸顶滚动，2026-08-15 更新）
+- Active requirement: docs/requirements/mvp.md, docs/requirements/vertical-scale-dialog.md, docs/requirements/horizontal-scale-dialog.md, docs/requirements/pod-list-content-area.md（滚动模型：隐藏内部滚动 + 外部同步，2026-08-16 修订）
 - Active owner doc: docs/design/app-overview.md
-- Active plan: docs/plans/2026-08-15-workloads-sticky-scroll-plan.md (Workloads 多级吸顶滚动/假滚动, in progress); 已完成: docs/plans/2026-08-03-pod-detail-drawer-ops-standalone-page-plan.md (req2 Drawer 操作列表 + 独立页面, independent closure audit PASS), docs/plans/2026-08-03-global-modal-drawer-registry-plan.md (independent closure audit PASS), docs/plans/2026-08-03-workloads-detail-optimizations-plan.md (req1/3/4, closure audit 通过)
+- Active plan: docs/plans/2026-08-16-workloads-linked-scroll-plan.md (Workloads 隐藏内部滚动 + 外部同步, planned, draft review 修订后通过, Phase 1 spike 为改码门控); 被取代（文档按用户指示冻结不改）: docs/plans/2026-08-15-workloads-sticky-scroll-plan.md (假滚动 transform 机制, in progress——机制与未竟的视觉 proof/closure 出口由 linked-scroll 计划 Phase 6 承接), docs/plans/2026-08-16-workloads-sticky-scroll-perf-plan.md (planned——7 条中 2 条被 linked-scroll Phase 5 吸收, 其余结构性失效); 已完成: docs/plans/2026-08-03-pod-detail-drawer-ops-standalone-page-plan.md (req2 Drawer 操作列表 + 独立页面, independent closure audit PASS), docs/plans/2026-08-03-global-modal-drawer-registry-plan.md (independent closure audit PASS), docs/plans/2026-08-03-workloads-detail-optimizations-plan.md (req1/3/4, closure audit 通过)
 - Active backlog item: docs/backlog/README.md#age-setup
 - AI autonomy: implement
 - Current blocker: none

@@ -21,6 +21,8 @@ export interface StickyScrollApi {
     registerGroup: (id: string, el: HTMLElement | null) => void;
     /** 请求重新量测（折叠 / 数据到达 / 换页 / 视图切换后调用） */
     remeasure: () => void;
+    /** 内部滚动窗口 DOM（antd Table sticky 的 getContainer 指向它） */
+    getStickyContainer: () => HTMLElement | null;
 }
 
 const noop = () => {};
@@ -33,6 +35,7 @@ export const StickyScrollContext = createContext<StickyScrollApi>({
     paginationSlot: null,
     registerGroup: noop,
     remeasure: noop,
+    getStickyContainer: () => null,
 });
 
 export function useStickyScrollContext(): StickyScrollApi {

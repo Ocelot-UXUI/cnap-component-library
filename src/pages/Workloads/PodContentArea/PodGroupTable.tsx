@@ -1,6 +1,7 @@
 import {Alert, Empty, Pagination, Table} from '@/design';
 import type {TablePaginationConfig} from '@/design';
 import type {SorterResult, TableCurrentDataSource} from '@/design';
+import {spacing} from '@/constants/spacing';
 import {useEffect, useRef} from 'react';
 import {createPortal} from 'react-dom';
 
@@ -14,6 +15,9 @@ import {GroupBlock, GroupHeaderPin, PagerRow} from './PodContentArea.style';
 import {podKey} from './selection';
 import type {PodFilterState, ViewMode} from './types';
 import {useGroupPods} from './useGroupPods';
+
+/** 表头吸顶偏移：呼吸位(xl2) + GroupHeaderBar(48)，与 GroupHeaderPin 吸顶盒底精确对接（恢复 GroupBlock gap 时在此加 spacing.s） */
+const THEAD_STICKY_OFFSET = spacing.xl2 + 48;
 
 interface PodGroupTableProps {
     group: WorkloadGroup;
@@ -50,7 +54,7 @@ export const PodGroupTable = ({
     onPodOperation,
     onWorkloadOperation,
 }: PodGroupTableProps) => {
-    const {registerGroup, paginationPinnedId, paginationSlot, remeasure} = useStickyScrollContext();
+    const {getStickyContainer, registerGroup, paginationPinnedId, paginationSlot, remeasure} = useStickyScrollContext();
     const blockRef = useRef<HTMLDivElement>(null);
 
     const {data, loading, error, query, setPage, setSort, reload} = useGroupPods(
@@ -119,12 +123,14 @@ export const PodGroupTable = ({
                     : (
                         <>
                             <Table<Pod>
+                                style={{position: 'relative', zIndex: 1}}
                                 rowKey={podKey}
                                 columns={columns}
                                 dataSource={pods}
                                 loading={loading}
                                 size="small"
                                 scroll={{x: 'max-content'}}
+                                sticky={{offsetHeader: THEAD_STICKY_OFFSET, getContainer: () => getStickyContainer() ?? window}}
                                 locale={{emptyText: <Empty description="该组暂无 Pod" />}}
                                 rowSelection={{
                                     selectedRowKeys: selectedKeys,

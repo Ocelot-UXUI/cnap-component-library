@@ -109,34 +109,38 @@ export const QuickChip = styled.button<{ selected: boolean; }>`
 export const GroupSection = styled.div`
     display: flex;
     flex-direction: column;
+    /* 首个分组呼吸位条带的覆盖空间：抵消 GroupHeaderPin 负 margin 的上探 */
+    padding-top: ${spacing.xl2}px;
 `;
 
 export const GroupBlock = styled.div`
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: ${spacing.s}px;
+    // 增加这个间距会使滚动后在缝隙中显示出滚上来的表格内容，之后再调整
+    // gap: ${spacing.s}px;
     margin-bottom: ${spacing.xl2}px;
-
-    /* 假滚动下 thead 由 JS 反向 translate 吸顶，需盖住其下 body 行 */
-    & thead {
-        position: relative;
-        // 设置为16是因为需要盖住fixed的表格首位两列的表头渲染
-        z-index: 16;
-        will-change: transform;
-    }
 `;
 
-/** GroupHeader 吸顶承载层：data-group-header 供进度控制器实测/施加 transform */
+/** GroupHeader 吸顶层：原生 sticky 钉在窗口顶。padding-top + 等量负 margin-top 构成吸顶呼吸位——不透明盒从窗口顶开始、视觉内容下移 xl2，自然流布局净零（组间距不膨胀）；表头 offsetHeader 须计入呼吸位并留重叠量防透缝 */
 export const GroupHeaderPin = styled.div`
-    position: relative;
-    will-change: transform;
+    position: sticky;
+    top: 0;
+    z-index: 15;
+    margin-top: -${spacing.xl2}px;
+    padding-top: ${spacing.xl2}px;
     background: ${semantic.bg.default};
 `;
 
-/** 组内分页行：固定 min-height 保证分页固定/回流切换时组高不跳变 */
+/** 组内分页行：原生 sticky 于窗口底（组底在窗口下方时固定、入窗后回流），不脱离文档流无需占位 hack */
 export const PagerRow = styled.div`
+    position: sticky;
+    bottom: 0;
+    z-index: 5;
     display: flex;
     justify-content: flex-end;
     min-height: 32px;
+    padding: ${spacing.xs}px 0;
+    background: ${semantic.bg.default};
+    border-top: 1px solid ${semantic.border.divider};
 `;
