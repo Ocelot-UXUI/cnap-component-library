@@ -12,7 +12,8 @@ const getAppName = (): AppName => {
 
 export const APP_NAME = getAppName();
 
-export const APP_IS_DEV = window.location.hostname === 'localhost';
+const localHostnames = new Set(['localhost', '127.0.0.1', '::1']);
+export const APP_IS_DEV = localHostnames.has(window.location.hostname);
 
 export const APP_BASENAME = '/devops/cnap';
 
