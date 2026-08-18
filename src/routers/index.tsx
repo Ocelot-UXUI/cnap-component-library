@@ -23,6 +23,12 @@ export const router = createBrowserRouter([
             : withSuspense(P.ComponentPlaygroundPage),
     },
     {
+        path: '/designer-drafts/traffic-access',
+        element: APP_IS_ONLINE_PRODUCTION
+            ? <Navigate to="/home" replace />
+            : withSuspense(P.TrafficAccessHoverDraftPage),
+    },
+    {
         path: '*',
         element: <Navigate to="/home" replace />,
     },

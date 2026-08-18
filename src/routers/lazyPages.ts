@@ -29,3 +29,4 @@ export const AppRuntimeConfigPage = lazy(() => import('@/pages/AppRuntimeConfig'
 export const AppSettingsPage = lazy(() => import('@/pages/AppSettings'));
 export const BorderGlowDemoPage = lazy(() => import('@/pages/BorderGlowDemo'));
 export const ComponentPlaygroundPage = lazy(() => import('@/pages/ComponentPlayground'));
+export const TrafficAccessHoverDraftPage = lazy(() => import('@/pages/DesignerDrafts/drafts/TrafficAccessHover'));
