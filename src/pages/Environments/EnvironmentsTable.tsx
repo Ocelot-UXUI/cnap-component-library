@@ -32,6 +32,7 @@ import {
     statusErrorClass,
     statusHealthyClass,
     statusWarningClass,
+    environmentTableClass,
 } from './styles';
 
 interface EnvironmentsTableProps {
@@ -186,11 +187,13 @@ export const EnvironmentsTable = ({ environments }: EnvironmentsTableProps) => {
 
     return (
         <Table
+            className={environmentTableClass}
             columns={columns}
             dataSource={environments}
             rowKey="id"
-            pagination={{ pageSize: 10 }}
-            scroll={{ x: 1200 }}
+            size="small"
+            pagination={{ pageSize: 10, showSizeChanger: false }}
+            scroll={{ x: 'max-content' }}
             data-ai-entity="environment"
             data-ai-desc="环境列表表格"
         />

@@ -6,7 +6,7 @@ import {Button, Input, Select} from '@/design';
 import {MotionItem, MotionList} from '@/components/Motion';
 import {useTranslation} from '@/utils/i18n';
 import {PlusOutlined, SearchOutlined} from '@ant-design/icons';
-import {Space, Typography} from '@/design';
+import {Typography} from '@/design';
 import {useMemo, useState} from 'react';
 import {CreateEnvironmentModal} from './CreateEnvironmentModal';
 import {EnvironmentSection} from './EnvironmentSection';
@@ -66,33 +66,33 @@ const EnvironmentsPage = () => {
             </div>
 
             <div className={filterContainerClass}>
-                <Space size="middle">
-                    <Input
-                        placeholder="搜索环境..."
-                        prefix={<SearchOutlined />}
-                        value={search}
-                        onChange={e => setSearch(e.target.value)}
-                        className={searchInputWidthClass}
-                        data-ai-param="searchKeyword"
-                        data-ai-entity="environment"
-                        data-ai-desc="搜索环境关键词"
-                    />
-                    <Select
-                        value={typeFilter}
-                        onChange={setTypeFilter}
-                        className={selectWidthClass}
-                        data-ai-param="typeFilter"
-                        data-ai-entity="environment"
-                        data-ai-desc="环境类型筛选"
-                    >
-                        <Select.Option value="all">所有类型</Select.Option>
-                        <Select.Option value="prod">生产</Select.Option>
-                        <Select.Option value="staging">预发</Select.Option>
-                        <Select.Option value="sandbox">沙盒</Select.Option>
-                        <Select.Option value="testing">测试</Select.Option>
-                        <Select.Option value="dev">开发</Select.Option>
-                    </Select>
-                </Space>
+                <Select
+                    value={typeFilter}
+                    onChange={setTypeFilter}
+                    className={selectWidthClass}
+                    placeholder="环境类型"
+                    data-ai-param="typeFilter"
+                    data-ai-entity="environment"
+                    data-ai-desc="环境类型筛选"
+                >
+                    <Select.Option value="all">所有类型</Select.Option>
+                    <Select.Option value="prod">生产</Select.Option>
+                    <Select.Option value="staging">预发</Select.Option>
+                    <Select.Option value="sandbox">沙盒</Select.Option>
+                    <Select.Option value="testing">测试</Select.Option>
+                    <Select.Option value="dev">开发</Select.Option>
+                </Select>
+                <Input
+                    allowClear
+                    placeholder="搜索环境名称"
+                    prefix={<SearchOutlined />}
+                    value={search}
+                    onChange={e => setSearch(e.target.value)}
+                    className={searchInputWidthClass}
+                    data-ai-param="searchKeyword"
+                    data-ai-entity="environment"
+                    data-ai-desc="搜索环境关键词"
+                />
             </div>
 
             <MotionList>

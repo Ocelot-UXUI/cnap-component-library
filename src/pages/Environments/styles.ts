@@ -23,32 +23,50 @@ export const envSectionClass = css`
 `;
 
 export const envSectionHeaderClass = css`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 48px;
+    padding: 8px 12px;
     margin-bottom: 16px;
+    border-radius: 12px;
+    background: #f5f7fa;
 `;
 
 export const envSectionTitleClass = css`
-    font-size: 18px;
-    font-weight: 600;
+    color: #181818;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
     margin-bottom: 4px;
 `;
 
 export const envSectionDescClass = css`
-    font-size: 14px;
-    color: rgba(0, 0, 0, 0.45);
-    margin-bottom: 16px;
+    color: #7b818c;
+    font-size: 12px;
+    line-height: 18px;
 `;
 
 export const envTypeTagClass = (type: string) => {
     const colors: Record<string, string> = {
-        prod: '#ff4d4f',
-        staging: '#faad14',
-        sandbox: '#fa8c16',
-        testing: '#52c41a',
-        dev: '#1890ff',
+        prod: '#f04438',
+        staging: '#f79009',
+        sandbox: '#f79009',
+        testing: '#16a765',
+        dev: '#2468f2',
+    };
+    const backgrounds: Record<string, string> = {
+        prod: '#ffe8e6',
+        staging: '#fff0d8',
+        sandbox: '#fff0d8',
+        testing: '#e4f9ed',
+        dev: '#e7efff',
     };
     return css`
-        border-color: ${colors[type] || '#d9d9d9'};
+        border-color: transparent;
+        background: ${backgrounds[type] || '#f2f4f7'};
         color: ${colors[type] || '#595959'};
+        border-radius: 4px;
     `;
 };
 
@@ -59,6 +77,9 @@ export const pageHeaderFlexClass = css`
 `;
 
 export const filterContainerClass = css`
+    display: flex;
+    align-items: center;
+    gap: 8px;
     margin-bottom: 24px;
 `;
 
@@ -68,16 +89,41 @@ export const emptyStateClass = css`
     color: rgba(0, 0, 0, 0.45);
 `;
 
-export const transparentBgClass = css`
-    background: transparent;
-`;
-
 export const searchInputWidthClass = css`
-    width: 300px;
+    width: 256px;
 `;
 
 export const selectWidthClass = css`
-    width: 150px;
+    width: 140px;
+`;
+
+export const environmentTableClass = css`
+    .ant-5-table {
+        background: #fff;
+    }
+
+    .ant-5-table-container {
+        border-radius: 0;
+    }
+
+    .ant-5-table-thead > tr > th {
+        height: 36px;
+        padding: 0 12px;
+        color: #7b818c;
+        font-size: 12px;
+        font-weight: 400;
+        white-space: nowrap;
+    }
+
+    .ant-5-table-tbody > tr > td {
+        height: 48px;
+        padding: 0 12px;
+        font-size: 12px;
+    }
+
+    .ant-5-table-tbody > tr:hover > td {
+        background: #fafcff;
+    }
 `;
 
 export const envNameClass = css`
