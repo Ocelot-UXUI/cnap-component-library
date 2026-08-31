@@ -8,7 +8,10 @@ const buildTarget = ['chrome89', 'edge89', 'firefox89', 'safari15'];
 
 // const isDev = process.env.NODE_ENV !== 'production';
 // const CNAP_BASE_URL = isDev ? '/' : 'https://cnap2-sandbox.now.baidu-int.com/';
-const CNAP_BASE_URL = process.env.FCNAP === 'true'
+const isGitHubPages = process.env.GITHUB_PAGES === 'true';
+const CNAP_BASE_URL = isGitHubPages
+    ? '/cnap-component-library/'
+    : process.env.FCNAP === 'true'
     ? `${process.env.FCNAP_CDN_HOST}/${process.env.FCNAP_CDN_PATH}`
     : 'https://cnap2-sandbox.now.baidu-int.com/';
 

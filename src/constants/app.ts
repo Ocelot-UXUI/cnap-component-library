@@ -15,7 +15,7 @@ export const APP_NAME = getAppName();
 const localHostnames = new Set(['localhost', '127.0.0.1', '::1']);
 export const APP_IS_DEV = localHostnames.has(window.location.hostname);
 
-export const APP_BASENAME = '/devops/cnap';
+export const APP_BASENAME = import.meta.env.VITE_APP_BASENAME || '/devops/cnap';
 
 export const APP_HEADER_HEIGHT = '48px';
 
