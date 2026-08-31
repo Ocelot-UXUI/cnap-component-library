@@ -5,7 +5,80 @@
       "path": "/app/applications",
       "page": "ApplicationsPage",
       "title": "应用列表",
-      "elements": [],
+      "elements": [
+        {
+          "action": "addArrayItem"
+        },
+        {
+          "action": "removeConfigRef"
+        },
+        {
+          "action": "addConfigRef"
+        },
+        {
+          "action": "addContainer"
+        },
+        {
+          "action": "removeEnv"
+        },
+        {
+          "action": "addEnv"
+        },
+        {
+          "action": "removeEnvRef"
+        },
+        {
+          "action": "addEnvRef"
+        },
+        {
+          "action": "removeKv"
+        },
+        {
+          "action": "addKv"
+        },
+        {
+          "action": "removeVolume"
+        },
+        {
+          "action": "addVolume"
+        },
+        {
+          "action": "removePort"
+        },
+        {
+          "action": "addPort"
+        },
+        {
+          "action": "saveRuntimeConfig"
+        },
+        {
+          "action": "resetRuntimeConfig"
+        },
+        {
+          "action": "submitSettings",
+          "entity": "application"
+        },
+        {
+          "action": "saveStartupConfig"
+        },
+        {
+          "action": "resetStartupConfig"
+        },
+        {
+          "action": "deployApplication"
+        },
+        {
+          "action": "configApplication"
+        },
+        {
+          "action": "createApplication",
+          "entity": "application"
+        },
+        {
+          "action": "toggleViewMode",
+          "entity": "applications"
+        }
+      ],
       "params": []
     },
     {
@@ -21,7 +94,22 @@
       "path": "/app/applications/:appId/deployments",
       "page": "DeploymentsPage",
       "title": "部署管理",
-      "elements": [],
+      "elements": [
+        {
+          "action": "viewDeploymentDetails"
+        },
+        {
+          "action": "viewDeploymentLogs"
+        },
+        {
+          "action": "deployApplication",
+          "entity": "application"
+        },
+        {
+          "action": "submitDeploy",
+          "entity": "deployment"
+        }
+      ],
       "params": [
         "appId"
       ]
@@ -30,7 +118,12 @@
       "path": "/app/applications/:appId/settings",
       "page": "ApplicationSettings",
       "title": "应用设置",
-      "elements": [],
+      "elements": [
+        {
+          "action": "submitSettings",
+          "entity": "application"
+        }
+      ],
       "params": [
         "appId"
       ]
@@ -39,28 +132,99 @@
       "path": "/app/environments",
       "page": "EnvironmentsPage",
       "title": "环境管理",
-      "elements": [],
+      "elements": [
+        {
+          "action": "viewEnvironment"
+        },
+        {
+          "action": "settingsEnvironment"
+        },
+        {
+          "action": "deleteEnvironment"
+        },
+        {
+          "action": "openEnvironmentMenu"
+        },
+        {
+          "action": "openCreateEnvironmentModal",
+          "entity": "environment"
+        }
+      ],
       "params": []
     },
     {
       "path": "/app/clusters",
       "page": "ClustersPage",
       "title": "集群管理",
-      "elements": [],
+      "elements": [
+        {
+          "action": "viewCluster"
+        },
+        {
+          "action": "manageCredentials"
+        },
+        {
+          "action": "shareCluster"
+        },
+        {
+          "action": "deleteCluster"
+        },
+        {
+          "action": "openClusterMenu"
+        },
+        {
+          "action": "addCluster",
+          "entity": "cluster"
+        }
+      ],
       "params": []
     },
     {
       "path": "/app/accounts",
       "page": "AccountsPage",
       "title": "账户管理",
-      "elements": [],
+      "elements": [
+        {
+          "action": "createAccount",
+          "entity": "account"
+        },
+        {
+          "action": "viewAccount"
+        }
+      ],
       "params": []
     },
     {
       "path": "/app/settings",
       "page": "SettingsPage",
       "title": "用户设置",
-      "elements": [],
+      "elements": [
+        {
+          "action": "uploadAvatar",
+          "entity": "user"
+        },
+        {
+          "action": "toggleTerminalFont",
+          "entity": "userPreference"
+        },
+        {
+          "action": "saveProfile",
+          "entity": "user",
+          "desc": "保存个人资料更改"
+        },
+        {
+          "action": "updatePassword",
+          "entity": "security"
+        },
+        {
+          "action": "configure2FA",
+          "entity": "security"
+        },
+        {
+          "action": "revokeSession",
+          "entity": "session"
+        }
+      ],
       "params": []
     }
   ]

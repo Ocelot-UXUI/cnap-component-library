@@ -2,7 +2,7 @@
 /**
  * 环境表格组件
  */
-import {Dropdown, Table} from '@/components/ai';
+import {Dropdown, Table} from '@/design';
 import {Environment} from '@/types/environment';
 import {useTranslation} from '@/utils/i18n';
 import {

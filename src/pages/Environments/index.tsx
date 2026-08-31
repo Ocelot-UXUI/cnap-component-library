@@ -2,7 +2,7 @@
 /**
  * 环境管理页面
  */
-import {Button, Input, Select} from '@/components/ai';
+import {Button, Input, Select} from '@/design';
 import {MotionItem, MotionList} from '@/components/Motion';
 import {useTranslation} from '@/utils/i18n';
 import {PlusOutlined, SearchOutlined} from '@ant-design/icons';
@@ -99,7 +99,6 @@ const EnvironmentsPage = () => {
                 {productionEnvs.length > 0 && (
                     <MotionItem>
                         <EnvironmentSection
-                            level="production"
                             title={t('pages.environments.production')}
                             description="为真实用户提供服务的环境"
                             environments={productionEnvs}
@@ -109,7 +108,6 @@ const EnvironmentsPage = () => {
                 {testingEnvs.length > 0 && (
                     <MotionItem>
                         <EnvironmentSection
-                            level="testing"
                             title={t('pages.environments.testing')}
                             description="开发和测试环境"
                             environments={testingEnvs}

@@ -22,13 +22,14 @@ export const envSectionClass = css`
     margin-bottom: 32px;
 `;
 
+export const envSectionHeaderClass = css`
+    margin-bottom: 16px;
+`;
+
 export const envSectionTitleClass = css`
     font-size: 18px;
     font-weight: 600;
     margin-bottom: 4px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
 `;
 
 export const envSectionDescClass = css`
