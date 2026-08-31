@@ -4,7 +4,7 @@ import {MotionEmpty, MotionItem, MotionList} from '@/components/Motion';
 import {hexToHslStr} from '@/utils/color';
 import {PlusOutlined, SearchOutlined, UserOutlined} from '@ant-design/icons';
 import {css} from '@emotion/css';
-import {Col, Input, Row, Space, Tag, theme} from '@/design';
+import {Card, Col, Input, Row, Space, Tag, theme, Typography} from '@/design';
 import {useState} from 'react';
 
 interface Account {
@@ -75,8 +75,8 @@ export default function AccountsPage() {
         <div>
             <div className={pageHeaderClass}>
                 <div>
-                    <h1 style={{ fontSize: 24, fontWeight: 600, margin: '0 0 8px' }}>账户管理</h1>
-                    <p style={{ color: 'rgba(0,0,0,0.45)', margin: 0 }}>管理系统账户和访问权限</p>
+                    <Typography.Title level={2} style={{ margin: 0 }}>账户管理</Typography.Title>
+                    <Typography.Text type="secondary">管理系统账户和访问权限</Typography.Text>
                 </div>
                 <Button icon={<PlusOutlined />} type="primary" data-ai-action="createAccount" data-ai-entity="account">
                     新建账户
@@ -113,8 +113,11 @@ export default function AccountsPage() {
                                         glowRadius={32}
                                         lightMode={true}
                                     >
-                                        <div
+                                        <Card
+                                            size="small"
+                                            variant="borderless"
                                             className={cardInnerClass}
+                                            styles={{ body: { padding: 20 } }}
                                             data-ai-action="viewAccount"
                                             data-ai-entity={`account:${account.id}`}
                                         >
@@ -124,7 +127,7 @@ export default function AccountsPage() {
                                             </div>
                                             <div className={cardDescClass}>{account.description}</div>
                                             <Tag color={tagColor}>{text}</Tag>
-                                        </div>
+                                        </Card>
                                     </BorderGlow>
                                 </MotionItem>
                             </Col>

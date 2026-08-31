@@ -2,6 +2,7 @@
  * 集群管理页面
  */
 import {Button, Tabs} from '@/components/ai';
+import {Typography} from '@/design';
 import {useTranslation} from '@/utils/i18n';
 import {ClusterOutlined, KeyOutlined, PlusOutlined} from '@ant-design/icons';
 import {ClustersTab} from './ClustersTab';
@@ -39,8 +40,12 @@ const ClustersPage = () => {
         <div>
             <div className={`${pageHeaderClass} ${pageHeaderFlexClass}`}>
                 <div>
-                    <h1 className={pageTitleClass}>{t('pages.clusters.title')}</h1>
-                    <p className={pageDescClass}>{t('pages.clusters.description')}</p>
+                    <Typography.Title level={2} className={pageTitleClass}>
+                        {t('pages.clusters.title')}
+                    </Typography.Title>
+                    <Typography.Text type="secondary" className={pageDescClass}>
+                        {t('pages.clusters.description')}
+                    </Typography.Text>
                 </div>
                 <Button
                     type="primary"

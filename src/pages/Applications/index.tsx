@@ -7,7 +7,7 @@ import {PageLayoutHeader} from '@/components/Layouts/PageLayout';
 import {applicationDeployments, applicationSettings} from '@/routes';
 import {AppstoreOutlined, PlusOutlined, UnorderedListOutlined} from '@ant-design/icons';
 import {css, cx} from '@emotion/css';
-import {Alert, Empty, Space, Spin, theme} from '@/design';
+import {Alert, Card, Empty, Space, Spin, theme} from '@/design';
 import {LayoutGroup, motion} from 'framer-motion';
 import {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
@@ -86,7 +86,7 @@ export default function ApplicationsPage() {
         border-radius: ${token.borderRadius}px;
     `,
     );
-    const cardClass = cx(glassBase, css`padding: 16px; border-radius: 12px; height: 100%;`);
+    const cardClass = cx(glassBase, css`border-radius: 12px; height: 100%;`);
     const listColName = css`flex: 1; font-weight: 500; color: ${token.colorText};`;
     const listColActions = css`display: flex; gap: 4px;`;
     const cardTitleClass = css`font-weight: 600; font-size: 15px; margin-bottom: 12px; color: ${token.colorText};`;
@@ -180,10 +180,14 @@ export default function ApplicationsPage() {
                                                 layout
                                                 transition={springTransition}
                                             >
-                                                <div className={cardClass}>
+                                                <Card
+                                                    variant="borderless"
+                                                    className={cardClass}
+                                                    styles={{ body: { padding: 16 } }}
+                                                >
                                                     <div className={cardTitleClass}>{app.name}</div>
                                                     <div className={cardActionsClass}>{renderActions(app)}</div>
-                                                </div>
+                                                </Card>
                                             </motion.div>
                                         ))}
                                     </div>

@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import {PageLayoutHeader} from '@/components/Layouts/PageLayout';
 import {css} from '@emotion/css';
-import {Tag, theme, Timeline} from '@/design';
+import {Card, Tag, theme, Timeline} from '@/design';
 
 const items = [
     {
@@ -46,7 +46,6 @@ const items = [
 const cardClass = css`
     background: rgba(255,255,255,0.6);
     border-radius: 8px;
-    padding: 20px 24px;
     backdrop-filter: blur(12px);
 `;
 
@@ -55,7 +54,11 @@ export default function ChangelogPage() {
     return (
         <div>
             <PageLayoutHeader title="更新日志" />
-            <div className={cardClass}>
+            <Card
+                variant="borderless"
+                className={cardClass}
+                styles={{ body: { padding: '20px 24px' } }}
+            >
                 <Timeline
                     items={items.map(item => ({
                         color: item.color || token.colorPrimary,
@@ -72,7 +75,7 @@ export default function ChangelogPage() {
                     }))}
                     mode="left"
                 />
-            </div>
+            </Card>
         </div>
     );
 }

@@ -2,6 +2,7 @@
  * 用户设置页面
  */
 import {Tabs} from '@/components/ai';
+import {Typography} from '@/design';
 import {useTranslation} from '@/utils/i18n';
 import {
     ApiOutlined,
@@ -76,8 +77,12 @@ const SettingsPage = () => {
     return (
         <div>
             <div className={pageHeaderClass}>
-                <h1 className={pageTitleClass}>{t('pages.settings.title')}</h1>
-                <p className={pageDescClass}>{t('pages.settings.description')}</p>
+                <Typography.Title level={2} className={pageTitleClass}>
+                    {t('pages.settings.title')}
+                </Typography.Title>
+                <Typography.Text type="secondary" className={pageDescClass}>
+                    {t('pages.settings.description')}
+                </Typography.Text>
             </div>
             <Tabs defaultActiveKey="profile" items={tabItems} destroyOnHidden />
         </div>

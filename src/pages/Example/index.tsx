@@ -1,5 +1,5 @@
 import {css} from '@emotion/css';
-import {Button, Card, Form, Input, message, Modal, Space, Table} from '@/design';
+import {Button, Card, Form, Input, message, Modal, Space, Table, Typography} from '@/design';
 import {useState} from 'react';
 
 const containerClass = css`
@@ -55,7 +55,7 @@ function ExamplePage() {
     return (
         <div className={containerClass}>
             <section className={sectionClass}>
-                <h2 className={titleClass}>按钮示例</h2>
+                <Typography.Title level={3} className={titleClass}>按钮示例</Typography.Title>
                 <Card>
                     <Space wrap>
                         <Button type="primary">主要按钮</Button>
@@ -70,7 +70,7 @@ function ExamplePage() {
             </section>
 
             <section className={sectionClass}>
-                <h2 className={titleClass}>表单示例</h2>
+                <Typography.Title level={3} className={titleClass}>表单示例</Typography.Title>
                 <Card>
                     <Form form={form} layout="inline" onFinish={handleSubmit}>
                         <Form.Item name="username" rules={[{ required: true, message: '请输入用户名' }]}>
@@ -87,7 +87,7 @@ function ExamplePage() {
             </section>
 
             <section className={sectionClass}>
-                <h2 className={titleClass}>表格示例</h2>
+                <Typography.Title level={3} className={titleClass}>表格示例</Typography.Title>
                 <Card>
                     <Table columns={columns} dataSource={tableData} pagination={false} />
                 </Card>

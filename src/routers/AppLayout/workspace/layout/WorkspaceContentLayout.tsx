@@ -2,9 +2,6 @@ import styled from '@emotion/styled';
 import {Layout} from '@/design';
 import {motion} from 'framer-motion';
 
-import {radius} from '@/constants/radius';
-import {shadow} from '@/constants/shadow';
-
 import {WorkspaceHost} from '../content/WorkspaceHost';
 
 const { Content } = Layout;
@@ -17,11 +14,10 @@ interface ContentAreaProps {
 
 interface MainLayoutFrameProps {
     $background: string;
-    $borderColor: string;
 }
 
 const contentAreaStyleProps = new Set(['$background', '$borderColor', '$isLiquidGlass']);
-const mainLayoutFrameStyleProps = new Set(['$background', '$borderColor']);
+const mainLayoutFrameStyleProps = new Set(['$background']);
 
 const ContentArea = styled(Content, {
     shouldForwardProp: prop => !contentAreaStyleProps.has(prop),
@@ -53,9 +49,6 @@ const MainLayoutFrame = styled(motion.div, {
     min-width: 0;
     height: 100%;
     background: ${({ $background }: MainLayoutFrameProps) => $background};
-    border: 1px solid ${({ $borderColor }: MainLayoutFrameProps) => $borderColor};
-    border-radius: ${radius.xl}px;
-    box-shadow: ${shadow.s};
     overflow: hidden;
 `;
 
@@ -73,7 +66,6 @@ export function WorkspaceContentLayout({
     return (
         <MainLayoutFrame
             $background={background}
-            $borderColor={borderColor}
         >
             <ContentArea
                 id="pageContent"

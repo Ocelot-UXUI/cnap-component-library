@@ -6,7 +6,7 @@ import {Button, Input, Select} from '@/components/ai';
 import {MotionItem, MotionList} from '@/components/Motion';
 import {useTranslation} from '@/utils/i18n';
 import {PlusOutlined, SearchOutlined} from '@ant-design/icons';
-import {Space} from '@/design';
+import {Space, Typography} from '@/design';
 import {useMemo, useState} from 'react';
 import {CreateEnvironmentModal} from './CreateEnvironmentModal';
 import {EnvironmentSection} from './EnvironmentSection';
@@ -47,8 +47,12 @@ const EnvironmentsPage = () => {
         <div>
             <div className={`${pageHeaderClass} ${pageHeaderFlexClass}`}>
                 <div>
-                    <h1 className={pageTitleClass}>{t('pages.environments.title')}</h1>
-                    <p className={pageDescClass}>{t('pages.environments.description')}</p>
+                    <Typography.Title level={2} className={pageTitleClass}>
+                        {t('pages.environments.title')}
+                    </Typography.Title>
+                    <Typography.Text type="secondary" className={pageDescClass}>
+                        {t('pages.environments.description')}
+                    </Typography.Text>
                 </div>
                 <Button
                     type="primary"

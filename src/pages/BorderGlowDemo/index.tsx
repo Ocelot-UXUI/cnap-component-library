@@ -3,7 +3,7 @@ import BorderGlow from '@/components/BorderGlow/BorderGlow';
 import {PageLayoutHeader} from '@/components/Layouts/PageLayout';
 import {hexToHslStr} from '@/utils/color';
 import {css} from '@emotion/css';
-import {theme} from '@/design';
+import {theme, Typography} from '@/design';
 
 const gridStyle = css`
     display: grid;
@@ -95,11 +95,7 @@ function BorderGlowDemo() {
     return (
         <>
             <PageLayoutHeader
-                title={
-                    <h2 style={{ margin: 0, color: '#1a1a2e', fontSize: 22, fontWeight: 600 }}>
-                        BorderGlow 组件演示（主题联动）
-                    </h2>
-                }
+                title={<Typography.Title level={2} style={{ margin: 0 }}>BorderGlow 组件演示（主题联动）</Typography.Title>}
             />
             <div className={gridStyle}>
                 {cards.map(({ title, desc, label, color, extra }) => (
