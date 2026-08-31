@@ -14,7 +14,7 @@
     "test": "vitest run",
     "start": "vite",
     "prepare": "husky",
-    "gen:ai-context": "npx tsx scripts/generate-ai-context.ts",
+    "gen:ai-context": "npx --yes tsx scripts/generate-ai-context.ts",
     "verify:router-paths": "npx tsx scripts/verify-router-paths.ts",
     "verify:component-styles": "npx tsx scripts/verify-component-styles.ts",
     "verify:design-tokens": "npx tsx scripts/verify-design-tokens.ts"
