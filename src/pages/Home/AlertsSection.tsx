@@ -2,6 +2,7 @@ import {AlertOutlined, LoadingOutlined, PauseCircleOutlined} from '@ant-design/i
 import {css} from '@emotion/css';
 import {Alert, Button, Card, Progress, Space, Tag, theme, Typography} from '@/design';
 import {deployments, userAlerts} from './data';
+import {dashboardCardClass, dashboardSectionClass} from './styles';
 
 const { Text } = Typography;
 
@@ -29,17 +30,16 @@ export const AlertsSection = () => {
     const { token } = theme.useToken();
 
     return (
-        <Space direction="vertical" style={{ width: '100%' }} size={16}>
+        <Space direction="vertical" className={dashboardSectionClass} size={16}>
             {userAlerts.length > 0 && (
                 <Card
+                    className={dashboardCardClass}
                     title={
                         <>
                             <AlertOutlined style={{ color: token.colorError, marginRight: 6 }} />活跃告警
                         </>
                     }
                     size="small"
-                    style={{ borderColor: token.colorErrorBorder, background: token.colorErrorBg }}
-                    styles={{ header: { borderBottom: 'none' } }}
                 >
                     <Space direction="vertical" style={{ width: '100%' }} size={8}>
                         {userAlerts.map(alert => (
@@ -61,10 +61,9 @@ export const AlertsSection = () => {
             )}
             {deployments.length > 0 && (
                 <Card
+                    className={dashboardCardClass}
                     title="进行中的部署"
                     size="small"
-                    style={{ borderColor: token.colorInfoBorder, background: token.colorInfoBg }}
-                    styles={{ header: { borderBottom: 'none' } }}
                 >
                     {deployments.map(dep => (
                         <div

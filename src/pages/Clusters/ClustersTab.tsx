@@ -63,16 +63,6 @@ export const ClustersTab = ({ clusters, providers }: ClustersTabProps) => {
             </div>
 
             <div className={filterContainerClass}>
-                <Input
-                    placeholder="搜索集群..."
-                    prefix={<SearchOutlined />}
-                    value={search}
-                    onChange={e => setSearch(e.target.value)}
-                    className={searchInputClass}
-                    data-ai-param="clusterSearch"
-                    data-ai-entity="cluster"
-                    data-ai-desc="搜索集群名称"
-                />
                 <Select
                     value={providerFilter}
                     onChange={setProviderFilter}
@@ -88,6 +78,17 @@ export const ClustersTab = ({ clusters, providers }: ClustersTabProps) => {
                         </Select.Option>
                     ))}
                 </Select>
+                <Input
+                    allowClear
+                    placeholder="搜索集群名称"
+                    prefix={<SearchOutlined />}
+                    value={search}
+                    onChange={e => setSearch(e.target.value)}
+                    className={searchInputClass}
+                    data-ai-param="clusterSearch"
+                    data-ai-entity="cluster"
+                    data-ai-desc="搜索集群名称"
+                />
             </div>
 
             <MotionList>

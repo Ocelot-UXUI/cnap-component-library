@@ -10,9 +10,10 @@ import {
     SettingOutlined,
     UserOutlined,
 } from '@ant-design/icons';
-import {Button, Card, Col, Row, theme, Timeline, Typography} from '@/design';
+import {Button, Card, Col, Row, Timeline, Typography} from '@/design';
 import {useNavigate} from 'react-router-dom';
 import {activities} from './data';
+import {dashboardCardClass, quickActionButtonClass} from './styles';
 import type {ActivityType} from './data';
 
 const { Text } = Typography;
@@ -67,13 +68,16 @@ const quickActions = [
 ];
 
 export const RecentActivity = () => {
-    const { token } = theme.useToken();
     const navigate = useNavigate();
 
     return (
         <Row gutter={[16, 16]}>
             <Col xs={24} lg={16}>
-                <Card title="最近动态" extra={<Button type="link" size="small">查看全部</Button>}>
+                <Card
+                    className={dashboardCardClass}
+                    title="最近动态"
+                    extra={<Button type="link" size="small">查看全部</Button>}
+                >
                     <Timeline
                         items={activities.map(activity => ({
                             dot: activityIcon[activity.type],
@@ -93,14 +97,14 @@ export const RecentActivity = () => {
                 </Card>
             </Col>
             <Col xs={24} lg={8}>
-                <Card title="快捷操作">
+                <Card className={dashboardCardClass} title="快捷操作">
                     <Row gutter={[8, 8]}>
                         {quickActions.map(action => (
                             <Col span={12} key={action.label}>
                                 <Button
                                     block
                                     icon={action.icon}
-                                    style={{ height: 52 }}
+                                    className={quickActionButtonClass}
                                     onClick={() => navigate(action.path)}
                                     data-ai-action={action.aiAction as never}
                                     data-ai-entity={action.aiEntity as never}
@@ -112,8 +116,9 @@ export const RecentActivity = () => {
                     </Row>
                 </Card>
                 <Card
+                    className={dashboardCardClass}
                     title="AI 洞察"
-                    style={{ marginTop: 16, borderColor: token.colorPrimaryBorder, background: token.colorPrimaryBg }}
+                    style={{ marginTop: 16 }}
                 >
                     <Text type="secondary" style={{ fontSize: 13 }}>
                         payment-service 在过去一小时内错误率持续升高，建议回滚至 v3.1.2 或排查近期部署变更。

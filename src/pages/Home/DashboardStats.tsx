@@ -7,6 +7,7 @@ import {
 import {css} from '@emotion/css';
 import {Card, Col, Row, Statistic, theme} from '@/design';
 import {userStats} from './data';
+import {dashboardCardClass, dashboardStatsCardClass} from './styles';
 
 const iconWrapClass = css`
     display: inline-flex;
@@ -57,7 +58,12 @@ export const DashboardStats = () => {
         <Row gutter={[16, 16]}>
             {stats.map(stat => (
                 <Col xs={24} sm={12} lg={6} key={stat.title}>
-                    <Card data-ai-role="card" data-ai-entity="dashboard" data-ai-desc={stat.title}>
+                    <Card
+                        className={`${dashboardCardClass} ${dashboardStatsCardClass}`}
+                        data-ai-role="card"
+                        data-ai-entity="dashboard"
+                        data-ai-desc={stat.title}
+                    >
                         <Statistic
                             title={stat.title}
                             value={stat.value}

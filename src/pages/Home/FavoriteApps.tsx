@@ -3,6 +3,7 @@ import {css} from '@emotion/css';
 import {Badge, Button, Card, Col, List, Row, Space, Tag, theme, Typography} from '@/design';
 import {favoriteApps, recentItems} from './data';
 import type {AppStatus} from './data';
+import {dashboardCardClass} from './styles';
 
 const { Text } = Typography;
 
@@ -27,6 +28,7 @@ export const FavoriteApps = () => {
         <Row gutter={[16, 16]}>
             <Col xs={24} lg={16}>
                 <Card
+                    className={dashboardCardClass}
                     title="收藏的应用"
                     extra={
                         <Button type="link" size="small" data-ai-action="manageFavorites" data-ai-entity="application">
@@ -75,7 +77,7 @@ export const FavoriteApps = () => {
                 </Card>
             </Col>
             <Col xs={24} lg={8}>
-                <Card title="最近访问">
+                <Card className={dashboardCardClass} title="最近访问">
                     <List
                         dataSource={recentItems}
                         renderItem={item => (

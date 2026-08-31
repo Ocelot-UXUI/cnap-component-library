@@ -21,27 +21,30 @@ export const pageDescClass = css`
 
 export const providerIconClass = (color: string) =>
     css`
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: ${color};
-    color: white;
-    font-size: 20px;
+    background: color-mix(in srgb, ${color} 14%, #fff);
+    color: ${color};
+    font-size: 16px;
 `;
 
 export const clusterCardClass = css`
-    cursor: pointer;
-    transition: all 0.3s ease;
     height: 100%;
     display: flex;
     flex-direction: column;
-    
+    border: 1px solid #e8ebf0;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
     &:hover {
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        border-color: #1890ff;
+        box-shadow: 0 4px 12px rgba(28, 32, 43, 0.08);
+        border-color: #c9d0da;
     }
 `;
 
@@ -50,9 +53,15 @@ export const providerSectionClass = css`
 `;
 
 export const providerTitleClass = css`
-    font-size: 18px;
-    font-weight: 600;
+    min-height: 48px;
+    padding: 8px 12px;
     margin-bottom: 16px;
+    border-radius: 8px;
+    background: #f5f7fa;
+    color: #181818;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -65,26 +74,28 @@ export const statsCardContentClass = css`
 `;
 
 export const statsIconClass = css`
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
     background: #f5f5f5;
     display: flex;
     align-items: center;
     justify-content: center;
     color: rgba(0, 0, 0, 0.45);
-    font-size: 20px;
+    font-size: 16px;
 `;
 
 export const statsValueClass = css`
-    font-size: 24px;
+    color: #181818;
+    font-size: 20px;
     font-weight: 600;
-    margin-bottom: 4px;
+    line-height: 28px;
 `;
 
 export const statsLabelClass = css`
-    font-size: 14px;
-    color: rgba(0, 0, 0, 0.45);
+    color: #7b818c;
+    font-size: 12px;
+    line-height: 18px;
 `;
 
 export const clusterHeaderClass = css`
@@ -151,9 +162,10 @@ export const appCountClass = css`
 `;
 
 export const filterContainerClass = css`
-    margin-bottom: 24px;
     display: flex;
-    gap: 16px;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 24px;
 `;
 
 export const pageHeaderFlexClass = css`
@@ -171,11 +183,11 @@ export const marginBottom24Class = css`
 `;
 
 export const searchInputClass = css`
-    max-width: 400px;
+    width: 256px;
 `;
 
 export const selectWidthClass = css`
-    width: 200px;
+    width: 140px;
 `;
 
 export const emptyStateClass = css`
