@@ -2,13 +2,18 @@ import {useState} from 'react';
 
 import {
     BellOutlined,
-    MoreOutlined,
     QuestionCircleOutlined,
     RetweetOutlined,
     SettingOutlined,
 } from '@ant-design/icons';
 import {cx} from '@emotion/css';
 import {Popover, Tooltip} from '@/design';
+import {
+    moreNavigationIcon,
+    primaryNavigationActiveIcons,
+    primaryNavigationIcons,
+} from '../navigationIcons';
+import type {NavigationNodeKey} from '@/navigation';
 
 import {
     popoverClass,
@@ -17,6 +22,8 @@ import {
     primaryActiveClass,
     PrimaryBusiness,
     primaryIconClass,
+    primaryIconActiveImageClass,
+    primaryIconImageClass,
     primaryItemClass,
     primaryLabelClass,
     PrimarySidebar,
@@ -59,7 +66,25 @@ export function WorkspacePrimaryNavigationLayout({
             className={cx(primaryItemClass, item.key === activeKey && primaryActiveClass)}
             onClick={() => handleSelect(item.key)}
         >
-            <span className={primaryIconClass}>{item.icon}</span>
+            <span className={primaryIconClass}>
+                {primaryNavigationIcons[item.key as NavigationNodeKey] ? (
+                    <img
+                        alt=""
+                        className={cx(
+                            primaryIconImageClass,
+                            item.key === activeKey && primaryIconActiveImageClass,
+                        )}
+                        src={
+                            item.key === activeKey
+                                ? primaryNavigationActiveIcons[item.key as NavigationNodeKey] ??
+                                  primaryNavigationIcons[item.key as NavigationNodeKey]
+                                : primaryNavigationIcons[item.key as NavigationNodeKey]
+                        }
+                    />
+                ) : (
+                    item.icon
+                )}
+            </span>
             <span className={primaryLabelClass}>{item.label}</span>
         </button>
     );
@@ -86,7 +111,7 @@ export function WorkspacePrimaryNavigationLayout({
                     >
                         <button type="button" className={primaryItemClass}>
                             <span className={primaryIconClass}>
-                                <MoreOutlined />
+                                <img alt="" className={primaryIconImageClass} src={moreNavigationIcon} />
                             </span>
                             <span className={primaryLabelClass}>更多</span>
                         </button>

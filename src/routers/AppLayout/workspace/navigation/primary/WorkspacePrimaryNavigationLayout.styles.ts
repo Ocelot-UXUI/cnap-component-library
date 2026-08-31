@@ -98,6 +98,18 @@ export const primaryIconClass = css`
     font-size: ${primaryIconFontSize}px;
 `;
 
+export const primaryIconImageClass = css`
+    width: ${primaryIconSize}px;
+    height: ${primaryIconSize}px;
+    display: block;
+    object-fit: contain;
+`;
+
+export const primaryIconActiveImageClass = css`
+    /* 作品集导航资源为白色单色图标，选中态切换为深色以匹配薄荷绿底。 */
+    filter: brightness(0);
+`;
+
 export const primaryLabelClass = css`
     font-family: ${typography.body.small.fontFamily};
     font-size: ${typography.body.small.fontSize}px;
